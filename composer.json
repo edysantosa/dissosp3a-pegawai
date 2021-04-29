@@ -1,0 +1,22 @@
+{
+    "autoload": {
+        "psr-4":{
+            "app\\" : "application",
+            "sys\\" : "system"
+        }
+    },
+    "require": {
+        "slim/slim": "^3.12",
+        "slim/twig-view": "^2.4",
+        "illuminate/database": "^5.7",
+        "bryanjhv/slim-session": "^3.6",
+        "phpmailer/phpmailer": "^6.0",
+        "slim/flash": "^0.4.0",
+        "kanellov/slim-twig-flash": "^0.2.0",
+        "mpdf/mpdf": "^7.1",
+        "sybio/image-workshop": "^2.1",
+        "nesbot/carbon": "^2.16.3",
+        "webfontkit/roboto": "^1.0",
+        "phpoffice/phpspreadsheet": "^1.7"
+    }
+}

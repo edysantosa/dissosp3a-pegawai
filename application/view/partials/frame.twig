@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include "partials/head.twig" %}
+
+    <body>    
+        {# navbar #}
+        {% block navbar %}
+            {% include "partials/navbar.twig" %}
+        {% endblock navbar %}
+
+      <!-- Page content -->
+      <div class="page-content">
+        {% block sidebar %}
+            {% include "partials/sidebar.twig" %}
+        {% endblock sidebar %}
+            <!-- Main content -->
+            <div class="content-wrapper">
+
+                <!-- Page header -->
+                <div class="page-header page-header-light">
+                    {# <div class="page-header-content header-elements-md-inline">
+                        <div class="page-title d-flex">
+                            <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">{{topTitle}}</span> {% if subTitle is defined and subTitle is not empty %}- {{subTitle}}{% endif %}</h4>
+                            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+                        </div>
+
+                        {% block global_trigger %}
+                            {% include "partials/global-trigger.twig" %}
+                        {% endblock global_trigger %}
+                    </div> #}
+
+                    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+                        {% include "partials/breadcrumb.twig" %}
+                        
+                        {% block page_trigger %}
+                            {# {% include "partials/page-trigger.twig" %} #}
+                        {% endblock page_trigger %}
+                    </div>
+                </div>
+                <!-- /page header -->
+
+                <!-- Content area -->
+                {# page content #}
+                {% block site_content %}{% endblock site_content %}                    
+            </div>
+        </div>
+  
+    {{ __site_rendered_js | raw }}
+    </body>
+</html>

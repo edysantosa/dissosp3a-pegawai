@@ -1,0 +1,54 @@
+<?php namespace app\config;
+
+return [
+    'settings' => [
+        'displayErrorDetails'               => true,
+        'determineRouteBeforeAppMiddleware' => true,
+
+        'emailServer' => [
+            'isTestEmail'  => false,
+            'smtpName'    => 'Meyaboo Picker',
+            'protocol'    => 'smtp',
+            'smtpHost'    => 'smtp.gmail.com', //examples: ssl://smtp.googlemail.com, myhost.com
+            'smtpUser'    => 'aaaa@gmail.com',
+            'smtpPass'    => 'aaaa',
+            'smtpPort'    => 587,
+            'smtpCrypto'  => 'tls',
+            'smtpDebug'   => 0
+        ],
+
+        /***
+         * Jika mengerjakan pada folder local dan tidak memiliki domain khusus,
+         * maka baseUrl perlu disetting agar redirect url tepat sasaran.
+         * contoh setting, "http://localhost/slimbase/public"
+         */
+        'baseUrl' => 'http://picking.test',
+
+        /***
+         * Database setting configuration
+         */
+        'databaseConnection' => [
+            'driver'    => 'mysql',
+            'host'      => '73.0.0.13',
+            'database'  => 'oka_maxomorra',
+            'username'  => 'root',
+            'password'  => 'root',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ],
+
+        /**
+         * Setting timezone PHP
+         */
+        'timezone'   => 'Europe/Amsterdam', //timezone ini harus sama dengan mysql
+
+        /***
+         * Yang ini juga jangan diubah,
+         * appPlugins gunanya untuk configurasi plugin slim, jika punya konfigurasi lain bisa diganti filenya menjadi yang lain
+         * appRoutes gunanya untuk setting route dari project ini
+         */
+        'appPlugins'    => require('../application/plugins.php'),
+        'appRoutes'     => require('../application/routes.php')
+    ]
+];

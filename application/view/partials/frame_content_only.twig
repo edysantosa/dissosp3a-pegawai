@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include "partials/head.twig" %}
+    <body>    
+      <!-- Page content -->
+      <div class="page-content">
+            <!-- Main content -->
+            <div class="content-wrapper">
+                <!-- Content area -->
+                {# page content #}
+                {% block site_content %}{% endblock site_content %}                    
+            </div>
+        </div>
+  
+    {{ __site_rendered_js | raw }}
+    </body>
+</html>

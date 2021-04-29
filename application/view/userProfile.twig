@@ -1,0 +1,120 @@
+{% extends "partials/frame.twig" %}
+
+{% block site_content %}
+<!-- Content area -->
+<div class="content">
+
+    <!-- Inner container -->
+    <div class="d-flex align-items-start flex-column flex-md-row">
+
+        <!-- Left content -->
+        <div class="tab-content w-100 overflow-auto order-2 order-md-1">
+
+            <div class="tab-pane fade active show" id="activity">
+
+                <!-- Usser form -->
+                <div class="card card-collapsed">
+                    <div class="card-body">
+                        <form id="user-edit-form" action="#">
+                            <fieldset class="mb-3">
+                                <legend class="font-weight-semibold text-uppercase font-size-sm">User Information</legend>
+
+                                <input type="hidden" name="task" value="update">
+                                <input type="hidden" name="id" value="{{user ? user.userId}}">
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-2">Nama</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" name="name" value="{{user ? user.name}}" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-2">Email</label>
+                                    <div class="col-lg-10">
+                                        <input type="email" class="form-control" name="email" value="{{user ? user.email}}" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-2">Posisi</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" value="{{user ? user.group.groupName}}" readonly="readonly">
+                                    </div>
+                                </div>
+
+                            </fieldset>
+
+                            <fieldset>
+                                <legend class="font-weight-semibold text-uppercase font-size-sm">Edit Password</legend>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-2">Password Baru</label>
+                                    <div class="col-lg-10">
+                                        <input type="password" id="password" class="form-control" name="password">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-2">Ulangi Password Baru</label>
+                                    <div class="col-lg-10">
+                                        <input type="password" class="form-control" name="password2">
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">Submit <i class="icon-paperplane ml-2"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /user form -->
+
+            </div>
+
+        </div>
+        <!-- /left content -->
+
+
+        <!-- Right sidebar component -->
+        <div class="sidebar sidebar-light bg-transparent sidebar-component sidebar-component-right wmin-300 border-0 shadow-0 order-1 order-md-2 sidebar-expand-md">
+
+            <!-- Sidebar content -->
+            <div class="sidebar-content">
+
+                <!-- User card -->
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="card-img-actions d-inline-block mb-3">
+                            <img class="img-fluid rounded-circle profile-image" src="{{session.user.image}}" width="170" height="170" alt="">
+                            <div class="card-img-actions-overlay card-img rounded-circle">
+                                <a href="#" class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round upload-image">
+                                    <i class="icon-plus3"></i>
+                                </a>
+                                </a>
+                            </div>
+                        </div>
+
+                        <form id="image-form" action="#">
+                            <input type="hidden" name="id" value="{{user.userId}}">
+                            <input type="file" id="image" name="image" style="display:none">
+                        </form>
+
+                        <h6 class="font-weight-semibold mb-0">{{session.user.name}}</h6>
+                        <span class="d-block text-muted">{{session.user.position}}</span>
+
+                    </div>
+                </div>
+                <!-- /user card -->
+
+            </div>
+            <!-- /sidebar content -->
+
+        </div>
+        <!-- /right sidebar component -->
+
+    </div>
+    <!-- /inner container -->
+
+</div>
+<!-- /content area -->
+{% endblock site_content %}

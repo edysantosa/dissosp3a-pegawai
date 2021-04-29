@@ -1,0 +1,20 @@
+<div class="d-flex">
+    <div class="breadcrumb">
+        {% for crumb in breadCrumb %}
+            {% if crumb is iterable %}
+                <a href="{{baseUrl}}/{{crumb.path}}" class="breadcrumb-item"><i class="{{crumb.icon}} mr-2"></i> {{crumb.name}}</a>
+            {% else %}
+                <span class="breadcrumb-item active">{{crumb}}</span>
+            {% endif %}
+    
+        {% endfor %}
+    </div>
+</div>
+
+{# <div class="d-flex">
+    <div class="breadcrumb">
+        <a href="index.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+        <a href="form_inputs.html" class="breadcrumb-item">Forms</a>
+        <span class="breadcrumb-item active">Basic inputs</span>
+    </div>
+</div> #}

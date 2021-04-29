@@ -1,0 +1,93 @@
+<!-- Main sidebar -->
+<div class="sidebar sidebar-light sidebar-main sidebar-expand-md">
+
+    <!-- Sidebar mobile toggler -->
+    <div class="sidebar-mobile-toggler text-center">
+        <a href="#" class="sidebar-mobile-main-toggle">
+            <i class="icon-arrow-left8"></i>
+        </a>
+        <span class="font-weight-semibold">Navigation</span>
+        <a href="#" class="sidebar-mobile-expand">
+            <i class="icon-screen-full"></i>
+            <i class="icon-screen-normal"></i>
+        </a>
+    </div>
+    <!-- /sidebar mobile toggler -->
+
+
+    <!-- Sidebar content -->
+    <div class="sidebar-content">
+
+        <!-- User menu -->
+        <div class="sidebar-user-material">
+            <div class="sidebar-user-material-body">
+                <div class="card-body text-center">
+                    <a href="#">
+                        <img src="{{session.user.image}}" class="img-fluid rounded-circle shadow-1 mb-3 profile-image" width="80" height="80" alt="">
+                    </a>
+                    <h6 class="mb-0 text-white text-shadow-dark">{{session.user.name}}</h6>
+                    <span class="font-size-sm text-white text-shadow-dark">{{session.user.position}}</span>
+                </div>
+                                            
+                <div class="sidebar-user-material-footer">
+                    <a href="#user-nav" class="d-flex justify-content-between align-items-center text-shadow-dark dropdown-toggle" data-toggle="collapse"><span>Akun</span></a>
+                </div>
+            </div>
+
+            <div class="collapse" id="user-nav">
+                <ul class="nav nav-sidebar">
+                    <li class="nav-item">
+                        <a href="{{baseUrl}}/profile" class="nav-link">
+                            <i class="icon-user-plus"></i>
+                            <span>Profil Saya</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link signout">
+                            <i class="icon-switch2"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /user menu -->
+
+
+        <!-- Main navigation -->
+        <div class="card card-sidebar-mobile">
+            <ul class="nav nav-sidebar" data-nav-type="accordion">
+                {% for key,group in menu %}
+                    {# <li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">{{key}}</div> <i class="icon-menu" title="{{key}}"></i></li> #}
+                    {% for menuItem in group %}
+                        {% if menuItem.children is not null and menuItem.children is not empty %}
+                            <li class="nav-item pt-0 nav-item-submenu {{menuItem.active == 1 ? 'nav-item-expanded nav-item-open'}}">
+                                <a href="#" class="nav-link {{menuItem.active == 1 ? 'active'}}"><i class="{{menuItem.icon}}"></i> <span>{{menuItem.name}}</span></a>
+
+                                <ul class="nav nav-group-sub" data-submenu-title="{{menuItem.name}}">
+                                    {% for subItem in menuItem.children %}
+                                        <li class="nav-item"><a href="{{baseUrl}}/{{subItem.path}}" class="nav-link {{subItem.active == 1 ? 'active'}}"><i class="{{subItem.icon}}"></i> {{subItem.name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item pt-0">
+                                <a href="{{baseUrl}}/{{menuItem.path}}" class="nav-link {{menuItem.active == 1 ? 'active'}}">
+                                    <i class="{{menuItem.icon}}"></i>
+                                    <span>
+                                        {{menuItem.name}}
+                                    </span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- /main navigation -->
+
+    </div>
+    <!-- /sidebar content -->
+    
+</div>
+<!-- /main sidebar -->

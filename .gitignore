@@ -1,0 +1,12 @@
+/node_modules
+/vendor
+/application/config.php
+/appresource/javascript/config.js
+/public/assets/dist/*
+/public/assets/images/*
+/public/archives
+/public/cache
+npm-debug.log
+
+git-hook.php
+/.project

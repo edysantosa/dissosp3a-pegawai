@@ -1,0 +1,7 @@
+module.exports = {
+    "publicUrl"      : "http://picking.test",
+    "renderMode"     : "development",
+    "watchMode"      : true,
+    "sourceMap"      : "source-map",
+    "terserSourceMap": true
+};

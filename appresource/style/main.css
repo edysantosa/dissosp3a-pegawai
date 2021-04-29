@@ -1,0 +1,121 @@
+ /**
+ * Data tables
+ */
+
+ .dt-buttons.btn-group{
+    float: left;
+ }
+
+ .dataTables_length select.custom-select {
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    border: unset;
+ }
+
+    .datatable-header .custom-element-right {
+        padding: 0.5rem 0 0 0;
+        float: right;
+        display: inline-block;
+    }
+
+/* Hide icon + dan - menampilkan child row custom pada datatavle responsive */
+.dtr-inline.collapsed tbody tr td:first-child.custom-detail::before {
+    content : unset;
+}
+
+
+/* Loading Box Datatables */
+.dataTables_processing.card {
+    background: #fc9f9f;
+    height: 120px;
+    width: 230px;
+    font-size: 1.7em;
+    top: 170px !important;
+}
+
+.dataTables_processing.card div{
+    margin-top: 20px;
+}
+
+table.dataTable tbody tr.selected {
+    color: white;
+    background-color: #26ff05 !important;
+}
+
+ /* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+
+.cursor-pointer:hover {
+    cursor: pointer;
+}
+
+.cursor-pointer.bg:hover {
+    background-color: beige;
+}
+
+
+td.invoice {
+    position: relative;
+    padding: 5px 10px;
+}
+tr.strikeout td:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 1px solid #CCC;
+    width: 100%;
+}
+
+
+/** COLORS **/
+.legend>li+li:before {
+    padding: 0 3px;
+    content: "|";
+    text-decoration: none;
+    list-style: none;
+}
+.legend > li {
+    display: inline-block;
+}
+.legend-span {
+    width: 25px;
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid #000;
+}
+
+.hg-pale-green{
+    background-color: #b3ffa9 !important;
+}
+.hg-light-green{
+    background-color: #92DD92 !important;
+    color:#fff;
+}
+.hg-light-red{
+    background-color: #fc9f9f !important;
+}
+.hg-light-orange{
+    background-color: #fccd9f !important;
+}
+.hg-light-blue{
+    background-color: #91cdff !important;
+}
+.hg-yellow-green{
+    background-color: #5acd32 !important;
+}
+
+/**
+ * INPUTS
+ */
+
+input.rupiah-modal {
+    width: 80px;
+}

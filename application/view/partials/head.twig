@@ -1,0 +1,24 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Database Kepegawaian Dissos P3A</title>
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{baseUrl}}/assets/dist/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{baseUrl}}/assets/dist/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{baseUrl}}/assets/dist/images/favicon-16x16.png">
+
+
+    {{ __site_rendered_css | raw }}
+
+    {% block sitebase %}
+        <base id="sitebase" 
+            {% for sitebase in __sitebase %}
+                data-{{sitebase['name']}}="{{sitebase['value']}}"
+            {% endfor %}
+        />
+    {% endblock sitebase %}
+
+</head>
