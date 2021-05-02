@@ -3,6 +3,7 @@
 class PegawaiModel extends \sys\Model
 {
     public $timestamps = false;
+    public static $snakeAttributes = false;
 
     protected $table = 'Pegawai';
     protected $primaryKey = 'pegawaiId';
@@ -10,6 +11,30 @@ class PegawaiModel extends \sys\Model
     protected $hidden   = [];
     protected $guarded  = [ 'pegawaiId' ];
 
+
+    public function statusKepeg()
+    {
+        return $this->hasOne('\app\model\JenisKepegawaianModel', 'jenisKepegawaianId', 'jenisKepegawaianId');
+    }
+
+    public function pangkat()
+    {
+        return $this->hasMany('\app\model\PegRiwayatPangkatModel', 'pegawaiId', 'pegawaiId');
+    }
+    public function pangkatTerakhir()
+    {
+        return $this->hasOne('\app\model\PegRiwayatPangkatModel', 'pegawaiId', 'pegawaiId')->latest('tglSKPangkat');
+    }
+
+
+    public function jabatan()
+    {
+        return $this->hasMany('\app\model\PegRiwayatJabatanModel', 'pegawaiId', 'pegawaiId');
+    }
+    public function jabatanTerakhir()
+    {
+        return $this->hasOne('\app\model\PegRiwayatJabatanModel', 'pegawaiId', 'pegawaiId')->latest('tglSKJabatan');
+    }
 
     public function bahasa()
     {

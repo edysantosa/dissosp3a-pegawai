@@ -1,0 +1,118 @@
+{% extends "partials/frameTopMenu.twig" %}
+
+{% block page_trigger %}
+<div class="header-elements d-none">
+    <div class="breadcrumb justify-content-center">
+        <a href="#" data-type="single"  data-trigger="new-pegawai" class="page-trigger breadcrumb-elements-item">
+            <i class="icon-file-plus mr-2"></i>
+            Tambah Pegawai
+        </a>
+        <div class="breadcrumb-elements-item dropdown p-0">
+            <a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-file-text3 mr-2"></i>
+                Export
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="#" data-trigger="export-excel" class="page-trigger dropdown-item"><i class="icon-file-excel"></i> Export to Excel</a>
+                <a href="#" data-trigger="export-pdf" class="page-trigger dropdown-item"><i class="icon-file-pdf"></i> Export to PDF</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" data-trigger="print-pdf" class="page-trigger dropdown-item"><i class="icon-printer2"></i> Print</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_trigger %}
+
+{% block frameTopMenuTrigger %}
+    <ul class="navbar-nav navbar-nav-highlight ml-md-auto">
+        <li class="nav-item dropdown">
+            <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-cog3"></i>
+                <span class="d-md-none ml-2">Menu Pegawai</span>
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="#" data-type="single" data-trigger="new-pegawai" class="page-trigger dropdown-item"><i class="icon-file-plus"></i> Tambah Pegawai</a>
+            </div>
+        </li>
+    </ul>
+{% endblock frameTopMenuTrigger %}
+
+
+{% block site_content %}
+    <!-- Content area -->
+    <div class="content">
+
+        <!-- Pegawai Filter -->
+        <div class="card card-collapsed">
+            <div class="card-header header-elements-inline">
+                <h6 class="card-title">Filter List</h6>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <a id="driver-filter-collapse" class="list-icons-item" data-action="collapse"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <form id="form-driver-filter" action="#">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Driver Name</label>
+                                <input type="text" class="form-control" name="driver-name" id="driver-name">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Area</label>
+                                <input type="text" class="form-control" name="driver-area" id="driver-area">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Plate</label>
+                                <input type="text" class="form-control" name="driver-plate" id="driver-plate" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Max. Capacity</label>
+                                <input type="text" class="form-control" name="driver-capacity" id="driver-capacity" maxlength="2">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary legitRipple"><i class="icon-search4 mr-1"></i> Filter</button>
+                            </div>                                  
+                        </div>                              
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END Pegawai Filter -->
+
+        <!-- Driver Table -->
+        <div class="card">
+            <table id="pegawai-table" class="table datatable-resize">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama</th>
+                        <th>NIP</th>
+                        <th>Tempat/Tgl Lahir</th>
+                        <th>Status Kepegawaian</th>
+                        <th>Golongan/Pangkat</th>
+                        <th>Jabatan</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>                   
+                </tbody>
+            </table>
+        </div>
+        <!-- End Driver Table -->
+
+    </div>
+    <!-- /content area -->
+{% endblock site_content %}

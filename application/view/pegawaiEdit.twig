@@ -1,0 +1,50 @@
+{% extends "partials/frameTopMenu.twig" %}
+
+{% block site_content %}
+    <!-- Content Area -->
+    <div class="content">
+
+        <!-- Pegawai Form -->
+        <div class="card card-collapsed">
+            <div class="card-body">
+                <form id="pegawai-edit-form" action="#">
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Edit Data Pegawai</legend>
+                        
+                        <input type="hidden" name="task" value="{{pegawai ? 'update' : 'save'}}">
+                        <input type="hidden" name="id" value="{{pegawai ? pegawai.pegawaiId}}">
+
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-2">Nama</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="nama" value="{{pegawai ? pegawai.nama}}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-2">NIP</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="nip" value="{{pegawai ? pegawai.nip}}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-2">Tempat Lahir</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="tempat-lahir" value="{{pegawai ? pegawai.tempatLahir}}">
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit <i class="icon-paperplane ml-2"></i></button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <!-- End Pegawai Form -->
+
+
+    </div>
+    <!-- End Content Area -->
+{% endblock site_content %}

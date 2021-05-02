@@ -9,5 +9,8 @@ module.exports = {
 	"profile"     		 : mod('profile'),
 	"user"     		     : mod('user'),
 	"user-edit"      	 : mod('user-edit'),
+	"pegawai"   	     : mod('pegawai'),
+	"pegawai-edit"   	 : mod('pegawai-edit'),
+	
 	"import-pegawai"   	 : mod('import-pegawai'),
 };
