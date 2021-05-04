@@ -210,16 +210,18 @@ class Pegawai extends Base
 
             // Foto Pegawai
             $uploadedFile = $uploadedFiles['pegawai-image'];
-            $uplSuccess = $uploadedFile->getError() === UPLOAD_ERR_OK;
-            $uplValid = v::size(null, '2MB')->anyOf(v::mimetype('image/jpg'), v::mimetype('image/jpeg'), v::mimetype('image/png'))->validate($uploadedFile->file);
-            if ($uplSuccess && $uplValid) {
-                $filename = $this->moveUploadedFile($imagePath, $uploadedFile);
-            } else {
-                $message = 'Gagal upload gambar, error pada aplikasi';
-                if (!$uplValid) {
-                    $message = 'Format gambar harus berupa JPG atau PNG, ukuran maksimum 2MB';
+            if ($uploadedFile->getError() != UPLOAD_ERR_NO_FILE) {
+                $uplSuccess = $uploadedFile->getError() === UPLOAD_ERR_OK;
+                $uplValid = v::size(null, '2MB')->anyOf(v::mimetype('image/jpg'), v::mimetype('image/jpeg'), v::mimetype('image/png'))->validate($uploadedFile->file);
+                if ($uplSuccess && $uplValid) {
+                    $filename = $this->moveUploadedFile($imagePath, $uploadedFile);
+                } else {
+                    $message = 'Gagal upload gambar, error pada aplikasi';
+                    if (!$uplValid) {
+                        $message = 'Format gambar harus berupa JPG atau PNG, ukuran maksimum 2MB';
+                    }
+                    throw new Exception($message);
                 }
-                throw new Exception($message);
             }
 
             // Dokumen PDF
@@ -227,16 +229,18 @@ class Pegawai extends Base
             $uplDocs['sk-pns'] = $uploadedFiles['file-sk-pns'];
 
             foreach ($uplDocs as $key => $doc) {
-                $uplSuccess = $doc->getError() === UPLOAD_ERR_OK;
-                $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($doc->file);
-                if ($uplSuccess && $uplValid) {
-                    $filename = $this->moveUploadedFile($documentPath, $doc);
-                } else {
-                    $message = 'Gagal upload dokumen SK, error pada aplikasi';
-                    if (!$uplValid) {
-                        $message = 'File dokumen harus berupa PDF, ukuran maksimum 2MB';
+                if ($doc->getError() != UPLOAD_ERR_NO_FILE) {
+                    $uplSuccess = $doc->getError() === UPLOAD_ERR_OK;
+                    $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($doc->file);
+                    if ($uplSuccess && $uplValid) {
+                        $filename = $this->moveUploadedFile($documentPath, $doc);
+                    } else {
+                        $message = 'Gagal upload dokumen SK, error pada aplikasi';
+                        if (!$uplValid) {
+                            $message = 'File dokumen harus berupa PDF, ukuran maksimum 2MB';
+                        }
+                        throw new Exception($message);
                     }
-                    throw new Exception($message);
                 }
             }
             /** END UPLOAD GAMBAR DAN FILE **/
