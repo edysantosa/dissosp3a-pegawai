@@ -40,5 +40,8 @@
     "webpack-cli": "^3.3.1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "daterangepicker": "^3.1.0"
+  }
 }

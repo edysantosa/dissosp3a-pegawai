@@ -36,7 +36,7 @@ $(function(){
         order: [[ 1, 'asc' ]],
         dom: '<"datatable-header"fl><"datatable-scroll-lg"t>r<"datatable-footer"ip>',
         language: {
-            processing: '<div><i class="icon-spinner2 spinner"></i>  <span class="font-weight-semibold">Loading Data...</span></div>',
+            processing: '<div><i class="icon-spinner2 spinner"></i>  <span class="font-weight-semibold">Memuat Data</span></div>',
             search: '<span>Filter:</span> _INPUT_',
             searchPlaceholder: 'Type to filter...',
             lengthMenu: '<span>Show:</span> <select class="custom-select">'+

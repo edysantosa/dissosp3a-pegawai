@@ -8,6 +8,9 @@ use \PhpOffice\PhpSpreadsheet\Spreadsheet;
 use \PhpOffice\PhpSpreadsheet\IOFactory;
 
 use \app\helper\LoggingHelper as Logger;
+use Respect\Validation\Validator as v;
+
+// use finfo;
 
 class Pegawai extends Base
 {
@@ -43,11 +46,37 @@ class Pegawai extends Base
             throw new \Slim\Exception\NotFoundException($this->request, $this->response);
         }
 
+        if (is_null($pegawai->tglLahir)) {
+            $pegawai->tglLahirFormat = '';
+        } else {
+            $pegawai->tglLahirFormat = date("d-m-Y", strtotime($pegawai->tglLahir));
+        }
+        if (is_null($pegawai->cpnsTglBKN)) {
+            $pegawai->cpnsTglBKNFormat = '';
+        } else {
+            $pegawai->cpnsTglBKNFormat = date("d-m-Y", strtotime($pegawai->cpnsTglBKN));
+        }
+        if (is_null($pegawai->cpnsTglSK)) {
+            $pegawai->cpnsTglSKFormat = '';
+        } else {
+            $pegawai->cpnsTglSKFormat = date("d-m-Y", strtotime($pegawai->cpnsTglSK));
+        }
+        if (is_null($pegawai->cpnsTMT)) {
+            $pegawai->cpnsTMTFormat = '';
+        } else {
+            $pegawai->cpnsTMTFormat = date("d-m-Y", strtotime($pegawai->cpnsTMT));
+        }
+
         return $this->view
             ->addCss($this->url . '/assets/dist/css/pegawai-edit.css')
             ->addJs($this->url . '/assets/dist/js/pegawai-edit.js')
 
-            ->render('pegawaiEdit.twig', ['pegawai'   => $pegawai ]);
+            ->render('pegawaiEdit.twig', [
+                'pegawai'   => $pegawai,
+                'agama'   => \app\model\JenisAgamaModel::all(),
+                'provinsi'   => \app\model\JenisProvinsiModel::all(),
+                'pangkat'   => \app\model\JenisPangkatGolonganModel::all(),
+            ]);
     }
 
     public function loadData()
@@ -110,9 +139,8 @@ class Pegawai extends Base
                         $pegawai = PegawaiModel::where('pegawaiId', $id)->first();
                         $pegawai->status = 0;
                         $pegawai->save();
-
                         // Log
-                        Logger::add(2,
+                        Logger::add(
                             $this->session->user['userId'],
                             'Hapus data pegawai: ' . $pegawai->nama
                         );
@@ -121,33 +149,15 @@ class Pegawai extends Base
                     break;
 
                 case 'save':
-                    $pegawai = new PegawaiModel;
-                    $pegawai->nama = $post->get('nama', '');
-                    $pegawai->nip = $post->get('nip', '');
-                    $pegawai->tempatLahir = $post->get('tempat-lahir', '');
-                    $pegawai->status = 1;
-                    $pegawai->save();
-                    $message = 'Data pegawai tersimpan';
-
-                    // Log
-                    Logger::add(2,
-                        $this->session->user['userId'],
-                        'Tambah data pegawai: ' . $post['nama']
-                    );
+                    $pegawaiId = $this->savePegawai();
+                    return $this->response->withJson([
+                        'message' => 'Pelanggan tersimpan',
+                        'pegawaiId' => $pegawaiId
+                    ]);
                     break;
 
                 case 'update':
-                    $pegawai = PegawaiModel::where('pegawaiId', $post->get('id'))->first();
-                    // Log
-                    Logger::add(2,
-                        $this->session->user['userId'],
-                        'Update data pegawai: ' . $pegawai->nama . ' -> ' .$post->get('nama')
-                    );
-                    $pegawai->nama = $post->get('nama', '');
-                    $pegawai->nip = $post->get('nip', '');
-                    $pegawai->tempatLahir = $post->get('tempat-lahir', '');
-                    $pegawai->save();
-                    $message = 'Data pegawai terupdate';
+                    return $this->savePegawai($post->get('id'));
                     break;
                 
                 default:
@@ -163,5 +173,119 @@ class Pegawai extends Base
                 'message' => $err->getMessage()
             ]);
         }
+    }
+
+    public function savePegawai($pegawaiId = null)
+    {
+        try {
+            // $this->database->getConnection()->getPdo()->beginTransaction();
+            $post = new GetSetHelper($this->request->getParsedBody());
+            
+            if ($pegawaiId) {
+                $pegawai = PegawaiModel::where('pegawaiId', $pegawaiId)->first();
+                $pegawaiOld = clone $pegawai;
+            } else {
+                $pegawai = new PegawaiModel;
+            }
+
+            $pegawai->nama = $post->get('nama', '');
+            $pegawai->nip = $post->get('nip', '');
+            $pegawai->tempatLahir = $post->get('tempat-lahir', '');
+            $pegawai->tglLahir = $post->get('tglLahir', null);
+            $pegawai->status = 1;
+            $pegawai->save();
+
+
+
+            /** UPLOAD GAMBAR DAN FILE **/
+            $uploadedFiles = $this->request->getUploadedFiles();
+            $imagePath = __DIR__ . '/../../public/assets/pegawai/photos/';
+            $documentPath = __DIR__ . '/../../public/assets/pegawai/documents/';
+            if (!file_exists($imagePath)) {
+                mkdir($imagePath, 0777, true);
+            }
+            if (!file_exists($documentPath)) {
+                mkdir($documentPath, 0777, true);
+            }
+
+            // Foto Pegawai
+            $uploadedFile = $uploadedFiles['pegawai-image'];
+            $uplSuccess = $uploadedFile->getError() === UPLOAD_ERR_OK;
+            $uplValid = v::size(null, '2MB')->anyOf(v::mimetype('image/jpg'), v::mimetype('image/jpeg'), v::mimetype('image/png'))->validate($uploadedFile->file);
+            if ($uplSuccess && $uplValid) {
+                $filename = $this->moveUploadedFile($imagePath, $uploadedFile);
+            } else {
+                $message = 'Gagal upload gambar, error pada aplikasi';
+                if (!$uplValid) {
+                    $message = 'Format gambar harus berupa JPG atau PNG, ukuran maksimum 2MB';
+                }
+                throw new Exception($message);
+            }
+
+            // Dokumen PDF
+            $uplDocs['sk-cpns'] = $uploadedFiles['file-sk-cpns'];
+            $uplDocs['sk-pns'] = $uploadedFiles['file-sk-pns'];
+
+            foreach ($uplDocs as $key => $doc) {
+                $uplSuccess = $doc->getError() === UPLOAD_ERR_OK;
+                $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($doc->file);
+                if ($uplSuccess && $uplValid) {
+                    $filename = $this->moveUploadedFile($documentPath, $doc);
+                } else {
+                    $message = 'Gagal upload dokumen SK, error pada aplikasi';
+                    if (!$uplValid) {
+                        $message = 'File dokumen harus berupa PDF, ukuran maksimum 2MB';
+                    }
+                    throw new Exception($message);
+                }
+            }
+            /** END UPLOAD GAMBAR DAN FILE **/
+
+
+            // Log
+            if ($pegawaiId) {
+                Logger::add($this->session->user['userId'], 'Update data pegawai: ' . $pegawai->nama . ' -> ' .$post->get('nama'), json_encode($pegawaiOld), json_encode($pegawai));
+            } else {
+                Logger::add(
+                    $this->session->user['userId'],
+                    'Tambah data pegawai: ' . $post['nama']
+                );
+            }
+
+            // $this->database->getConnection()->getPdo()->commit();
+
+            return $this->response->withJson([
+                'message' => 'Data pegawai tersimpan',
+                'pegawaiId' => $pegawai->pegawaiId
+            ]);
+        } catch (Exception $err) {
+            // $this->database->getConnection()->getPdo()->rollBack();
+            return $this->response->withStatus(500)->withJson([
+                'message' => $err->getMessage()
+            ]);
+        }
+    }
+
+    private function moveUploadedFile($directory, $uploadedFile)
+    {
+        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+        $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
+        $filename = sprintf('%s.%0.8s', $basename, $extension);
+
+        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+        // RESIZE GAMBAR
+        // $gambar = ImageWorkshop::initFromPath($uploadedFile->file);
+        // $gambar->cropMaximumInPercent(0, 0, 'MM');
+        // $gambar->resizeInPixel(400, 400, true);
+        // $gambar->save($directory, $filename, true, null, 100);
+
+        return $filename;
+    }
+
+
+    public function test()
+    {
+        var_dump(v::numericVal()->max(10)->validate(51));
     }
 }

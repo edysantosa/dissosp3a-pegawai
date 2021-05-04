@@ -9,36 +9,406 @@
             <div class="card-body">
                 <form id="pegawai-edit-form" action="#">
                     <fieldset class="mb-3">
-                        <legend class="text-uppercase font-size-sm font-weight-bold">Edit Data Pegawai</legend>
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Data Kepegawaian</legend>
                         
                         <input type="hidden" name="task" value="{{pegawai ? 'update' : 'save'}}">
                         <input type="hidden" name="id" value="{{pegawai ? pegawai.pegawaiId}}">
 
-                        <div class="form-group row">
-                            <label class="col-form-label col-lg-2">Nama</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" name="nama" value="{{pegawai ? pegawai.nama}}" required>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Status Kepegawaian:</label>
+                                    <select class="custom-select" autocomplete="off" name="agama">
+                                        {% for ag in agama %}
+                                        <option value="{{t.userId}}" 
+                                            {% if pegawai %}
+                                                {{pegawai.jenisAgamaId == ag.jenisAgamaId ? 'selected="selected"'}}
+                                            {% endif %}
+                                        >{{ag.jenisAgama}}</option>
+                                        {% endfor %}  
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>NIP:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="NIP" name="nip" value="{{pegawai ? pegawai.nip}}" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Nama:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Nama" name="nama" value="{{pegawai ? pegawai.nama}}" required>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gelar Depan:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="Gelar Depan" name="gelar-depan" value="{{pegawai ? pegawai.gelarDepan}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gelar Belakang:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="Gelar Belakang" name="gelar-belakang" value="{{pegawai ? pegawai.gelarBelakang}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tempat Lahir:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="Tempat Lahir" name="tempat-lahir" value="{{pegawai ? pegawai.tempatLahir}}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tanggal Lahir:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                                </span>                                                
+                                                <input type="text" autocomplete="off" class="form-control daterange tgl-lahir" placeholder="Tanggal Lahir" name="tgl-lahir" value="{% if pegawai.tglLahirFormat %}{{pegawai.tglLahirFormat}}{% endif %}" required readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Jenis Kelamin:</label>
+                                            <div class="input-group">
+                                                <div class="form-check form-check-inline">
+                                                    <label class="form-check-label">
+                                                        <input type="radio" autocomplete="off" name="jk" class="form-check-input-styled" value="1" {{pegawai.jk == 1 ? 'checked'}} data-fouc>
+                                                        Laki-laki
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check form-check-inline">
+                                                    <label class="form-check-label">
+                                                        <input type="radio" autocomplete="off" name="jk" class="form-check-input-styled" value="2" {{pegawai.jk == 2 ? 'checked'}} data-fouc>
+                                                        Perempuan
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Agama:</label>
+                                            <select class="custom-select" autocomplete="off" name="agama">
+                                                {% for ag in agama %}
+                                                <option value="{{t.userId}}" 
+                                                    {% if pegawai %}
+                                                        {{pegawai.jenisAgamaId == ag.jenisAgamaId ? 'selected="selected"'}}
+                                                    {% endif %}
+                                                >{{ag.jenisAgama}}</option>
+                                                {% endfor %}  
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>No. Telepon:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="No. Telepon" name="telepon" value="{{pegawai ? pegawai.noTelepon}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Email:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="Email" name="email" value="{{pegawai ? pegawai.email}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Golongan Darah:</label>
+                                            <select class="custom-select" autocomplete="off" name="golongan-darah">
+                                                <option value="O"{{pegawai.golonganDarah == "O" ? 'selected="selected"'}}>O</option> 
+                                                <option value="A"{{pegawai.golonganDarah == "A" ? 'selected="selected"'}}>A</option> 
+                                                <option value="B"{{pegawai.golonganDarah == "B" ? 'selected="selected"'}}>B</option> 
+                                                <option value="AB"{{pegawai.golonganDarah == "AB" ? 'selected="selected"'}}>AB</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <!-- User card -->
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="card col-md-4">
+                                        <div class="card-body text-center">
+                                            <div class="card-img-actions d-inline-block mb-3">
+                                                <img class="img-fluid" id="pegawai-image-preview" src="{{session.user.image}}" width="170" height="170" alt="">
+                                                <div class="card-img-actions-overlay card-img">
+                                                    <a href="#" class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round upload-image">
+                                                        <i class="icon-plus3"></i>
+                                                    </a>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <input type="file" id="pegawai-image" name="pegawai-image" accept="image/x-png,image/jpeg" style="display:none">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                    </div>
+                                    <!-- /user card -->
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Alamat:</label>
+                                    <textarea autocomplete="off" rows="3" cols="5" class="form-control" placeholder="Alamat" name="alamat">{{pegawai ? pegawai.alamat}}</textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Desa/Kelurahan:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="Desa/Kelurahan" name="kelurahan" value="{{pegawai ? pegawai.kelurahan}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Kecamatan:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="Kecamatan" name="kecamatan" value="{{pegawai ? pegawai.kecamatan}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Kabupaten/Kota:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="Kabupaten/Kota" name="kabupatan" value="{{pegawai ? pegawai.kabupatan}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Provinsi:</label>
+                                            <select class="custom-select" autocomplete="off" name="provinsi">
+                                                {% for pv in provinsi %}
+                                                <option value="{{pv.jenisProvinsiId}}" 
+                                                    {% if pegawai %}
+                                                        {{pegawai.jenisProvinsiId == pv.jenisProvinsiId ? 'selected="selected"'}}
+                                                    {% endif %}
+                                                >{{pv.provinsi}}</option>
+                                                {% endfor %}  
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Kode Pos:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="Kode Pos" name="kode-pos" value="{{pegawai ? pegawai.kodePos}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Status Pernikahan:</label>
+                                            <select class="custom-select" autocomplete="off" name="status-pernikahan">
+                                                <option value="1"{{pegawai.statusPernikahan == "1" ? 'selected="selected"'}}>Belum Menikah</option> 
+                                                <option value="2"{{pegawai.statusPernikahan == "2" ? 'selected="selected"'}}>Menikah</option> 
+                                                <option value="3"{{pegawai.statusPernikahan == "3" ? 'selected="selected"'}}>Janda</option> 
+                                                <option value="4"{{pegawai.statusPernikahan == "4" ? 'selected="selected"'}}>Duda</option> 
+                                            </select>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>No. Kartu Pegawai:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="No. Kartu Pegawai" name="no-karpeg" value="{{pegawai ? pegawai.noKarpeg}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>No. BPJS:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="No. Kartu BPJS" name="no-bpjs" value="{{pegawai ? pegawai.noBPJS}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>No. Taspen:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="No. Taspen" name="no-taspen" value="{{pegawai ? pegawai.noTaspen}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>No. Karis/Karsu:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="No. Karis/Karsu" name="no-karis" value="{{pegawai ? pegawai.noKaris}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>NPWP:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholeder="NPWP" name="no-npwp" value="{{pegawai ? pegawai.noNPWP}}">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </fieldset>
 
-                        <div class="form-group row">
-                            <label class="col-form-label col-lg-2">NIP</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" name="nip" value="{{pegawai ? pegawai.nip}}" required>
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Data Pengangkatan Sebagai CPNS</legend>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>No. Persetujuan BKN:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholeder="No Persetujuan BKN" name="cpns-no-bkn" value="{{pegawai ? pegawai.cpnsNoBKN}}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Tgl. Persetujuan BKN:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                        </span>                                                
+                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tgl-bkn" placeholder="Tgl Persetujuan BKN" name="cpns-tgl-bkn" value="{% if pegawai.cpnsTglBKNFormat %}{{pegawai.cpnsTglBKNFormat}}{% endif %}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Ditetapkan Oleh:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholeder="Ditetapkan Oleh" name="cpns-ditetapkan-oleh" value="{{pegawai ? pegawai.cpnsDitetapkanOleh}}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Pangkat/Golongan:</label>
+                                    <select class="custom-select" autocomplete="off" name="cpns-pangkat-golongan">
+                                        {% for pk in pangkat %}
+                                        <option value="{{pk.jenisPangkatGolonganId}}" 
+                                            {% if pegawai %}
+                                                {{pegawai.cpnsPangkatGolonganId == pk.jenisPangkatGolonganId ? 'selected="selected"'}}
+                                            {% endif %}
+                                        >{{pk.golonganRuang}} - {{pk.pangkat}}</option>
+                                        {% endfor %}  
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>No. SK CPNS:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholeder="No SK CPNS" name="cpns-no-sk" value="{{pegawai ? pegawai.cpnsNoSK}}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Tgl. SK CPNS:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                        </span>                                                
+                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tgl-sk" placeholder="Tgl SK CPNS" name="cpns-tgl-sk" value="{% if pegawai.cpnsTglSKFormat %}{{pegawai.cpnsTglSKFormat}}{% endif %}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>TMT CPNS:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                        </span>                                                
+                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tmt" placeholder="TMT CPNS" name="cpns-tmt" value="{% if pegawai.cpnsTMTFormat %}{{pegawai.cpnsTMTFormat}}{% endif %}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Dokumen SK CPNS:</label>
+                                    <input type="file" autocomplete="off" class="form-input-styled" name="file-sk-cpns" aaccept="application/pdf" data-fouc>
+                                    <span class="form-text text-muted">Format file pdf. Ukuran maksimum 2MB</span>
+                                </div>
                             </div>
                         </div>
+                    </fieldset>
 
-                        <div class="form-group row">
-                            <label class="col-form-label col-lg-2">Tempat Lahir</label>
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control" name="tempat-lahir" value="{{pegawai ? pegawai.tempatLahir}}">
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Data Pengangkatan Sebagai PNS</legend>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Ditetapkan Oleh:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholeder="Ditetapkan Oleh" name="pns-ditetapkan-oleh" value="{{pegawai ? pegawai.pnsDitetapkanOleh}}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Pangkat/Golongan:</label>
+                                    <select class="custom-select" autocomplete="off" name="pns-pangkat-golongan">
+                                        {% for pk in pangkat %}
+                                        <option value="{{pk.jenisPangkatGolonganId}}" 
+                                            {% if pegawai %}
+                                                {{pegawai.pnsPangkatGolonganId == pk.jenisPangkatGolonganId ? 'selected="selected"'}}
+                                            {% endif %}
+                                        >{{pk.golonganRuang}} - {{pk.pangkat}}</option>
+                                        {% endfor %}  
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>No. SK PNS:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholeder="No SK PNS" name="cpns-no-sk" value="{{pegawai ? pegawai.pnsNoSK}}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Tgl. SK PNS:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                        </span>                                                
+                                        <input type="text" autocomplete="off" class="form-control daterange pns-tgl-sk" placeholder="Tgl SK PNS" name="pns-tgl-sk" value="{% if pegawai.pnsTglSKFormat %}{{pegawai.pnsTglSKFormat}}{% endif %}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>TMT PNS:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                        </span>                                                
+                                        <input type="text" autocomplete="off" class="form-control daterange pns-tmt" placeholder="TMT PNS" name="pns-tmt" value="{% if pegawai.pnsTMTFormat %}{{pegawai.pnsTMTFormat}}{% endif %}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Dokumen SK PNS:</label>
+                                    <input type="file" autocomplete="off" class="form-input-styled" name="file-sk-pns" accept="application/pdf" data-fouc>
+                                    <span class="form-text text-muted">Format file pdf. Ukuran maksimum 2MB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>       
+
+
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Edit Data Pegawai</legend>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Gelar Depan:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholeder="Gelar Depan" name="gelar-depan" value="{{pegawai ? pegawai.gelarDepan}}">
+                                </div>
                             </div>
                         </div>
 
                         <div class="text-right">
                             <button type="submit" class="btn btn-primary">Submit <i class="icon-paperplane ml-2"></i></button>
                         </div>
-                    </fieldset>
+                    </fieldset>                    
                 </form>
             </div>
         </div>
