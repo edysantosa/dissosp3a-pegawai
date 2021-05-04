@@ -99,6 +99,16 @@ $(function(){
         cpnsTMT = $('.cpns-tmt').data('daterangepicker').startDate.format('YYYY-MM-DD');
     }    
     formData.append('cpnsTMT', cpnsTMT);
+    let pnsTglSK = '';
+    if($('.pns-tgl-bkn').val()!=""){
+        pnsTglSK = $('.pns-tgl-sk').data('daterangepicker').startDate.format('YYYY-MM-DD');
+    }    
+    formData.append('pnsTglSK', pnsTglSK);
+    let pnsTMT = '';
+    if($('.pns-tgl-bkn').val()!=""){
+        pnsTMT = $('.pns-tmt').data('daterangepicker').startDate.format('YYYY-MM-DD');
+    }    
+    formData.append('pnsTMT', pnsTMT);
 
     $.ajax({
         url : Sitebase.url + '/pegawai/submit',
