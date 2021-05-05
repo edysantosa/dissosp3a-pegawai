@@ -82,10 +82,11 @@ class Pegawai extends Base
             ->addJs($this->url . '/assets/dist/js/pegawai-edit.js')
 
             ->render('pegawaiEdit.twig', [
-                'pegawai'   => $pegawai,
-                'agama'   => \app\model\JenisAgamaModel::all(),
+                'pegawai'    => $pegawai,
+                'agama'      => \app\model\JenisAgamaModel::all(),
                 'provinsi'   => \app\model\JenisProvinsiModel::all(),
-                'pangkat'   => \app\model\JenisPangkatGolonganModel::all(),
+                'pangkat'    => \app\model\JenisPangkatGolonganModel::all(),
+                'jenisKepeg' => \app\model\JenisKepegawaianModel::all(),
             ]);
     }
 
@@ -198,6 +199,7 @@ class Pegawai extends Base
                 $pegawai = new PegawaiModel;
             }
 
+            $pegawai->jenisKepegawaianId = $post->get('jenis-kepegawaian', '');
             $pegawai->nama = $post->get('nama', '');
             $pegawai->nip = $post->get('nip', '');
             $pegawai->tempatLahir = $post->get('tempat-lahir', '');
@@ -259,6 +261,8 @@ class Pegawai extends Base
                 $uplValid = v::size(null, '2MB')->anyOf(v::mimetype('image/jpg'), v::mimetype('image/jpeg'), v::mimetype('image/png'))->validate($uploadedFile->file);
                 if ($uplSuccess && $uplValid) {
                     $filename = $this->moveUploadedFile($imagePath, $uploadedFile);
+                    $pegawai->foto = $filename;
+                    $pegawai->save();                    
                 } else {
                     $message = 'Gagal upload gambar, error pada aplikasi';
                     if (!$uplValid) {
@@ -269,8 +273,8 @@ class Pegawai extends Base
             }
 
             // Dokumen PDF
-            $uplDocs['sk-cpns'] = $uploadedFiles['file-sk-cpns'];
-            $uplDocs['sk-pns'] = $uploadedFiles['file-sk-pns'];
+            $uplDocs['dokSKCPNS'] = $uploadedFiles['file-sk-cpns'];
+            $uplDocs['dokSKPNS'] = $uploadedFiles['file-sk-pns'];
 
             foreach ($uplDocs as $key => $doc) {
                 if ($doc->getError() != UPLOAD_ERR_NO_FILE) {
@@ -278,6 +282,8 @@ class Pegawai extends Base
                     $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($doc->file);
                     if ($uplSuccess && $uplValid) {
                         $filename = $this->moveUploadedFile($documentPath, $doc);
+                        $pegawai->$key = $filename;
+                        $pegawai->save();
                     } else {
                         $message = 'Gagal upload dokumen SK, error pada aplikasi';
                         if (!$uplValid) {
@@ -334,6 +340,12 @@ class Pegawai extends Base
 
     public function test()
     {
-        var_dump(v::numericVal()->max(10)->validate(51));
+        // var_dump(v::numericVal()->max(10)->validate(51));
+        $x = 'dokSKCPNS';
+
+        $pegawai = PegawaiModel::where('pegawaiId', 1)->first();
+        // $pegawai->dokSKCPNS = 'asdasd';
+        $pegawai->$x = 'asdasd';
+        $pegawai->save();
     }
 }

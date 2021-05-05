@@ -18,13 +18,13 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Status Kepegawaian:</label>
-                                    <select class="custom-select" autocomplete="off" name="agama">
-                                        {% for ag in agama %}
-                                        <option value="{{t.userId}}" 
+                                    <select class="custom-select" autocomplete="off" name="jenis-kepegawaian">
+                                        {% for kep in jenisKepeg %}
+                                        <option value="{{kep.jenisKepegawaianId}}" 
                                             {% if pegawai %}
-                                                {{pegawai.jenisAgamaId == ag.jenisAgamaId ? 'selected="selected"'}}
+                                                {{pegawai.jenisKepegawaianId == kep.jenisKepegawaianId ? 'selected="selected"'}}
                                             {% endif %}
-                                        >{{ag.jenisAgama}}</option>
+                                        >{{kep.jenisKepegawaian}}</option>
                                         {% endfor %}  
                                     </select>
                                 </div>
@@ -99,7 +99,7 @@
                                             <label>Agama:</label>
                                             <select class="custom-select" autocomplete="off" name="agama">
                                                 {% for ag in agama %}
-                                                <option value="{{t.userId}}" 
+                                                <option value="{{ag.jenisAgamaId}}" 
                                                     {% if pegawai %}
                                                         {{pegawai.jenisAgamaId == ag.jenisAgamaId ? 'selected="selected"'}}
                                                     {% endif %}
@@ -144,7 +144,7 @@
                                     <div class="card col-md-4">
                                         <div class="card-body text-center">
                                             <div class="card-img-actions d-inline-block mb-3">
-                                                <img class="img-fluid" id="pegawai-image-preview" src="{{session.user.image}}" width="170" height="170" alt="">
+                                                <img class="img-fluid" id="pegawai-image-preview" src="{% if pegawai.foto is not null and pegawai.foto is not empty %} {{baseUrl}}/assets/pegawai/photos/{{pegawai.foto}} {% else %} {{baseUrl}}/assets/dist/images/placeholder.jpg {% endif %}" width="170" height="170" alt="">
                                                 <div class="card-img-actions-overlay card-img">
                                                     <a href="#" class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round upload-image">
                                                         <i class="icon-plus3"></i>
@@ -324,7 +324,11 @@
                                 <div class="form-group">
                                     <label>Dokumen SK CPNS:</label>
                                     <input type="file" autocomplete="off" class="form-input-styled" name="file-sk-cpns" aaccept="application/pdf" data-fouc>
-                                    <span class="form-text text-muted">Format file pdf. Ukuran maksimum 2MB</span>
+                                    <span class="form-text text-muted">Format file pdf. Ukuran maksimum 2MB
+                                        {% if pegawai.dokSKCPNS is not null and pegawai.dokSKCPNS is not empty %}
+                                            &nbsp;<a href="{{baseUrl}}/assets/pegawai/documents/{{pegawai.dokSKCPNS}}" target="_blank">Lihat...</a>
+                                        {% endif %}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -386,7 +390,11 @@
                                 <div class="form-group">
                                     <label>Dokumen SK PNS:</label>
                                     <input type="file" autocomplete="off" class="form-input-styled" name="file-sk-pns" accept="application/pdf" data-fouc>
-                                    <span class="form-text text-muted">Format file pdf. Ukuran maksimum 2MB</span>
+                                    <span class="form-text text-muted">Format file pdf. Ukuran maksimum 2MB
+                                        {% if pegawai.dokSKPNS is not null and pegawai.dokSKPNS is not empty %}
+                                            &nbsp;<a href="{{baseUrl}}/assets/pegawai/documents/{{pegawai.dokSKPNS}}" target="_blank">Lihat...</a>
+                                        {% endif %}
+                                    </span>
                                 </div>
                             </div>
                         </div>

@@ -55,7 +55,7 @@ class Profile extends Base
                     }
 
                     $user->save();
-                    $message = 'Prodil diupdate';
+                    $message = 'Profil diupdate';
                     break;
 
                 default:
