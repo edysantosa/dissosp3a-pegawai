@@ -4,6 +4,7 @@
 /appresource/javascript/config.js
 /public/assets/dist/*
 /public/assets/images/*
+/public/assets/pegawai/*
 /public/archives
 /public/cache
 npm-debug.log
