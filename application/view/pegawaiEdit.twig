@@ -68,7 +68,7 @@
                                                 <span class="input-group-prepend">
                                                     <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                                 </span>                                                
-                                                <input type="text" autocomplete="off" class="form-control daterange tgl-lahir" placeholder="Tanggal Lahir" name="tgl-lahir" value="{% if pegawai.tglLahirFormat %}{{pegawai.tglLahirFormat}}{% endif %}" required readonly>
+                                                <input type="text" autocomplete="off" class="form-control daterange tgl-lahir" data-variable="tglLahir" placeholder="Tanggal Lahir" name="tgl-lahir" value="{% if pegawai.tglLahirFormat %}{{pegawai.tglLahirFormat}}{% endif %}" required readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -268,7 +268,7 @@
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>                                                
-                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tgl-bkn" placeholder="Tgl Persetujuan BKN" name="cpns-tgl-bkn" value="{% if pegawai.cpnsTglBKNFormat %}{{pegawai.cpnsTglBKNFormat}}{% endif %}" readonly>
+                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tgl-bkn" data-variable="cpnsTglBKN" placeholder="Tgl Persetujuan BKN" name="cpns-tgl-bkn" value="{% if pegawai.cpnsTglBKNFormat %}{{pegawai.cpnsTglBKNFormat}}{% endif %}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -305,7 +305,7 @@
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>                                                
-                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tgl-sk" placeholder="Tgl SK CPNS" name="cpns-tgl-sk" value="{% if pegawai.cpnsTglSKFormat %}{{pegawai.cpnsTglSKFormat}}{% endif %}" readonly>
+                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tgl-sk" data-variable="cpnsTglSK" placeholder="Tgl SK CPNS" name="cpns-tgl-sk" value="{% if pegawai.cpnsTglSKFormat %}{{pegawai.cpnsTglSKFormat}}{% endif %}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -316,7 +316,7 @@
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>                                                
-                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tmt" placeholder="TMT CPNS" name="cpns-tmt" value="{% if pegawai.cpnsTMTFormat %}{{pegawai.cpnsTMTFormat}}{% endif %}" readonly>
+                                        <input type="text" autocomplete="off" class="form-control daterange cpns-tmt" data-variable="cpnsTMT" placeholder="TMT CPNS" name="cpns-tmt" value="{% if pegawai.cpnsTMTFormat %}{{pegawai.cpnsTMTFormat}}{% endif %}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -371,7 +371,7 @@
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>                                                
-                                        <input type="text" autocomplete="off" class="form-control daterange pns-tgl-sk" placeholder="Tgl SK PNS" name="pns-tgl-sk" value="{% if pegawai.pnsTglSKFormat %}{{pegawai.pnsTglSKFormat}}{% endif %}" readonly>
+                                        <input type="text" autocomplete="off" class="form-control daterange pns-tgl-sk" data-variable="pnsTglSK" placeholder="Tgl SK PNS" name="pns-tgl-sk" value="{% if pegawai.pnsTglSKFormat %}{{pegawai.pnsTglSKFormat}}{% endif %}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -382,7 +382,7 @@
                                         <span class="input-group-prepend">
                                             <span class="input-group-text"><i class="icon-calendar22"></i></span>
                                         </span>                                                
-                                        <input type="text" autocomplete="off" class="form-control daterange pns-tmt" placeholder="TMT PNS" name="pns-tmt" value="{% if pegawai.pnsTMTFormat %}{{pegawai.pnsTMTFormat}}{% endif %}" readonly>
+                                        <input type="text" autocomplete="off" class="form-control daterange pns-tmt" data-variable="pnsTMT" placeholder="TMT PNS" name="pns-tmt" value="{% if pegawai.pnsTMTFormat %}{{pegawai.pnsTMTFormat}}{% endif %}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -402,18 +402,84 @@
 
 
                     <fieldset class="mb-3">
-                        <legend class="text-uppercase font-size-sm font-weight-bold">Edit Data Pegawai</legend>
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Data Transaksi Gaji Berkala</legend>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Gelar Depan:</label>
-                                    <input type="text" autocomplete="off" class="form-control" placeholeder="Gelar X" name="gelar-x" value="{{pegawai ? pegawai.gelarDepan}}">
-                                </div>
-                            </div>
+                        <table id="table-gaji-berkala" class="table table-bordered with-input">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th class="text-center">No. SK</th>
+                                    <th class="text-center">Tgl. SK</th>
+                                    <th class="text-center">Tgl. Mulai</th>
+                                    <th class="text-center">Masa Kerja Tahun</th>
+                                    <th class="text-center">Masa Kerja Bulan</th>
+                                    <th class="text-center">Gaji Pokok</th>
+                                    <th class="text-center">Dokumen SK</th>
+                                    <th class="text-center">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="display: none;">
+                                    <td>
+                                        <input type="hidden" class="gbk-id" name="gbk-id[]" value="0">
+                                        <input type="hidden" class="gbk-delete" name="gbk-delete[]" value="0"> 
+                                        <span class="p-3"></span>
+                                    </td>
+                                    <td><input type="text" name="gbk-no-sk[]" value=""></td>
+                                    <td>
+                                        <input type="text" autocomplete="off" class="daterange gbk-tgl-sk" data-variable="gbkTglSK[]" name="gbk-tgl-sk[]" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="text" autocomplete="off" class="daterange gbk-tgl-mulai" data-variable="gbkTglMulai[]" name="gbk-tgl-mulai[]" readonly>
+                                    </td>
+                                    <td><input type="text" name="gbk-tahun[]" value=""></td>
+                                    <td><input type="text" name="gbk-bulan[]" value=""></td>
+                                    <td><input type="text" name="gbk-gaji[]" value=""></td>
+                                    <td><input type="file" name="gbk-dok[]"></td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn alpha-danger border-danger text-danger-800 btn-icon remove-gaji-berkala"><i class="icon-cross3"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% for key,g in pegawai.gajiBerkala %}
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" class="gbk-id" name="gbk-id[]" value="{{g.pegGajiBerkalaId}}">
+                                            <input type="hidden" class="gbk-delete" name="gbk-delete[]" value="0"> 
+                                            <span class="p-3">{{key+1}}</span>
+                                        </td>
+                                        <td><input type="text" name="gbk-no-sk[]" value="{{g.noSK}}"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange gbk-tgl-sk" data-variable="gbkTglSK[]" name="gbk-tgl-sk[]" value="{% if g.tglSK %}{{g.tglSKFormat}}{% endif %}" readonly>
+                                        </td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange gbk-tgl-mulai" data-variable="gbkTglMulai[]" name="gbk-tgl-mulai[]" value="{% if g.tglMulai %}{{g.tglMulaiFormat}}{% endif %}" readonly>
+                                        </td>
+                                        <td><input type="text" name="gbk-tahun[]" value="{{g.masaKerjaTahun}}"></td>
+                                        <td><input type="text" name="gbk-bulan[]" value="{{g.masaKerjaBulan}}"></td>
+                                        <td><input type="text" name="gbk-gaji[]" value="{{g.gajiPokok}}"></td>
+                                        <td><input type="file" name="gbk-dok[]"></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                {% if g.dokumen is not null and g.dokumen is not empty %}
+                                                    <a type="button" class="btn btn-sm alpha-primary border-primary text-primary-800 btn-icon" href="{{baseUrl}}/assets/pegawai/documents/{{g.dokumen}}" target="_blank"><i class="icon-file-pdf"></i></a>
+                                                {% endif %}
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-gaji-berkala"><i class="icon-cross3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="mt-1">
+                            <button type="button" id="add-gaji-berkala" class="btn btn-sm btn-primary"><i class="icon-plus2 mr-2"></i> Tambah</button>
                         </div>
 
-                        <div class="text-right">
+
+
+                        <div class="text-right mt-5">
+                            <button type="button" class="btn btn-primary" id="test">Test</button>
                             <button type="submit" class="btn btn-primary">Submit <i class="icon-paperplane ml-2"></i></button>
                         </div>
                     </fieldset>                    

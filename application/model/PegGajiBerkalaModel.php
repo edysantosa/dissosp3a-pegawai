@@ -9,4 +9,14 @@ class PegGajiBerkalaModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegGajiBerkalaId' ];
+    protected $appends = ['tglSKFormat', 'tglMulaiFormat'];
+
+    public function getTglSKFormatAttribute()
+    {
+        return date("d-m-Y", strtotime($this->tglSK));
+    }
+    public function getTglMulaiFormatAttribute()
+    {
+        return date("d-m-Y", strtotime($this->tglMulai));
+    }
 }

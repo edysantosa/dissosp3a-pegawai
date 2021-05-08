@@ -10,6 +10,56 @@ class PegawaiModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegawaiId' ];
+    protected $appends = ['tglLahirFormat', 'cpnsTglBKNFormat', 'cpnsTglSKFormat', 'cpnsTMTFormat', 'pnsTglSKFormat', 'pnsTMTFormat'];
+
+    public function getTglLahirFormatAttribute()
+    {
+        if (is_null($this->tglLahir)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->tglLahir));
+        }
+    }
+    public function getcpnsTglBKNFormatAttribute()
+    {
+        if (is_null($this->cpnsTglBKN)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->cpnsTglBKN));
+        }
+    }
+    public function getCpnsTglSKFormatAttribute()
+    {
+        if (is_null($this->cpnsTglSK)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->cpnsTglSK));
+        }
+    }
+    public function getCpnsTMTFormatAttribute()
+    {
+        if (is_null($this->cpnsTMT)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->cpnsTMT));
+        }
+    }
+    public function getPnsTglSKFormatAttribute()
+    {
+        if (is_null($this->pnsTglSK)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->pnsTglSK));
+        }
+    }
+    public function getPnsTMTFormatAttribute()
+    {
+        if (is_null($this->pnsTMT)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->pnsTMT));
+        }
+    }
 
 
     public function statusKepeg()

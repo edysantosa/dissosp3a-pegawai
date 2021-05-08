@@ -2,6 +2,7 @@
 
 use \Exception;
 use \app\model\PegawaiModel;
+use \app\model\PegGajiBerkalaModel;
 use \app\helper\GetSetHelper;
 
 use \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -40,42 +41,44 @@ class Pegawai extends Base
     public function edit($id)
     {
         $post = $this->request->getParsedBody();
-        $pegawai = PegawaiModel::where('pegawaiId', $id)->first();
-
+        $pegawai = PegawaiModel::with(['gajiBerkala'])->where('pegawaiId', $id)->first();
+        // echo '<pre>';
+        // var_dump($pegawai->toArray());
+        // die();
         if (!$pegawai) {
             throw new \Slim\Exception\NotFoundException($this->request, $this->response);
         }
 
-        if (is_null($pegawai->tglLahir)) {
-            $pegawai->tglLahirFormat = '';
-        } else {
-            $pegawai->tglLahirFormat = date("d-m-Y", strtotime($pegawai->tglLahir));
-        }
-        if (is_null($pegawai->cpnsTglBKN)) {
-            $pegawai->cpnsTglBKNFormat = '';
-        } else {
-            $pegawai->cpnsTglBKNFormat = date("d-m-Y", strtotime($pegawai->cpnsTglBKN));
-        }
-        if (is_null($pegawai->cpnsTglSK)) {
-            $pegawai->cpnsTglSKFormat = '';
-        } else {
-            $pegawai->cpnsTglSKFormat = date("d-m-Y", strtotime($pegawai->cpnsTglSK));
-        }
-        if (is_null($pegawai->cpnsTMT)) {
-            $pegawai->cpnsTMTFormat = '';
-        } else {
-            $pegawai->cpnsTMTFormat = date("d-m-Y", strtotime($pegawai->cpnsTMT));
-        }
-        if (is_null($pegawai->pnsTglSK)) {
-            $pegawai->pnsTglSKFormat = '';
-        } else {
-            $pegawai->pnsTglSKFormat = date("d-m-Y", strtotime($pegawai->pnsTglSK));
-        }
-        if (is_null($pegawai->pnsTMT)) {
-            $pegawai->pnsTMTFormat = '';
-        } else {
-            $pegawai->pnsTMTFormat = date("d-m-Y", strtotime($pegawai->pnsTMT));
-        }
+        // if (is_null($pegawai->tglLahir)) {
+        //     $pegawai->tglLahirFormat = '';
+        // } else {
+        //     $pegawai->tglLahirFormat = date("d-m-Y", strtotime($pegawai->tglLahir));
+        // }
+        // if (is_null($pegawai->cpnsTglBKN)) {
+        //     $pegawai->cpnsTglBKNFormat = '';
+        // } else {
+        //     $pegawai->cpnsTglBKNFormat = date("d-m-Y", strtotime($pegawai->cpnsTglBKN));
+        // }
+        // if (is_null($pegawai->cpnsTglSK)) {
+        //     $pegawai->cpnsTglSKFormat = '';
+        // } else {
+        //     $pegawai->cpnsTglSKFormat = date("d-m-Y", strtotime($pegawai->cpnsTglSK));
+        // }
+        // if (is_null($pegawai->cpnsTMT)) {
+        //     $pegawai->cpnsTMTFormat = '';
+        // } else {
+        //     $pegawai->cpnsTMTFormat = date("d-m-Y", strtotime($pegawai->cpnsTMT));
+        // }
+        // if (is_null($pegawai->pnsTglSK)) {
+        //     $pegawai->pnsTglSKFormat = '';
+        // } else {
+        //     $pegawai->pnsTglSKFormat = date("d-m-Y", strtotime($pegawai->pnsTglSK));
+        // }
+        // if (is_null($pegawai->pnsTMT)) {
+        //     $pegawai->pnsTMTFormat = '';
+        // } else {
+        //     $pegawai->pnsTMTFormat = date("d-m-Y", strtotime($pegawai->pnsTMT));
+        // }
 
         return $this->view
             ->addCss($this->url . '/assets/dist/css/pegawai-edit.css')
@@ -188,6 +191,10 @@ class Pegawai extends Base
 
     public function savePegawai($pegawaiId = null)
     {
+        // $post = new GetSetHelper($this->request->getParsedBody());
+        // return $this->response->withStatus(500)->withJson([
+        //     'pnsTglSK' => $post->get('pnsTglSK', null)
+        // ]);
         try {
             // $this->database->getConnection()->getPdo()->beginTransaction();
             $post = new GetSetHelper($this->request->getParsedBody());
@@ -223,25 +230,18 @@ class Pegawai extends Base
             $pegawai->noKaris = $post->get('no-karis', null);
             $pegawai->noNPWP = $post->get('no-npwp', null);
             $pegawai->cpnsNoBKN = $post->get('cpns-no-bkn', null);
-            $pegawai->cpnsTglBKN = $post->get('cpnsTglBKN', null);
+            $pegawai->cpnsTglBKN = $post->get('cpnsTglBKN', null) ?: null;
             $pegawai->cpnsDitetapkanOleh = $post->get('cpns-ditetapkan-oleh', null);
             $pegawai->cpnsPangkatGolonganId = $post->get('cpns-pangkat-golongan', null);
             $pegawai->cpnsNoSK = $post->get('cpns-no-sk', null);
-            $pegawai->cpnsTglSK = $post->get('cpnsTglSK', null);
+            $pegawai->cpnsTglSK = $post->get('cpnsTglSK', null) ?: null;
             $pegawai->cpnsTMT = $post->get('cpnsTMT', null);
             $pegawai->pnsDitetapkanOleh = $post->get('pns-ditetapkan-oleh', null);
             $pegawai->pnsPangkatGolonganId = $post->get('pns-pangkat-golongan', null);
             $pegawai->pnsNoSK = $post->get('pns-no-sk', null);
-            $pegawai->pnsTglSK = $post->get('pnsTglSK', null);
+            $pegawai->pnsTglSK = $post->get('pnsTglSK', null) ?: null;
             $pegawai->pnsTMT = $post->get('pnsTMT', null);
-
-
-
-
-            $pegawai->status = 1;
             $pegawai->save();
-
-
 
             /** UPLOAD GAMBAR DAN FILE **/
             $uploadedFiles = $this->request->getUploadedFiles();
@@ -262,7 +262,6 @@ class Pegawai extends Base
                 if ($uplSuccess && $uplValid) {
                     $filename = $this->moveUploadedFile($imagePath, $uploadedFile);
                     $pegawai->foto = $filename;
-                    $pegawai->save();                    
                 } else {
                     $message = 'Gagal upload gambar, error pada aplikasi';
                     if (!$uplValid) {
@@ -283,7 +282,6 @@ class Pegawai extends Base
                     if ($uplSuccess && $uplValid) {
                         $filename = $this->moveUploadedFile($documentPath, $doc);
                         $pegawai->$key = $filename;
-                        $pegawai->save();
                     } else {
                         $message = 'Gagal upload dokumen SK, error pada aplikasi';
                         if (!$uplValid) {
@@ -295,6 +293,66 @@ class Pegawai extends Base
             }
             /** END UPLOAD GAMBAR DAN FILE **/
 
+
+            /**
+             * Riwayat Gaji Berkala
+             */
+            $gbkId       = $post->get('gbk-id', []);
+            $gbkDelete   = $post->get('gbk-delete', []);
+            $gbkNoSK     = $post->get('gbk-no-sk', []);
+            $gbkTglSK    = $post->get('gbkTglSK', []) ?: null;
+            $gbkTglMulai = $post->get('gbkTglMulai', []) ?: null;
+            $gbkTahun    = $post->get('gbk-tahun', []);
+            $gbkBulan    = $post->get('gbk-bulan', []);
+            $gbkGaji     = $post->get('gbk-gaji', []);
+            $gbkDok      = $uploadedFiles['gbk-dok'];
+
+            foreach ($gbkId as $key => $id) {
+                if (empty(trim($gbkNoSK[$key])) && $id == 0) {
+                    continue;
+                }
+
+                if ($id == 0) {
+                    $gbk = new PegGajiBerkalaModel;
+                } else {
+                    $gbk = PegGajiBerkalaModel::where('pegGajiBerkalaId', $id)->first();
+                }
+                if (!$gbk) {
+                    throw new Exception('Data gaji berkala tidak ditemukan');
+                }
+                if ($gbkDelete[$key] == 1) {
+                    $gbk->delete();
+                    continue;
+                }
+
+                $gbk->pegawaiId = $pegawai->pegawaiId;
+                $gbk->noSK = $gbkNoSK[$key];
+                $gbk->tglSK = $gbkTglSK[$key];
+                $gbk->tglMulai = $gbkTglMulai[$key];
+                $gbk->masaKerjaTahun = $gbkTahun[$key];
+                $gbk->masaKerjaBulan = $gbkBulan[$key];
+                $gbk->gajiPokok = $gbkGaji[$key];
+
+                // Dokumen PDF
+                if ($gbkDok[$key]->getError() != UPLOAD_ERR_NO_FILE) {
+                    $uplSuccess = $gbkDok[$key]->getError() === UPLOAD_ERR_OK;
+                    $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($gbkDok[$key]->file);
+                    if ($uplSuccess && $uplValid) {
+                        $filename = $this->moveUploadedFile($documentPath, $gbkDok[$key]);
+                        $gbk->dokumen = $filename;
+                    } else {
+                        $message = 'Gagal upload dokumen SK Gaji Berkala, error pada aplikasi';
+                        if (!$uplValid) {
+                            $message = 'File dokumen harus berupa PDF, ukuran maksimum 2MB';
+                        }
+                        throw new Exception($message);
+                    }
+                }
+
+                $gbk->save();
+            }
+
+            $pegawai->save();
 
             // Log
             if ($pegawaiId) {
@@ -340,12 +398,14 @@ class Pegawai extends Base
 
     public function test()
     {
-        // var_dump(v::numericVal()->max(10)->validate(51));
-        $x = 'dokSKCPNS';
-
-        $pegawai = PegawaiModel::where('pegawaiId', 1)->first();
-        // $pegawai->dokSKCPNS = 'asdasd';
-        $pegawai->$x = 'asdasd';
+        $pegawai = PegawaiModel::with(['gajiBerkala'])->where('pegawaiId', 2)->first();
+        $pegawai->tglLahir = null;
         $pegawai->save();
+
+
+
+        return $this->response->withJson([
+            'message' => $pegawai->toArray()
+        ]);
     }
 }

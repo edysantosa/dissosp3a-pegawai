@@ -122,3 +122,28 @@ input[type="number"] {
   -moz-appearance: none;
   appearance: none;
 }
+
+
+/*
+Input di tabel
+ */
+
+table.with-input td input, .div_transaksi_table table.with-input td select {
+  width: 100%;
+  height: 100% !important;
+  display: block;
+  margin: 0 auto !important;
+  border: 0 !important;
+  padding-right: 4px;
+  padding-left: 4px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+table.with-input td input:hover, .div_transaksi_table table.with-input td select:hover {
+  background-color: #F9F8E7;
+}
+
+table.with-input td, table.with-input th {
+  padding: 0;
+}
