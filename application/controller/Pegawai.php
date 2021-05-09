@@ -3,6 +3,7 @@
 use \Exception;
 use \app\model\PegawaiModel;
 use \app\model\PegGajiBerkalaModel;
+use \app\model\PegRiwayatJabatanModel;
 use \app\helper\GetSetHelper;
 
 use \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -352,6 +353,79 @@ class Pegawai extends Base
                 $gbk->save();
             }
 
+
+            /**
+             * Riwayat Jabatan
+             */
+            $rjbId         = $post->get('rjb-id', []);
+            $rjbDelete     = $post->get('rjb-delete', []);
+            $rjbUnit       = $post->get('rjb-unit-kerja', []);
+            $rjbJenis      = $post->get('rjb-jenis-jabatan', []);
+            $rjbJabatan    = $post->get('rjb-nama-jabatan', []);
+            $rjbEselon     = $post->get('rjb-eselon', []);
+            $rjbBidang     = $post->get('rjb-bidang', []);
+            $rjbSub        = $post->get('rjb-sub-bidang', []);
+            $rjbDitetapkan = $post->get('rjb-ditetapkan-oleh', []);
+            $rjbNoSK       = $post->get('rjb-no-sk', []);
+            $rjbTmtJabatan = $post->get('rjbTmtJabatan', []) ?: null;
+            $rjbTmtEselon  = $post->get('rjbTmtEselon', []) ?: null;
+            $rjbTglSK      = $post->get('rjbTglSK', []) ?: null;
+            $rjbDok        = $uploadedFiles['rjb-dok'];
+
+            foreach ($rjbId as $key => $id) {
+                if (empty(trim($rjbUnit[$key])) && $id == 0) {
+                    continue;
+                }
+
+                if ($id == 0) {
+                    $rjb = new PegRiwayatJabatanModel;
+                } else {
+                    $rjb = PegRiwayatJabatanModel::where('pegRiwayatJabatanId', $id)->first();
+                }
+                if (!$rjb) {
+                    throw new Exception('Data riwayat jabatan tidak ditemukan');
+                }
+                if ($rjbDelete[$key] == 1) {
+                    $rjb->delete();
+                    continue;
+                }
+                
+                $rjb->pegawaiId      = $pegawai->pegawaiId;
+                $rjb->unitKerja      = $rjbUnit[$key];
+                $rjb->jenisJabatan   = $rjbJenis[$key];
+                $rjb->eselon         = $rjbEselon[$key];
+                $rjb->namaJabatan    = $rjbJabatan[$key];
+                $rjb->bidang         = $rjbBidang[$key];
+                $rjb->subBidang      = $rjbSub[$key];
+                $rjb->tmtJabatan     = $rjbTmtJabatan[$key];
+                $rjb->ditetapkanOleh = $rjbDitetapkan[$key];
+                $rjb->noSKJabatan    = $rjbNoSK[$key];
+                $rjb->tmtEselon      = $rjbTmtEselon[$key];
+                $rjb->tglSKJabatan   = $rjbTglSK[$key];
+
+
+                // Dokumen PDF
+                if ($rjbDok[$key]->getError() != UPLOAD_ERR_NO_FILE) {
+                    $uplSuccess = $rjbDok[$key]->getError() === UPLOAD_ERR_OK;
+                    $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($rjbDok[$key]->file);
+                    if ($uplSuccess && $uplValid) {
+                        $filename = $this->moveUploadedFile($documentPath, $rjbDok[$key]);
+                        $rjb->dokumen = $filename;
+                    } else {
+                        $message = 'Gagal upload dokumen SK Jabatan, error pada aplikasi';
+                        if (!$uplValid) {
+                            $message = 'File dokumen harus berupa PDF, ukuran maksimum 2MB';
+                        }
+                        throw new Exception($message);
+                    }
+                }
+
+                $rjb->save();
+            }
+
+
+
+
             $pegawai->save();
 
             // Log
@@ -398,10 +472,9 @@ class Pegawai extends Base
 
     public function test()
     {
-        $pegawai = PegawaiModel::with(['gajiBerkala'])->where('pegawaiId', 2)->first();
+        $pegawai = PegawaiModel::with(['gajiBerkala', 'riwayatJabatan'])->where('pegawaiId', 2)->first();
         $pegawai->tglLahir = null;
         $pegawai->save();
-
 
 
         return $this->response->withJson([

@@ -400,11 +400,11 @@
                         </div>
                     </fieldset>       
 
-
+                    <!-- Riwayat Gaji Berkala -->
                     <fieldset class="mb-3">
                         <legend class="text-uppercase font-size-sm font-weight-bold">Data Transaksi Gaji Berkala</legend>
 
-                        <table id="table-gaji-berkala" class="table table-bordered with-input">
+                        <table id="table-gaji-berkala" class="table table-sm table-bordered with-input">
                             <thead>
                                 <tr>
                                     <th class="text-center">No.</th>
@@ -421,8 +421,8 @@
                             <tbody>
                                 <tr style="display: none;">
                                     <td>
-                                        <input type="hidden" class="gbk-id" name="gbk-id[]" value="0">
-                                        <input type="hidden" class="gbk-delete" name="gbk-delete[]" value="0"> 
+                                        <input type="hidden" class="detail-id" name="gbk-id[]" value="0">
+                                        <input type="hidden" class="detail-delete" name="gbk-delete[]" value="0"> 
                                         <span class="p-3"></span>
                                     </td>
                                     <td><input type="text" name="gbk-no-sk[]" value=""></td>
@@ -438,15 +438,15 @@
                                     <td><input type="file" name="gbk-dok[]"></td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn alpha-danger border-danger text-danger-800 btn-icon remove-gaji-berkala"><i class="icon-cross3"></i></button>
+                                            <button type="button" class="btn alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
                                         </div>
                                     </td>
                                 </tr>
                                 {% for key,g in pegawai.gajiBerkala %}
                                     <tr>
                                         <td>
-                                            <input type="hidden" class="gbk-id" name="gbk-id[]" value="{{g.pegGajiBerkalaId}}">
-                                            <input type="hidden" class="gbk-delete" name="gbk-delete[]" value="0"> 
+                                            <input type="hidden" class="gbk-id detail-id" name="gbk-id[]" value="{{g.pegGajiBerkalaId}}">
+                                            <input type="hidden" class="gbk-delete detail-delete" name="gbk-delete[]" value="0"> 
                                             <span class="p-3">{{key+1}}</span>
                                         </td>
                                         <td><input type="text" name="gbk-no-sk[]" value="{{g.noSK}}"></td>
@@ -465,7 +465,7 @@
                                                 {% if g.dokumen is not null and g.dokumen is not empty %}
                                                     <a type="button" class="btn btn-sm alpha-primary border-primary text-primary-800 btn-icon" href="{{baseUrl}}/assets/pegawai/documents/{{g.dokumen}}" target="_blank"><i class="icon-file-pdf"></i></a>
                                                 {% endif %}
-                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-gaji-berkala"><i class="icon-cross3"></i></button>
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -473,16 +473,116 @@
                             </tbody>
                         </table>
                         <div class="mt-1">
-                            <button type="button" id="add-gaji-berkala" class="btn btn-sm btn-primary"><i class="icon-plus2 mr-2"></i> Tambah</button>
+                            <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
                         </div>
+                    </fieldset>
+                    <!-- End Riwayat Gaji Berkala -->
 
+                    <!-- Riwayat Jabatan -->
+                    <fieldset class="mb-3 ove">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Jabatan</legend>
 
+                        <div style="overflow: auto;">
+                            <table id="table-riwayat-jabatan" class="table table-sm table-bordered with-input">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No.</th>
+                                        <th class="text-center" style="min-width: 200px;">Unit Kerja</th>
+                                        <th class="text-center" style="min-width: 120px;">Jenis Jabatan</th>
+                                        <th class="text-center" style="min-width: 150px;">Nama Jabatan</th>
+                                        <th class="text-center">Eselon</th>
+                                        <th class="text-center" style="min-width: 150px;">Bidang</th>
+                                        <th class="text-center" style="min-width: 100px;">Sub Bidang</th>
+                                        <th class="text-center" style="min-width: 80px;">TMT Jabatan</th>
+                                        <th class="text-center" style="min-width: 80px;">TMT Eselon</th>
+                                        <th class="text-center" style="min-width: 100px;">Ditetapkan Oleh</th>
+                                        <th class="text-center" style="min-width: 100px;">No. SK Jabatan</th>
+                                        <th class="text-center" style="min-width: 80px;">Tgl. SK Jabatan</th>
+                                        <th class="text-center" style="min-width: 100px;">Dokumen SK</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="display: none;">
+                                        <td>
+                                            <input type="hidden" class="detail-id" name="rjb-id[]" value="0">
+                                            <input type="hidden" class="detail-delete" name="rjb-delete[]" value="0"> 
+                                            <span class="pl-3 pr-3"></span>
+                                        </td>
+                                        <td><input type="text" name="rjb-unit-kerja[]"></td>
+                                        <td><input type="text" name="rjb-jenis-jabatan[]"></td>
+                                        <td><input type="text" name="rjb-nama-jabatan[]"></td>
+                                        <td><input type="text" name="rjb-eselon[]"></td>
+                                        <td><input type="text" name="rjb-bidang[]"></td>
+                                        <td><input type="text" name="rjb-sub-bidang[]"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange rjb-tmt-jabatan" data-variable="rjbTmtJabatan[]" name="rjb-tmt-jabatan[]" readonly>
+                                        </td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange rjb-tmt-eselon" data-variable="rjbTmtEselon[]" name="rjb-tmt-eselon[]" readonly>
+                                        </td>
+                                        <td><input type="text" name="rjb-ditetapkan-oleh[]"></td>
+                                        <td><input type="text" name="rjb-no-sk[]"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange rjb-tgl-sk" data-variable="rjbTglSK[]" name="rjb-tgl-sk[]" readonly>
+                                        </td>
+                                        <td><input type="file" name="rjb-dok[]"></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% for key,r in pegawai.riwayatJabatan %}
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" class="detail-id" name="rjb-id[]" value="{{r.pegRiwayatJabatanId}}">
+                                                <input type="hidden" class="detail-delete" name="rjb-delete[]" value="0"> 
+                                                <span class="pl-3 pr-3">{{key+1}}</span>
+                                            </td>
+                                            <td><input type="text" name="rjb-unit-kerja[]" value="{{r.unitKerja}}"></td>
+                                            <td><input type="text" name="rjb-jenis-jabatan[]" value="{{r.jenisJabatan}}"></td>
+                                            <td><input type="text" name="rjb-nama-jabatan[]" value="{{r.namaJabatan}}"></td>
+                                            <td><input type="text" name="rjb-eselon[]" value="{{r.eselon}}"></td>
+                                            <td><input type="text" name="rjb-bidang[]" value="{{r.bidang}}"></td>
+                                            <td><input type="text" name="rjb-sub-bidang[]" value="{{r.subBidang}}"></td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange rjb-tmt-jabatan" data-variable="rjbTmtJabatan[]" name="rjb-tmt-jabatan[]" value="{% if r.tmtJabatan %}{{r.tmtJabatanFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange rjb-tmt-eselon" data-variable="rjbTmtEselon[]" name="rjb-tmt-eselon[]" value="{% if r.tmtEselon %}{{r.tmtEselonFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td><input type="text" name="rjb-ditetapkan-oleh[]" value="{{r.ditetapkanOleh}}"></td>
+                                            <td><input type="text" name="rjb-no-sk[]" value="{{r.noSKJabatan}}"></td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange rjb-tgl-sk" data-variable="rjbTglSK[]" name="rjb-tgl-sk[]" value="{% if r.tglSKJabatan %}{{r.tglSKJabatanFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td><input type="file" name="rjb-dok[]"></td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    {% if r.dokumen is not null and r.dokumen is not empty %}
+                                                        <a type="button" class="btn btn-sm alpha-primary border-primary text-primary-800 btn-icon" href="{{baseUrl}}/assets/pegawai/documents/{{r.dokumen}}" target="_blank"><i class="icon-file-pdf"></i></a>
+                                                    {% endif %}
+                                                    <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
+                        </div>
+                    </fieldset>
+                    <!-- End Riwayat Jabatan -->        
 
+                    <fieldset class="mb-3">
                         <div class="text-right mt-5">
                             <button type="button" class="btn btn-primary" id="test">Test</button>
                             <button type="submit" class="btn btn-primary">Submit <i class="icon-paperplane ml-2"></i></button>
                         </div>
-                    </fieldset>                    
+                    </fieldset>
                 </form>
             </div>
         </div>

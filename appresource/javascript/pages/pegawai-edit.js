@@ -78,39 +78,6 @@ $(function(){
     // return;
     let formData = new FormData($(this)[0]);
 
-
-    // let tglLahir = '';
-    // if($('.cpns-tgl-bkn').val()!=""){
-    //     tglLahir = $('.tgl-lahir').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    // }    
-    // formData.append('tglLahir', tglLahir);
-    // let cpnsTglBKN = '';
-    // if($('.cpns-tgl-bkn').val()!=""){
-    //     cpnsTglBKN = $('.cpns-tgl-bkn').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    // }    
-    // formData.append('cpnsTglBKN', cpnsTglBKN);
-    // let cpnsTglSK = '';
-    // if($('.cpns-tgl-bkn').val()!=""){
-    //     cpnsTglSK = $('.cpns-tgl-sk').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    // }    
-    // formData.append('cpnsTglSK', cpnsTglSK);
-    // let cpnsTMT = '';
-    // if($('.cpns-tgl-bkn').val()!=""){
-    //     cpnsTMT = $('.cpns-tmt').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    // }    
-    // formData.append('cpnsTMT', cpnsTMT);
-    // let pnsTglSK = '';
-    // if($('.pns-tgl-bkn').val()!=""){
-    //     pnsTglSK = $('.pns-tgl-sk').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    // }    
-    // formData.append('pnsTglSK', pnsTglSK);
-    // let pnsTMT = '';
-    // if($('.pns-tgl-bkn').val()!=""){
-    //     pnsTMT = $('.pns-tmt').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    // }    
-    // formData.append('pnsTMT', pnsTMT);
-
-
     $(".daterange").each(function(){
         let varName =  $(this).data('variable');
 
@@ -163,18 +130,18 @@ $(function(){
     }
 
     readURL(this);
-}).on('click' , '#add-gaji-berkala' , function( ev ){
-    var $elem = $('#table-gaji-berkala tbody tr:first').clone();
+}).on('click' , '.add-detail-row' , function( ev ){
+    var $elem = $(this).parents('fieldset').find('tbody tr:first').clone();
     $elem.show();
     $elem.find('input').val('');
-    $elem.find('.gbk-id').val(0);
+    $elem.find('.detail-id').val(0);
     initDatePicker($elem.find('.daterange'));
-    $('#table-gaji-berkala tbody').append($elem);
-}).on('click' , '.remove-gaji-berkala' , function( ev ){
+    $(this).parents('fieldset').find('tbody').append($elem);
+}).on('click' , '.remove-detail-row' , function( ev ){
     let $elem = $(this).parents('tr');
     Bootbox.confirm({
-        title: 'Hapus Data Gaji Berkala',
-        message: 'Apakah anda yakin akan menghapus data gaji berkala yang dipilih?',
+        title: 'Hapus Data',
+        message: 'Apakah anda yakin akan menghapus data yang dipilih?',
         buttons: {
             confirm: {
                 label: 'Yes',
@@ -187,7 +154,7 @@ $(function(){
         },
         callback: function (result) {
             if (result) {
-                $elem.find('.gbk-delete').val(1);
+                $elem.find('.detail-delete').val(1);
                 $elem.hide('slow');
             }
         }
