@@ -9,6 +9,16 @@ class PegRiwayatPangkatModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegRiwayatPangkatId' ];
+    protected $appends  = ['tmtPangkatFormat', 'tglSKPangkatFormat'];
+
+    public function getTmtPangkatFormatAttribute()
+    {
+        return date("d-m-Y", strtotime($this->tmtPangkat));
+    }
+    public function getTglSKPangkatFormatAttribute()
+    {
+        return date("d-m-Y", strtotime($this->tglSKPangkat));
+    }
 
     public function pangkat()
     {

@@ -4,6 +4,7 @@ use \Exception;
 use \app\model\PegawaiModel;
 use \app\model\PegGajiBerkalaModel;
 use \app\model\PegRiwayatJabatanModel;
+use \app\model\PegRiwayatPangkatModel;
 use \app\helper\GetSetHelper;
 
 use \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -42,44 +43,13 @@ class Pegawai extends Base
     public function edit($id)
     {
         $post = $this->request->getParsedBody();
-        $pegawai = PegawaiModel::with(['gajiBerkala'])->where('pegawaiId', $id)->first();
+        $pegawai = PegawaiModel::with(['gajiBerkala', 'pangkat'])->where('pegawaiId', $id)->first();
         // echo '<pre>';
         // var_dump($pegawai->toArray());
         // die();
         if (!$pegawai) {
             throw new \Slim\Exception\NotFoundException($this->request, $this->response);
         }
-
-        // if (is_null($pegawai->tglLahir)) {
-        //     $pegawai->tglLahirFormat = '';
-        // } else {
-        //     $pegawai->tglLahirFormat = date("d-m-Y", strtotime($pegawai->tglLahir));
-        // }
-        // if (is_null($pegawai->cpnsTglBKN)) {
-        //     $pegawai->cpnsTglBKNFormat = '';
-        // } else {
-        //     $pegawai->cpnsTglBKNFormat = date("d-m-Y", strtotime($pegawai->cpnsTglBKN));
-        // }
-        // if (is_null($pegawai->cpnsTglSK)) {
-        //     $pegawai->cpnsTglSKFormat = '';
-        // } else {
-        //     $pegawai->cpnsTglSKFormat = date("d-m-Y", strtotime($pegawai->cpnsTglSK));
-        // }
-        // if (is_null($pegawai->cpnsTMT)) {
-        //     $pegawai->cpnsTMTFormat = '';
-        // } else {
-        //     $pegawai->cpnsTMTFormat = date("d-m-Y", strtotime($pegawai->cpnsTMT));
-        // }
-        // if (is_null($pegawai->pnsTglSK)) {
-        //     $pegawai->pnsTglSKFormat = '';
-        // } else {
-        //     $pegawai->pnsTglSKFormat = date("d-m-Y", strtotime($pegawai->pnsTglSK));
-        // }
-        // if (is_null($pegawai->pnsTMT)) {
-        //     $pegawai->pnsTMTFormat = '';
-        // } else {
-        //     $pegawai->pnsTMTFormat = date("d-m-Y", strtotime($pegawai->pnsTMT));
-        // }
 
         return $this->view
             ->addCss($this->url . '/assets/dist/css/pegawai-edit.css')
@@ -301,8 +271,8 @@ class Pegawai extends Base
             $gbkId       = $post->get('gbk-id', []);
             $gbkDelete   = $post->get('gbk-delete', []);
             $gbkNoSK     = $post->get('gbk-no-sk', []);
-            $gbkTglSK    = $post->get('gbkTglSK', []) ?: null;
-            $gbkTglMulai = $post->get('gbkTglMulai', []) ?: null;
+            $gbkTglSK    = $post->get('gbkTglSK', []);
+            $gbkTglMulai = $post->get('gbkTglMulai', []);
             $gbkTahun    = $post->get('gbk-tahun', []);
             $gbkBulan    = $post->get('gbk-bulan', []);
             $gbkGaji     = $post->get('gbk-gaji', []);
@@ -328,8 +298,8 @@ class Pegawai extends Base
 
                 $gbk->pegawaiId = $pegawai->pegawaiId;
                 $gbk->noSK = $gbkNoSK[$key];
-                $gbk->tglSK = $gbkTglSK[$key];
-                $gbk->tglMulai = $gbkTglMulai[$key];
+                $gbk->tglSK = $gbkTglSK[$key] ?: null;
+                $gbk->tglMulai = $gbkTglMulai[$key] ?: null;
                 $gbk->masaKerjaTahun = $gbkTahun[$key];
                 $gbk->masaKerjaBulan = $gbkBulan[$key];
                 $gbk->gajiPokok = $gbkGaji[$key];
@@ -367,9 +337,9 @@ class Pegawai extends Base
             $rjbSub        = $post->get('rjb-sub-bidang', []);
             $rjbDitetapkan = $post->get('rjb-ditetapkan-oleh', []);
             $rjbNoSK       = $post->get('rjb-no-sk', []);
-            $rjbTmtJabatan = $post->get('rjbTmtJabatan', []) ?: null;
-            $rjbTmtEselon  = $post->get('rjbTmtEselon', []) ?: null;
-            $rjbTglSK      = $post->get('rjbTglSK', []) ?: null;
+            $rjbTmtJabatan = $post->get('rjbTmtJabatan', []);
+            $rjbTmtEselon  = $post->get('rjbTmtEselon', []);
+            $rjbTglSK      = $post->get('rjbTglSK', []);
             $rjbDok        = $uploadedFiles['rjb-dok'];
 
             foreach ($rjbId as $key => $id) {
@@ -397,11 +367,11 @@ class Pegawai extends Base
                 $rjb->namaJabatan    = $rjbJabatan[$key];
                 $rjb->bidang         = $rjbBidang[$key];
                 $rjb->subBidang      = $rjbSub[$key];
-                $rjb->tmtJabatan     = $rjbTmtJabatan[$key];
+                $rjb->tmtJabatan     = $rjbTmtJabatan[$key] ?: null;
                 $rjb->ditetapkanOleh = $rjbDitetapkan[$key];
                 $rjb->noSKJabatan    = $rjbNoSK[$key];
-                $rjb->tmtEselon      = $rjbTmtEselon[$key];
-                $rjb->tglSKJabatan   = $rjbTglSK[$key];
+                $rjb->tmtEselon      = $rjbTmtEselon[$key] ?: null;
+                $rjb->tglSKJabatan   = $rjbTglSK[$key] ?: null;
 
 
                 // Dokumen PDF
@@ -421,6 +391,67 @@ class Pegawai extends Base
                 }
 
                 $rjb->save();
+            }
+
+
+
+            /**
+             * Riwayat Pangkat
+             */
+            $pktId         = $post->get('pkt-id', []);
+            $pktDelete     = $post->get('pkt-delete', []);
+            $pktPangkat    = $post->get('pkt-pangkat', []);
+            $pktTmtPangkat = $post->get('pktTmtPangkat', []);
+            $pktDitetapkan = $post->get('pkt-ditetapkan-oleh', []);
+            $pktNoSK       = $post->get('pkt-no-sk', []);
+            $pktTglSK      = $post->get('pktTglSK', []);
+            $pktTahun      = $post->get('pkt-tahun', []);
+            $pktBulan      = $post->get('pkt-bulan', []);
+            $pktDok        = $uploadedFiles['pkt-dok'];
+
+            foreach ($pktId as $key => $id) {
+                if (empty(trim($pktPangkat[$key])) && $id == 0) {
+                    continue;
+                }
+
+                if ($id == 0) {
+                    $pkt = new PegRiwayatPangkatModel;
+                } else {
+                    $pkt = PegRiwayatPangkatModel::where('pegRiwayatPangkatId', $id)->first();
+                }
+                if (!$pkt) {
+                    throw new Exception('Data riwayat pangkat tidak ditemukan');
+                }
+                if ($pktDelete[$key] == 1) {
+                    $pkt->delete();
+                    continue;
+                }
+                
+                $pkt->pegawaiId              = $pegawai->pegawaiId;
+                $pkt->JenisPangkatGolonganId = $pktPangkat[$key];
+                $pkt->tmtPangkat             = $pktTmtPangkat[$key] ?: null;
+                $pkt->ditetapkanOleh         = $pktDitetapkan[$key];
+                $pkt->noSKPangkat            = $pktNoSK[$key];
+                $pkt->tglSKPangkat           = $pktTglSK[$key] ?: null;
+                $pkt->masaKerjaTahun         = $pktTahun[$key];
+                $pkt->masaKerjaBulan         = $pktBulan[$key];
+
+                // Dokumen PDF
+                if ($pktDok[$key]->getError() != UPLOAD_ERR_NO_FILE) {
+                    $uplSuccess = $pktDok[$key]->getError() === UPLOAD_ERR_OK;
+                    $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($pktDok[$key]->file);
+                    if ($uplSuccess && $uplValid) {
+                        $filename = $this->moveUploadedFile($documentPath, $pktDok[$key]);
+                        $pkt->dokumen = $filename;
+                    } else {
+                        $message = 'Gagal upload dokumen SK Pangkat, error pada aplikasi';
+                        if (!$uplValid) {
+                            $message = 'File dokumen harus berupa PDF, ukuran maksimum 2MB';
+                        }
+                        throw new Exception($message);
+                    }
+                }
+                $pkt->save();
             }
 
 

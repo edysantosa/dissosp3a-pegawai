@@ -1,2 +1,4 @@
 - Tambah kolom dokumen di tabel pegGajiBerkala
 - Tambah kolom dokumen di tabel pegRiwayatJabatan
+
+- Tambah kolom dokumen di tabel pegRiwayatPangkat,masaKerjaTahun int 2, masaKerjaBulan int 2

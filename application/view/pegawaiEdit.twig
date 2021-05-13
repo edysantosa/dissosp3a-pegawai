@@ -533,7 +533,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    {% for key,r in pegawai.riwayatJabatan %}
+                                    {% for key,r in pegawai.jabatan %}
                                         <tr>
                                             <td>
                                                 <input type="hidden" class="detail-id" name="rjb-id[]" value="{{r.pegRiwayatJabatanId}}">
@@ -576,6 +576,106 @@
                         </div>
                     </fieldset>
                     <!-- End Riwayat Jabatan -->        
+
+                    <!-- Riwayat Pangkat -->
+                    <fieldset class="mb-3 ove">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Pangkat</legend>
+
+                        <div style="overflow: auto;">
+                            <table id="table-riwayat-pangkat" class="table table-sm table-bordered with-input">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No.</th>
+                                        <th class="text-center" style="min-width: 200px;">Pangkat/Gol. Ruang</th>
+                                        <th class="text-center" style="min-width: 80px;">TMT Pangkat</th>
+                                        <th class="text-center" style="min-width: 100px;">Ditetapkan Oleh</th>
+                                        <th class="text-center" style="min-width: 100px;">No. SK</th>
+                                        <th class="text-center" style="min-width: 80px;">Tgl. SK</th>
+                                        <th class="text-center" style="min-width: 80px;">Masa Kerja Tahun</th>
+                                        <th class="text-center" style="min-width: 80px;">Masa Kerja Bulan</th>
+                                        <th class="text-center" style="min-width: 100px;">Dokumen SK</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="display: none;">
+                                        <td>
+                                            <input type="hidden" class="detail-id" name="pkt-id[]" value="0">
+                                            <input type="hidden" class="detail-delete" name="pkt-delete[]" value="0"> 
+                                            <span class="pl-3 pr-3"></span>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="pkt-pangkat[]">
+                                                <option value=""></option>
+                                                {% for pk in pangkat %}
+                                                <option value="{{pk.jenisPangkatGolonganId}}">{{pk.golonganRuang}} - {{pk.pangkat}}</option>
+                                                {% endfor %}  
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange pkt-tmt-pangkat" data-variable="pktTmtPangkat[]" name="pkt-tmt-pangkat[]" readonly>
+                                        </td>
+                                        <td><input type="text" name="pkt-ditetapkan-oleh[]"></td>
+                                        <td><input type="text" name="pkt-no-sk[]"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange pkt-tgl-sk" data-variable="pktTglSK[]" name="pkt-tgl-sk[]" readonly>
+                                        </td>
+                                        <td><input type="text" name="pkt-tahun[]"></td>
+                                        <td><input type="text" name="pkt-bulan[]"></td>
+                                        <td><input type="file" name="pkt-dok[]"></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% for key,r in pegawai.pangkat %}
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" class="detail-id" name="pkt-id[]" value="{{r.pegRiwayatPangkatId}}">
+                                                <input type="hidden" class="detail-delete" name="pkt-delete[]" value="0"> 
+                                                <span class="pl-3 pr-3">{{key+1}}</span>
+                                            </td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="pkt-pangkat[]">
+                                                    {% for pk in pangkat %}
+                                                    <option value="{{pk.jenisPangkatGolonganId}}" 
+                                                        {% if pegawai %}
+                                                            {{r.jenisPangkatGolonganId == pk.jenisPangkatGolonganId ? 'selected="selected"'}}
+                                                        {% endif %}
+                                                    >{{pk.golonganRuang}} - {{pk.pangkat}}</option>
+                                                    {% endfor %}  
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange pkt-tmt-pangkat" data-variable="pktTmtPangkat[]" name="pkt-tmt-pangkat[]" value="{% if r.tmtPangkat %}{{r.tmtPangkatFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td><input type="text" name="pkt-ditetapkan-oleh[]" value="{{r.ditetapkanOleh}}"></td>
+                                            <td><input type="text" name="pkt-no-sk[]" value="{{r.noSKPangkat}}"></td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange pkt-tgl-sk" data-variable="pktTglSK[]" name="pkt-tgl-sk[]" value="{% if r.tglSKPangkat %}{{r.tglSKPangkatFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td><input type="text" name="pkt-tahun[]" value="{{r.masaKerjaTahun}}"></td>
+                                            <td><input type="text" name="pkt-bulan[]" value="{{r.masaKerjaBulan}}"></td>
+                                            <td><input type="file" name="pkt-dok[]"></td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    {% if r.dokumen is not null and r.dokumen is not empty %}
+                                                        <a type="button" class="btn btn-sm alpha-primary border-primary text-primary-800 btn-icon" href="{{baseUrl}}/assets/pegawai/documents/{{r.dokumen}}" target="_blank"><i class="icon-file-pdf"></i></a>
+                                                    {% endif %}
+                                                    <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
+                        </div>
+                    </fieldset>
+                    <!-- End Riwayat Pangkat -->        
 
                     <fieldset class="mb-3">
                         <div class="text-right mt-5">

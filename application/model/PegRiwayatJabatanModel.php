@@ -9,7 +9,7 @@ class PegRiwayatJabatanModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegRiwayatJabatanId' ];
-    protected $appends = ['tmtJabatanFormat', 'tmtEselonFormat', 'tglSKJabatanFormat'];
+    protected $appends  = ['tmtJabatanFormat', 'tmtEselonFormat', 'tglSKJabatanFormat'];
 
     public function getTmtJabatanFormatAttribute()
     {
