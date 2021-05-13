@@ -5,6 +5,7 @@ use \app\model\PegawaiModel;
 use \app\model\PegGajiBerkalaModel;
 use \app\model\PegRiwayatJabatanModel;
 use \app\model\PegRiwayatPangkatModel;
+use \app\model\PegBahasaModel;
 use \app\helper\GetSetHelper;
 
 use \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -61,6 +62,7 @@ class Pegawai extends Base
                 'provinsi'   => \app\model\JenisProvinsiModel::all(),
                 'pangkat'    => \app\model\JenisPangkatGolonganModel::all(),
                 'jenisKepeg' => \app\model\JenisKepegawaianModel::all(),
+                'jenisBahasa' => \app\model\JenisBahasaModel::all(),
             ]);
     }
 
@@ -428,7 +430,7 @@ class Pegawai extends Base
                 }
                 
                 $pkt->pegawaiId              = $pegawai->pegawaiId;
-                $pkt->JenisPangkatGolonganId = $pktPangkat[$key];
+                $pkt->jenisPangkatGolonganId = $pktPangkat[$key];
                 $pkt->tmtPangkat             = $pktTmtPangkat[$key] ?: null;
                 $pkt->ditetapkanOleh         = $pktDitetapkan[$key];
                 $pkt->noSKPangkat            = $pktNoSK[$key];
@@ -452,6 +454,41 @@ class Pegawai extends Base
                     }
                 }
                 $pkt->save();
+            }
+
+
+
+
+            /**
+             * Penguasaan Bahasa
+             */
+            $bhsId        = $post->get('bhs-id', []);
+            $bhsDelete    = $post->get('bhs-delete', []);
+            $bhsBahasa    = $post->get('bhs-bahasa', []);
+            $bhsKemampuan = $post->get('bhs-kemampuan', []);
+
+            foreach ($bhsId as $key => $id) {
+                if (empty(trim($bhsBahasa[$key])) && $id == 0) {
+                    continue;
+                }
+
+                if ($id == 0) {
+                    $bhs = new PegBahasaModel;
+                } else {
+                    $bhs = PegBahasaModel::where('pegBahasaId', $id)->first();
+                }
+                if (!$bhs) {
+                    throw new Exception('Data kemampuan bahasa tidak ditemukan');
+                }
+                if ($bhsDelete[$key] == 1) {
+                    $bhs->delete();
+                    continue;
+                }
+                
+                $bhs->pegawaiId     = $pegawai->pegawaiId;
+                $bhs->jenisBahasaId = $bhsBahasa[$key];
+                $bhs->kemampuan     = $bhsKemampuan[$key];
+                $bhs->save();
             }
 
 

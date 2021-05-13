@@ -407,7 +407,7 @@
                         <table id="table-gaji-berkala" class="table table-sm table-bordered with-input">
                             <thead>
                                 <tr>
-                                    <th class="text-center">No.</th>
+                                    <th class="text-center" style="width: 50px;">No.</th>
                                     <th class="text-center">No. SK</th>
                                     <th class="text-center">Tgl. SK</th>
                                     <th class="text-center">Tgl. Mulai</th>
@@ -486,7 +486,7 @@
                             <table id="table-riwayat-jabatan" class="table table-sm table-bordered with-input">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">No.</th>
+                                        <th class="text-center" style="width: 50px;">No.</th>
                                         <th class="text-center" style="min-width: 200px;">Unit Kerja</th>
                                         <th class="text-center" style="min-width: 120px;">Jenis Jabatan</th>
                                         <th class="text-center" style="min-width: 150px;">Nama Jabatan</th>
@@ -585,7 +585,7 @@
                             <table id="table-riwayat-pangkat" class="table table-sm table-bordered with-input">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">No.</th>
+                                        <th class="text-center" style="width: 50px;">No.</th>
                                         <th class="text-center" style="min-width: 200px;">Pangkat/Gol. Ruang</th>
                                         <th class="text-center" style="min-width: 80px;">TMT Pangkat</th>
                                         <th class="text-center" style="min-width: 100px;">Ditetapkan Oleh</th>
@@ -676,6 +676,93 @@
                         </div>
                     </fieldset>
                     <!-- End Riwayat Pangkat -->        
+
+
+                    <!-- Bahasa -->
+                    <fieldset class="mb-3 ove">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Penguasaan Bahasa</legend>
+
+                        <div style="overflow: auto;">
+                            <table id="table-bahasa" class="table table-sm table-bordered with-input">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 50px;">No.</th>
+                                        <th class="text-center">Bahasa</th>
+                                        <th class="text-center">Kemampuan Bahasa</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="display: none;">
+                                        <td>
+                                            <input type="hidden" class="detail-id" name="bhs-id[]" value="0">
+                                            <input type="hidden" class="detail-delete" name="bhs-delete[]" value="0"> 
+                                            <span class="pl-3 pr-3"></span>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="bhs-bahasa[]">
+                                                <option value=""></option>
+                                                {% for bh in jenisBahasa %}
+                                                <option value="{{bh.jenisBahasaId}}" 
+                                                    {% if pegawai %}
+                                                        {{b.jenisBahasaId == bh.jenisBahasaId ? 'selected="selected"'}}
+                                                    {% endif %}
+                                                >{{bh.jenisBahasa}}</option>
+                                                {% endfor %}  
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="bhs-kemampuan[]">
+                                                <option value="1">Aktif</option>
+                                                <option value="2">Pasif</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% for key,b in pegawai.bahasa %}
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" class="detail-id" name="bhs-id[]" value="{{b.pegBahasaId}}">
+                                                <input type="hidden" class="detail-delete" name="bhs-delete[]" value="0"> 
+                                                <span class="pl-3 pr-3">{{key+1}}</span>
+                                            </td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="bhs-bahasa[]">
+                                                    {% for bh in jenisBahasa %}
+                                                    <option value="{{bh.jenisBahasaId}}" 
+                                                        {% if pegawai %}
+                                                            {{b.jenisBahasaId == bh.jenisBahasaId ? 'selected="selected"'}}
+                                                        {% endif %}
+                                                    >{{bh.jenisBahasa}}</option>
+                                                    {% endfor %}  
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="bhs-kemampuan[]">
+                                                    <option value="1" {{b.kemampuan == 1 ? 'selected="selected"'}}>Aktif</option>
+                                                    <option value="2" {{b.kemampuan == 2 ? 'selected="selected"'}}>Pasif</option>
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
+                        </div>
+                    </fieldset>
+                    <!-- End Bahasa -->   
+
 
                     <fieldset class="mb-3">
                         <div class="text-right mt-5">
