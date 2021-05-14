@@ -9,7 +9,7 @@ class PegDiklatModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegDiklatId' ];
-    protected $appends  = ['TtglMulaiFormat', 'tglSelesaiFormat', 'tglSTTPFormat'];
+    protected $appends  = ['tglMulaiFormat', 'tglSelesaiFormat', 'tglSTTPFormat'];
 
     public function getTglMulaiFormatAttribute()
     {

@@ -107,24 +107,8 @@ class PegawaiModel extends \sys\Model
         return $this->hasMany('\app\model\PegDiklatModel', 'pegawaiId', 'pegawaiId');
     }
 
-
-    public function penataran()
+    public function penghargaan()
     {
-        return $this->hasMany('\app\model\PegPenataranModel', 'pegawaiId', 'pegawaiId');
-    }
-
-    public function riwayatPendidikan()
-    {
-        return $this->hasMany('\app\model\PegRiwayatPendidikanModel', 'pegawaiId', 'pegawaiId');
-    }
-
-    public function satyalancana()
-    {
-        return $this->hasMany('\app\model\PegSatyalancanaModel', 'pegawaiId', 'pegawaiId');
-    }
-
-    public function seminar()
-    {
-        return $this->hasMany('\app\model\PegSeminarModel', 'pegawaiId', 'pegawaiId');
+        return $this->hasMany('\app\model\PegPenghargaanModel', 'pegawaiId', 'pegawaiId');
     }
 }

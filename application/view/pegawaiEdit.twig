@@ -962,6 +962,81 @@
                     </fieldset>
                     <!-- End Riwayat Diklat -->
 
+
+                    <!-- Riwayat Penghargaan -->
+                    <fieldset class="mb-3 ove">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Penghargaan</legend>
+
+                        <div style="overflow: auto;">
+                            <table id="table-riwayat-penghargaan" class="table table-sm table-bordered with-input">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 50px;">No.</th>
+                                        <th class="text-center" style="min-width: 100px;">Nama Penghargaan</th>
+                                        <th class="text-center" style="min-width: 100px;">Asal Penghargaan</th>
+                                        <th class="text-center" style="min-width: 50px;">Tahun</th>
+                                        <th class="text-center" style="min-width: 80px;">No. Piagam</th>
+                                        <th class="text-center" style="min-width: 80px;">Tgl Piagam</th>
+                                        <th class="text-center" style="min-width: 100px;">Scan Piagam</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="display: none;">
+                                        <td>
+                                            <input type="hidden" class="detail-id" name="phg-id[]" value="0">
+                                            <input type="hidden" class="detail-delete" name="phg-delete[]" value="0"> 
+                                            <span class="pl-3 pr-3"></span>
+                                        </td>
+                                        <td><input type="text" name="phg-nama[]"></td>
+                                        <td><input type="text" name="phg-asal[]"></td>
+                                        <td><input type="text" name="phg-tahun[]"></td>
+                                        <td><input type="text" name="phg-no-piagam[]"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange phg-tgl-piagam" data-variable="phgTglPiagam[]" name="phg-tgl-piagam[]" readonly>
+                                        </td>
+                                        <td><input type="file" name="phg-dok[]"></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% for key,r in pegawai.penghargaan %}
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" class="detail-id" name="phg-id[]" value="{{r.pegPenghargaanId}}">
+                                                <input type="hidden" class="detail-delete" name="phg-delete[]" value="0"> 
+                                                <span class="pl-3 pr-3">{{key+1}}</span>
+                                            </td>
+                                            <td><input type="text" name="phg-nama[]" value="{{r.namaPenghargaan}}"></td>
+                                            <td><input type="text" name="phg-asal[]" value="{{r.asal}}"></td>
+                                            <td><input type="text" name="phg-tahun[]" value="{{r.tahun}}"></td>
+                                            <td><input type="text" name="phg-no-piagam[]" value="{{r.noPiagam}}"></td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange phg-tgl-piagam" data-variable="phgTglPiagam[]" name="phg-tgl-piagam[]" value="{% if r.tglPiagam %}{{r.tglPiagamFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td><input type="file" name="phg-dok[]"></td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    {% if r.dokumen is not null and r.dokumen is not empty %}
+                                                        <a type="button" class="btn btn-sm alpha-primary border-primary text-primary-800 btn-icon" href="{{baseUrl}}/assets/pegawai/documents/{{r.dokumen}}" target="_blank"><i class="icon-file-pdf"></i></a>
+                                                    {% endif %}
+                                                    <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
+                        </div>
+                    </fieldset>
+                    <!-- End Riwayat Penghargaan -->
+
+
                     <fieldset class="mb-3">
                         <div class="text-right mt-5">
                             <button type="button" class="btn btn-primary" id="test">Test</button>

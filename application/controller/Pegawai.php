@@ -7,6 +7,7 @@ use \app\model\PegRiwayatJabatanModel;
 use \app\model\PegRiwayatPangkatModel;
 use \app\model\PegRiwayatPendidikanModel;
 use \app\model\PegDiklatModel;
+use \app\model\PegPenghargaanModel;
 use \app\model\PegBahasaModel;
 use \app\helper\GetSetHelper;
 
@@ -596,11 +597,68 @@ class Pegawai extends Base
                 $dkt->tempatDiklat = $dktTempat[$key];
                 $dkt->penyelenggara = $dktPenyelenggara[$key];
                 $dkt->angkatan = $dktAngkatan[$key];
-                $dkt->tglMulai = $dktTglMulai[$key];
-                $dkt->tglSelesai = $dktTglSelesai[$key];
+                $dkt->tglMulai = $dktTglMulai[$key] ?: null;
+                $dkt->tglSelesai = $dktTglSelesai[$key] ?: null;
                 $dkt->noSTTP = $dktNoSTTP[$key];
-                $dkt->tglSTTP = $dktTglSTTP[$key];
+                $dkt->tglSTTP = $dktTglSTTP[$key] ?: null;
                 $dkt->save();
+            }
+
+
+
+            /**
+             * Penghargaan
+             */
+            $phgId          = $post->get('phg-id', []);
+            $phgDelete      = $post->get('phg-delete', []);
+            $phgPenghargaan = $post->get('phg-nama', []);
+            $phgAsal        = $post->get('phg-asal', []);
+            $phgTahun       = $post->get('phg-tahun', []);
+            $phgNoPiagam    = $post->get('phg-no-piagam', []);
+            $phgTglPiagam   = $post->get('phgTglPiagam', []);
+            $phgDok         = $uploadedFiles['phg-dok'];
+
+            foreach ($phgId as $key => $id) {
+                if (empty(trim($phgPenghargaan[$key])) && $id == 0) {
+                    continue;
+                }
+
+                if ($id == 0) {
+                    $phg = new PegPenghargaanModel;
+                } else {
+                    $phg = PegPenghargaanModel::where('pegPenghargaanId', $id)->first();
+                }
+                if (!$phg) {
+                    throw new Exception('Data riwayat penghargaan tidak ditemukan');
+                }
+                if ($phgDelete[$key] == 1) {
+                    $phg->delete();
+                    continue;
+                }
+                
+                $phg->pegawaiId     = $pegawai->pegawaiId;
+                $phg->namaPenghargaan = $phgPenghargaan[$key];
+                $phg->asal = $phgAsal[$key];
+                $phg->tahun = $phgTahun[$key];
+                $phg->noPiagam = $phgNoPiagam[$key];
+                $phg->tglPiagam = $phgTglPiagam[$key] ?: null;
+
+                // Dokumen PDF
+                if ($phgDok[$key]->getError() != UPLOAD_ERR_NO_FILE) {
+                    $uplSuccess = $phgDok[$key]->getError() === UPLOAD_ERR_OK;
+                    $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($phgDok[$key]->file);
+                    if ($uplSuccess && $uplValid) {
+                        $filename = $this->moveUploadedFile($documentPath, $phgDok[$key]);
+                        $phg->dokumen = $filename;
+                    } else {
+                        $message = 'Gagal upload dokumen SK Penghargaan, error pada aplikasi';
+                        if (!$uplValid) {
+                            $message = 'File dokumen harus berupa PDF, ukuran maksimum 2MB';
+                        }
+                        throw new Exception($message);
+                    }
+                }
+                $phg->save();
             }
 
             $pegawai->save();
