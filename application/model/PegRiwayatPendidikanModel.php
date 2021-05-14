@@ -9,6 +9,12 @@ class PegRiwayatPendidikanModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegRiwayatPendidikanId' ];
+    protected $appends  = ['tglIjasahFormat'];
+
+    public function getTglIjasahFormatattribute()
+    {
+        return date("d-m-Y", strtotime($this->tglIjasah));
+    }
 
     public function jenisPendidikan()
     {

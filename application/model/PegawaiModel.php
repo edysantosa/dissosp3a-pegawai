@@ -76,7 +76,6 @@ class PegawaiModel extends \sys\Model
         return $this->hasOne('\app\model\PegRiwayatPangkatModel', 'pegawaiId', 'pegawaiId')->latest('tglSKPangkat');
     }
 
-
     public function jabatan()
     {
         return $this->hasMany('\app\model\PegRiwayatJabatanModel', 'pegawaiId', 'pegawaiId');
@@ -86,9 +85,21 @@ class PegawaiModel extends \sys\Model
         return $this->hasOne('\app\model\PegRiwayatJabatanModel', 'pegawaiId', 'pegawaiId')->latest('tglSKJabatan');
     }
 
+
+
+    public function gajiBerkala()
+    {
+        return $this->hasMany('\app\model\PegGajiBerkalaModel', 'pegawaiId', 'pegawaiId');
+    }
+
     public function bahasa()
     {
         return $this->hasMany('\app\model\PegBahasaModel', 'pegawaiId', 'pegawaiId');
+    }
+
+    public function pendidikan()
+    {
+        return $this->hasMany('\app\model\PegRiwayatPendidikanModel', 'pegawaiId', 'pegawaiId');
     }
 
     public function diklat()
@@ -96,10 +107,6 @@ class PegawaiModel extends \sys\Model
         return $this->hasMany('\app\model\PegDiklatModel', 'pegawaiId', 'pegawaiId');
     }
 
-    public function gajiBerkala()
-    {
-        return $this->hasMany('\app\model\PegGajiBerkalaModel', 'pegawaiId', 'pegawaiId');
-    }
 
     public function penataran()
     {

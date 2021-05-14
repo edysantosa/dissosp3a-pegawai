@@ -5,6 +5,7 @@ use \app\model\PegawaiModel;
 use \app\model\PegGajiBerkalaModel;
 use \app\model\PegRiwayatJabatanModel;
 use \app\model\PegRiwayatPangkatModel;
+use \app\model\PegRiwayatPendidikanModel;
 use \app\model\PegBahasaModel;
 use \app\helper\GetSetHelper;
 
@@ -63,6 +64,7 @@ class Pegawai extends Base
                 'pangkat'    => \app\model\JenisPangkatGolonganModel::all(),
                 'jenisKepeg' => \app\model\JenisKepegawaianModel::all(),
                 'jenisBahasa' => \app\model\JenisBahasaModel::all(),
+                'jenisPendidikan' => \app\model\JenisPendidikanModel::all(),
             ]);
     }
 
@@ -493,6 +495,65 @@ class Pegawai extends Base
 
 
 
+
+            /**
+             * Riwayat Pendidikan
+             */
+            $pdkId         = $post->get('pdk-id', []);
+            $pdkDelete     = $post->get('pdk-delete', []);
+            $pdkPendidikan = $post->get('pdk-pendidikan', []);
+            $pdkJurusan    = $post->get('pdk-jurusan', []);
+            $pdkInstitusi  = $post->get('pdk-insitusi', []);
+            $pdkTempat     = $post->get('pdk-tempat', []);
+            $pdkKepala     = $post->get('pdk-kepala', []);
+            $pdkNoIjasah   = $post->get('pdk-no-ijasah', []);
+            $pdkTglIjasah  = $post->get('pdkTglIjasah', []);
+            $pdkDok        = $uploadedFiles['pdk-dok'];
+
+            foreach ($pdkId as $key => $id) {
+                if (empty(trim($pdkPendidikan[$key])) && $id == 0) {
+                    continue;
+                }
+
+                if ($id == 0) {
+                    $pdk = new PegRiwayatPendidikanModel;
+                } else {
+                    $pdk = PegRiwayatPendidikanModel::where('pegRiwayatPendidikanId', $id)->first();
+                }
+                if (!$pdk) {
+                    throw new Exception('Data riwayat pendidikan tidak ditemukan');
+                }
+                if ($pdkDelete[$key] == 1) {
+                    $pdk->delete();
+                    continue;
+                }
+                
+                $pdk->pegawaiId     = $pegawai->pegawaiId;
+                $pdk->jenisPendidikanId = $pdkPendidikan[$key];
+                $pdk->jurusan = $pdkJurusan[$key];
+                $pdk->namaInstitusi = $pdkInstitusi[$key];
+                $pdk->tempat = $pdkTempat[$key];
+                $pdk->namaKepala = $pdkKepala[$key];
+                $pdk->noIjasah = $pdkNoIjasah[$key];
+                $pdk->tglIjasah = $pdkTglIjasah[$key] ?: null;
+
+                // Dokumen PDF
+                if ($pdkDok[$key]->getError() != UPLOAD_ERR_NO_FILE) {
+                    $uplSuccess = $pdkDok[$key]->getError() === UPLOAD_ERR_OK;
+                    $uplValid = v::size(null, '2MB')->mimetype('application/pdf')->validate($pdkDok[$key]->file);
+                    if ($uplSuccess && $uplValid) {
+                        $filename = $this->moveUploadedFile($documentPath, $pdkDok[$key]);
+                        $pdk->dokumen = $filename;
+                    } else {
+                        $message = 'Gagal upload dokumen SK Pangkat, error pada aplikasi';
+                        if (!$uplValid) {
+                            $message = 'File dokumen harus berupa PDF, ukuran maksimum 2MB';
+                        }
+                        throw new Exception($message);
+                    }
+                }
+                $pdk->save();
+            }
 
             $pegawai->save();
 

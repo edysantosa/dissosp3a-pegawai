@@ -675,7 +675,7 @@
                             <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
                         </div>
                     </fieldset>
-                    <!-- End Riwayat Pangkat -->        
+                    <!-- End Riwayat Pangkat -->
 
 
                     <!-- Bahasa -->
@@ -762,6 +762,104 @@
                         </div>
                     </fieldset>
                     <!-- End Bahasa -->   
+
+
+                    <!-- Riwayat Pendidikan -->
+                    <fieldset class="mb-3 ove">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Pendidikan</legend>
+
+                        <div style="overflow: auto;">
+                            <table id="table-riwayat-pendidikan" class="table table-sm table-bordered with-input">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 50px;">No.</th>
+                                        <th class="text-center" style="min-width: 100px;">Tingkat Pendidikan</th>
+                                        <th class="text-center" style="min-width: 80px;">Jurusan</th>
+                                        <th class="text-center" style="min-width: 100px;">Nama Sekolah/PTS/PTN</th>
+                                        <th class="text-center" style="min-width: 100px;">Tempat</th>
+                                        <th class="text-center" style="min-width: 80px;">Nama Kepsek/Rektor</th>
+                                        <th class="text-center" style="min-width: 80px;">No. Ijasah</th>
+                                        <th class="text-center" style="min-width: 80px;">Tgl Ijasah</th>
+                                        <th class="text-center" style="min-width: 100px;">Scan Ijasah</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="display: none;">
+                                        <td>
+                                            <input type="hidden" class="detail-id" name="pdk-id[]" value="0">
+                                            <input type="hidden" class="detail-delete" name="pdk-delete[]" value="0"> 
+                                            <span class="pl-3 pr-3"></span>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="pdk-pendidikan[]">
+                                                <option value=""></option>
+                                                {% for pk in jenisPendidikan %}
+                                                <option value="{{pk.jenisPendidikanId}}">{{pk.jenisPendidikan}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="pdk-jurusan[]"></td>
+                                        <td><input type="text" name="pdk-insitusi[]"></td>
+                                        <td><input type="text" name="pdk-tempat[]"></td>
+                                        <td><input type="text" name="pdk-kepala[]"></td>
+                                        <td><input type="text" name="pdk-no-ijasah[]"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange pdk-tgl-ijasah" data-variable="pdkTglIjasah[]" name="pdk-tgl-ijasah[]" readonly>
+                                        </td>
+                                        <td><input type="file" name="pdk-dok[]"></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    {% for key,r in pegawai.pendidikan %}
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" class="detail-id" name="pdk-id[]" value="{{r.pegRiwayatPendidikanId}}">
+                                                <input type="hidden" class="detail-delete" name="pdk-delete[]" value="0"> 
+                                                <span class="pl-3 pr-3">{{key+1}}</span>
+                                            </td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="pdk-pendidikan[]">
+                                                    {% for pk in jenisPendidikan %}
+                                                    <option value="{{pk.jenisPendidikanId}}" 
+                                                        {% if pegawai %}
+                                                            {{r.jenisPendidikanId == pk.jenisPendidikanId ? 'selected="selected"'}}
+                                                        {% endif %}
+                                                    >{{pk.jenisPendidikan}}</option>
+                                                    {% endfor %}  
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="pdk-jurusan[]" value="{{r.jurusan}}"></td>
+                                            <td><input type="text" name="pdk-insitusi[]" value="{{r.namaInstitusi}}"></td>
+                                            <td><input type="text" name="pdk-tempat[]" value="{{r.tempat}}"></td>
+                                            <td><input type="text" name="pdk-kepala[]" value="{{r.namaKepala}}"></td>
+                                            <td><input type="text" name="pdk-no-ijasah[]" value="{{r.noIjasah}}"></td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange pdk-tgl-ijasah" data-variable="pdkTglIjasah[]" name="pdk-tgl-ijasah[]" value="{% if r.tglIjasah %}{{r.tglIjasahFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td><input type="file" name="pdk-dok[]"></td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    {% if r.dokumen is not null and r.dokumen is not empty %}
+                                                        <a type="button" class="btn btn-sm alpha-primary border-primary text-primary-800 btn-icon" href="{{baseUrl}}/assets/pegawai/documents/{{r.dokumen}}" target="_blank"><i class="icon-file-pdf"></i></a>
+                                                    {% endif %}
+                                                    <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
+                        </div>
+                    </fieldset>
+                    <!-- End Riwayat Pendidikan -->
 
 
                     <fieldset class="mb-3">
