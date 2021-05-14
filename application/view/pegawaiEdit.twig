@@ -862,6 +862,106 @@
                     <!-- End Riwayat Pendidikan -->
 
 
+                    <!-- Riwayat Diklat -->
+                    <fieldset class="mb-3 ove">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Diklat</legend>
+
+                        <div style="overflow: auto;">
+                            <table id="table-riwayat-pendidikan" class="table table-sm table-bordered with-input">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 50px;">No.</th>
+                                        <th class="text-center" style="min-width: 100px;">Jenis Diklat</th>
+                                        <th class="text-center" style="min-width: 100px;">Nama Diklat</th>
+                                        <th class="text-center" style="min-width: 100px;">Tempat Diklat</th>
+                                        <th class="text-center" style="min-width: 100px;">Penyelenggara</th>
+                                        <th class="text-center" style="min-width: 50px;">Angkatan</th>
+                                        <th class="text-center" style="min-width: 80px;">Tgl Mulai</th>
+                                        <th class="text-center" style="min-width: 80px;">Tgl Selesai</th>
+                                        <th class="text-center" style="min-width: 80px;">No. STTP</th>
+                                        <th class="text-center" style="min-width: 80px;">Tgl STTP</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="display: none;">
+                                        <td>
+                                            <input type="hidden" class="detail-id" name="dkt-id[]" value="0">
+                                            <input type="hidden" class="detail-delete" name="dkt-delete[]" value="0"> 
+                                            <span class="pl-3 pr-3"></span>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="dkt-diklat[]">
+                                                <option value=""></option>
+                                                <option value="1">Diklat Fungsional</option>
+                                                <option value="2">Diklat Struktural</option>
+                                                <option value="3">Diklat Teknis</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="dkt-nama[]"></td>
+                                        <td><input type="text" name="dkt-tempat[]"></td>
+                                        <td><input type="text" name="dkt-penyelenggara[]"></td>
+                                        <td><input type="text" name="dkt-angkatan[]"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange dkt-tgl-mulai" data-variable="dktTglMulai[]" name="dkt-tgl-mulai[]" readonly>
+                                        </td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange dkt-tgl-selesai" data-variable="dktTglSelesai[]" name="dkt-tgl-selesai[]" readonly>
+                                        </td>
+                                        <td><input type="text" name="dkt-no-sttp[]"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange dkt-tgl-sttp" data-variable="dktTglSTTP[]" name="dkt-tgl-sttp[]" readonly>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% for key,r in pegawai.diklat %}
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" class="detail-id" name="dkt-id[]" value="{{r.pegDiklatId}}">
+                                                <input type="hidden" class="detail-delete" name="dkt-delete[]" value="0"> 
+                                                <span class="pl-3 pr-3">{{key+1}}</span>
+                                            </td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="dkt-diklat[]">
+                                                    <option value="1" {{r.jenisDiklat == 1 ? 'selected="selected"'}}>Diklat Fungsional</option>
+                                                    <option value="2" {{r.jenisDiklat == 2 ? 'selected="selected"'}}>Diklat Struktural</option>
+                                                    <option value="3" {{r.jenisDiklat == 3 ? 'selected="selected"'}}>Diklat Teknis</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="dkt-nama[]" value="{{r.namaDiklat}}"></td>
+                                            <td><input type="text" name="dkt-tempat[]" value="{{r.tempatDiklat}}"></td>
+                                            <td><input type="text" name="dkt-penyelenggara[]" value="{{r.penyelenggara}}"></td>
+                                            <td><input type="text" name="dkt-angkatan[]" value="{{r.angkatan}}"></td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange dkt-tgl-mulai" data-variable="dktTglMulai[]" name="dkt-tgl-mulai[]" value="{% if r.tglMulai %}{{r.tglMulaiFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange dkt-tgl-selesai" data-variable="dktTglSelesai[]" name="dkt-tgl-selesai[]" value="{% if r.tglSelesai %}{{r.tglSelesaiFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td><input type="text" name="dkt-no-sttp[]" value="{{r.noSTTP}}"></td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange dkt-tgl-sttp" data-variable="dktTglSTTP[]" name="dkt-tgl-sttp[]" value="{% if r.tglSTTP %}{{r.tglSTTPFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
+                        </div>
+                    </fieldset>
+                    <!-- End Riwayat Diklat -->
+
                     <fieldset class="mb-3">
                         <div class="text-right mt-5">
                             <button type="button" class="btn btn-primary" id="test">Test</button>

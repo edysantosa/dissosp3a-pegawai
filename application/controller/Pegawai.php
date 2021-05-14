@@ -6,6 +6,7 @@ use \app\model\PegGajiBerkalaModel;
 use \app\model\PegRiwayatJabatanModel;
 use \app\model\PegRiwayatPangkatModel;
 use \app\model\PegRiwayatPendidikanModel;
+use \app\model\PegDiklatModel;
 use \app\model\PegBahasaModel;
 use \app\helper\GetSetHelper;
 
@@ -495,7 +496,6 @@ class Pegawai extends Base
 
 
 
-
             /**
              * Riwayat Pendidikan
              */
@@ -553,6 +553,54 @@ class Pegawai extends Base
                     }
                 }
                 $pdk->save();
+            }
+
+
+
+            /**
+             * Riwayat Diklat
+             */
+            $dktId            = $post->get('dkt-id', []);
+            $dktDelete        = $post->get('dkt-delete', []);
+            $dktDiklat        = $post->get('dkt-diklat', []);
+            $dktNama          = $post->get('dkt-nama', []);
+            $dktTempat        = $post->get('dkt-tempat', []);
+            $dktPenyelenggara = $post->get('dkt-penyelenggara', []);
+            $dktAngkatan      = $post->get('dkt-angkatan', []);
+            $dktTglMulai      = $post->get('dktTglMulai', []);
+            $dktTglSelesai    = $post->get('dktTglSelesai', []);
+            $dktNoSTTP        = $post->get('dkt-no-sttp', []);
+            $dktTglSTTP       = $post->get('dktTglSTTP', []);
+
+            foreach ($dktId as $key => $id) {
+                if (empty(trim($dktDiklat[$key])) && $id == 0) {
+                    continue;
+                }
+
+                if ($id == 0) {
+                    $dkt = new PegDiklatModel;
+                } else {
+                    $dkt = PegDiklatModel::where('pegDiklatId', $id)->first();
+                }
+                if (!$dkt) {
+                    throw new Exception('Data riwayat diklat tidak ditemukan');
+                }
+                if ($dktDelete[$key] == 1) {
+                    $dkt->delete();
+                    continue;
+                }
+                
+                $dkt->pegawaiId     = $pegawai->pegawaiId;
+                $dkt->jenisDiklat = $dktDiklat[$key];
+                $dkt->namaDiklat = $dktNama[$key];
+                $dkt->tempatDiklat = $dktTempat[$key];
+                $dkt->penyelenggara = $dktPenyelenggara[$key];
+                $dkt->angkatan = $dktAngkatan[$key];
+                $dkt->tglMulai = $dktTglMulai[$key];
+                $dkt->tglSelesai = $dktTglSelesai[$key];
+                $dkt->noSTTP = $dktNoSTTP[$key];
+                $dkt->tglSTTP = $dktTglSTTP[$key];
+                $dkt->save();
             }
 
             $pegawai->save();

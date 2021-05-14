@@ -9,4 +9,18 @@ class PegDiklatModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegDiklatId' ];
+    protected $appends  = ['TtglMulaiFormat', 'tglSelesaiFormat', 'tglSTTPFormat'];
+
+    public function getTglMulaiFormatAttribute()
+    {
+        return date("d-m-Y", strtotime($this->tglMulai));
+    }
+    public function getTglSelesaiFormatAttribute()
+    {
+        return date("d-m-Y", strtotime($this->tglSelesai));
+    }
+    public function getTglSTTPFormatAttribute()
+    {
+        return date("d-m-Y", strtotime($this->tglSTTP));
+    }
 }
