@@ -9,6 +9,7 @@ use \app\model\PegRiwayatPendidikanModel;
 use \app\model\PegDiklatModel;
 use \app\model\PegPenghargaanModel;
 use \app\model\PegBahasaModel;
+use \app\model\PegAnakModel;
 use \app\helper\GetSetHelper;
 
 use \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -660,6 +661,68 @@ class Pegawai extends Base
                 }
                 $phg->save();
             }
+
+
+            /**
+             * Orang tua dan anak
+             */
+            $pegawai->namaAyah = $post->get('ayah-nama', '');
+            $pegawai->tempatLahirAyah = $post->get('ayah-tempat', '');
+            $pegawai->tglLahirAyah = $post->get('ayahTgl', null) ?: null;
+            $pegawai->pekerjaanAyah = $post->get('ayah-pekerjaan', '');
+            $pegawai->alamatAyah = $post->get('ayah-alamat', '');
+            $pegawai->namaIbu = $post->get('ibu-nama', '');
+            $pegawai->tempatLahirIbu = $post->get('ibu-tempat', '');
+            $pegawai->tglLahirIbu = $post->get('ibuTgl', null) ?: null;
+            $pegawai->pekerjaanIbu = $post->get('ibu-pekerjaan', '');
+            $pegawai->alamatIbu = $post->get('ibu-alamat', '');
+
+            // Anak
+            $ankId         = $post->get('ank-id', []);
+            $ankDelete     = $post->get('ank-delete', []);
+            $ankNama       = $post->get('ank-nama', []);
+            $ankTempat     = $post->get('ank-tempat', []);
+            $ankTgl        = $post->get('ankTgl', []);
+            $ankJK         = $post->get('ank-jk', []);
+            $ankStatus     = $post->get('ank-status', []);
+            $ankPendidikan = $post->get('ank-pendidikan', []);
+            $ankJurusan    = $post->get('ank-jurusan', []);
+            $ankPekerjaan  = $post->get('ank-pekerjaan', []);
+            $ankTunjangan  = $post->get('ank-tunjangan', []);
+
+            foreach ($ankId as $key => $id) {
+                if (empty(trim($ankNama[$key])) && $id == 0) {
+                    continue;
+                }
+
+                if ($id == 0) {
+                    $ank = new PegAnakModel;
+                } else {
+                    $ank = PegAnakModel::where('pegAnakId', $id)->first();
+                }
+                if (!$ank) {
+                    throw new Exception('Data anak tidak ditemukan');
+                }
+                if ($ankDelete[$key] == 1) {
+                    $ank->delete();
+                    continue;
+                }
+                
+                $ank->pegawaiId     = $pegawai->pegawaiId;
+                $ank->nama = $ankNama[$key];
+                $ank->tempatLahir = $ankTempat[$key];
+                $ank->tglLahir = $ankTgl[$key] ?: null;
+                $ank->jk = $ankJK[$key];
+                $ank->statusKeluarga = $ankStatus[$key];
+                $ank->jenisPendidikanId = $ankPendidikan[$key];
+                $ank->jurusan = $ankJurusan[$key];
+                $ank->pekerjaan = $ankPekerjaan[$key];
+                $ank->statusTunjangan = $ankTunjangan[$key];
+                $ank->save();
+            }
+
+
+
 
             $pegawai->save();
 

@@ -10,7 +10,7 @@ class PegawaiModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegawaiId' ];
-    protected $appends = ['tglLahirFormat', 'cpnsTglBKNFormat', 'cpnsTglSKFormat', 'cpnsTMTFormat', 'pnsTglSKFormat', 'pnsTMTFormat'];
+    protected $appends = ['tglLahirFormat', 'cpnsTglBKNFormat', 'cpnsTglSKFormat', 'cpnsTMTFormat', 'pnsTglSKFormat', 'pnsTMTFormat', 'tglLahirAyahFormat', 'tglLahirIbuFormat'];
 
     public function getTglLahirFormatAttribute()
     {
@@ -58,6 +58,22 @@ class PegawaiModel extends \sys\Model
             return '';
         } else {
             return date("d-m-Y", strtotime($this->pnsTMT));
+        }
+    }
+    public function getTglLahirAyahFormatAttribute()
+    {
+        if (is_null($this->tglLahirAyah)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->tglLahirAyah));
+        }
+    }
+    public function getTglLahirIbuFormatAttribute()
+    {
+        if (is_null($this->tglLahirIbu)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->tglLahirIbu));
         }
     }
 
@@ -110,5 +126,10 @@ class PegawaiModel extends \sys\Model
     public function penghargaan()
     {
         return $this->hasMany('\app\model\PegPenghargaanModel', 'pegawaiId', 'pegawaiId');
+    }
+
+    public function anak()
+    {
+        return $this->hasMany('\app\model\PegAnakModel', 'pegawaiId', 'pegawaiId');
     }
 }

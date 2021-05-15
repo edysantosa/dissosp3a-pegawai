@@ -1037,6 +1037,211 @@
                     <!-- End Riwayat Penghargaan -->
 
 
+
+                    <!-- Orang Tua -->
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Data Orang Tua</legend>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nama Ayah:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Nama Ayah" name="ayah-nama" value="{{pegawai ? pegawai.namaAyah}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tempat Lahir:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Tempat Lahir" name="ayah-tempat" value="{{pegawai ? pegawai.tempatLahirAyah}}">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tanggal Lahir:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                                </span>                                                
+                                                <input type="text" autocomplete="off" class="form-control daterange ayah-tgl" data-variable="ayahTgl" placeholder="Tanggal Lahir" name="ayah-tgl" value="{% if pegawai.tglLahirAyah %}{{pegawai.tglLahirAyahFormat}}{% endif %}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Pekerjaan:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholder="Pekerjaan" name="ayah-pekerjaan" value="{{pegawai ? pegawai.pekerjaanAyah}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Alamat Tempat Tinggal:</label>
+                                    <textarea autocomplete="off" rows="3" cols="5" class="form-control" placeholder="Alamat Tempat Tinggal" name="ayah-alamat">{{pegawai ? pegawai.alamatAyah}}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nama Ibu:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Nama Ibu" name="ibu-nama" value="{{pegawai ? pegawai.namaIbu}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tempat Lahir:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Tempat Lahir" name="ibu-tempat" value="{{pegawai ? pegawai.tempatLahirIbu}}">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tanggal Lahir:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                                </span>                                                
+                                                <input type="text" autocomplete="off" class="form-control daterange ibu-tgl" data-variable="ibuTgl" placeholder="Tanggal Lahir" name="ibu-tgl" value="{% if pegawai.tglLahirIbu %}{{pegawai.tglLahirIbuFormat}}{% endif %}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Pekerjaan:</label>
+                                            <input type="text" autocomplete="off" class="form-control" placeholder="Pekerjaan" name="ibu-pekerjaan" value="{{pegawai ? pegawai.pekerjaanIbu}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Alamat Tempat Tinggal:</label>
+                                    <textarea autocomplete="off" rows="3" cols="5" class="form-control" placeholder="Alamat Tempat Tinggal" name="ibu-alamat">{{pegawai ? pegawai.alamatIbu}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- End Orang Tua -->
+
+
+                    <!-- Riwayat Anak -->
+                    <fieldset class="mb-3 ove">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Anak</legend>
+
+                        <div style="overflow: auto;">
+                            <table id="table-anak" class="table table-sm table-bordered with-input">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 50px;">No.</th>
+                                        <th class="text-center" style="min-width: 100px;">Nama Anak</th>
+                                        <th class="text-center" style="min-width: 100px;">Tempat Lahir</th>
+                                        <th class="text-center" style="min-width: 80px;">Tgl Lahir</th>
+                                        <th class="text-center" style="min-width: 80px;">Jenis Kelamin</th>
+                                        <th class="text-center" style="min-width: 80px;">Status Keluarga</th>
+                                        <th class="text-center" style="min-width: 80px;">Pendidikan</th>
+                                        <th class="text-center" style="min-width: 80px;">Jurusan Pendidikan</th>
+                                        <th class="text-center" style="min-width: 80px;">Pekerjaan</th>
+                                        <th class="text-center" style="min-width: 80px;">Status Tunjangan</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="display: none;">
+                                        <td>
+                                            <input type="hidden" class="detail-id" name="ank-id[]" value="0">
+                                            <input type="hidden" class="detail-delete" name="ank-delete[]" value="0"> 
+                                            <span class="pl-3 pr-3"></span>
+                                        </td>
+                                        <td><input type="text" name="ank-nama[]"></td>
+                                        <td><input type="text" name="ank-tempat[]"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" class="daterange ank-tgl" data-variable="ankTgl[]" name="ank-tgl[]" readonly>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="ank-jk[]">
+                                                <option value="1">Laki-laki</option>
+                                                <option value="2">Perempuan</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="ank-status[]">
+                                                <option value="1">Anak Kandung</option>
+                                                <option value="2">Anak Angkat</option>
+                                                <option value="3">Anak Tiri</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="ank-pendidikan[]">
+                                                {% for pk in jenisPendidikan %}
+                                                <option value="{{pk.jenisPendidikanId}}">{{pk.jenisPendidikan}}</option>
+                                                {% endfor %} 
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="ank-jurusan[]"></td>
+                                        <td><input type="text" name="ank-pekerjaan[]"></td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="ank-tunjangan[]">
+                                                <option value="1">Ya</option>
+                                                <option value="2">Tidak</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% for key,r in pegawai.anak %}
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" class="detail-id" name="ank-id[]" value="{{r.pegAnakId}}">
+                                                <input type="hidden" class="detail-delete" name="ank-delete[]" value="0"> 
+                                                <span class="pl-3 pr-3">{{key+1}}</span>
+                                            </td>
+                                            <td><input type="text" name="ank-nama[]" value="{{r.nama}}"></td>
+                                            <td><input type="text" name="ank-tempat[]" value="{{r.tempatLahir}}"></td>
+                                            <td>
+                                                <input type="text" autocomplete="off" class="daterange ank-tgl" data-variable="ankTgl[]" name="ank-tgl[]" value="{% if r.tglLahir %}{{r.tglLahirFormat}}{% endif %}" readonly>
+                                            </td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="ank-jk[]">
+                                                    <option value="1" {{r.jk == 1 ? 'selected="selected"'}}>Laki-laki</option>
+                                                    <option value="2" {{r.jk == 2 ? 'selected="selected"'}}>Perempuan</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="ank-status[]">
+                                                    <option value="1" {{r.statusKeluarga == 1 ? 'selected="selected"'}}>Anak Kandung</option>
+                                                    <option value="2" {{r.statusKeluarga == 2 ? 'selected="selected"'}}>Anak Angkat</option>
+                                                    <option value="3" {{r.statusKeluarga == 3 ? 'selected="selected"'}}>Anak Tiri</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="ank-pendidikan[]">
+                                                    {% for pk in jenisPendidikan %}
+                                                    <option value="{{pk.jenisPendidikanId}}" 
+                                                        {% if pegawai %}
+                                                            {{r.jenisPendidikanId == pk.jenisPendidikanId ? 'selected="selected"'}}
+                                                        {% endif %}
+                                                    >{{pk.jenisPendidikan}}</option>
+                                                    {% endfor %}  
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="ank-jurusan[]" value="{{r.jurusan}}"></td>
+                                            <td><input type="text" name="ank-pekerjaan[]" value="{{r.pekerjaan}}"></td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="ank-tunjangan[]">
+                                                    <option value="1" {{r.statusTunjangan == 1 ? 'selected="selected"'}}>Ya</option>
+                                                    <option value="2" {{r.statusTunjangan == 2 ? 'selected="selected"'}}>Tidak</option>
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm alpha-danger border-danger text-danger-800 btn-icon remove-detail-row"><i class="icon-cross3"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-sm btn-primary add-detail-row"><i class="icon-plus2 mr-2"></i> Tambah</button>
+                        </div>
+                    </fieldset>
+                    <!-- End Anak -->
+
+
                     <fieldset class="mb-3">
                         <div class="text-right mt-5">
                             <button type="button" class="btn btn-primary" id="test">Test</button>
