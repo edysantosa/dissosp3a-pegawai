@@ -82,6 +82,11 @@ class PegawaiModel extends \sys\Model
     {
         return $this->hasOne('\app\model\JenisKepegawaianModel', 'jenisKepegawaianId', 'jenisKepegawaianId');
     }
+    
+    public function agama()
+    {
+        return $this->hasOne('\app\model\JenisAgamaModel', 'jenisAgamaId', 'jenisAgamaId');
+    }
 
     public function pangkat()
     {

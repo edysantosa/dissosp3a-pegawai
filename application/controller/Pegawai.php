@@ -71,6 +71,31 @@ class Pegawai extends Base
             ]);
     }
 
+    public function view($id)
+    {
+        $post = $this->request->getParsedBody();
+        $pegawai = PegawaiModel::with(['statusKepeg', 'agama'])->where('pegawaiId', $id)->first();
+        // echo '<pre>';
+        // var_dump($pegawai->toArray());
+        // die();
+        if (!$pegawai) {
+            throw new \Slim\Exception\NotFoundException($this->request, $this->response);
+        }
+
+        return $this->view
+            ->addCss($this->url . '/assets/dist/css/pegawai-view.css')
+            ->addJs($this->url . '/assets/dist/js/pegawai-view.js')
+            ->render('pegawaiView.twig', [
+                'pegawai'    => $pegawai,
+                'agama'      => \app\model\JenisAgamaModel::all(),
+                'provinsi'   => \app\model\JenisProvinsiModel::all(),
+                'pangkat'    => \app\model\JenisPangkatGolonganModel::all(),
+                'jenisKepeg' => \app\model\JenisKepegawaianModel::all(),
+                'jenisBahasa' => \app\model\JenisBahasaModel::all(),
+                'jenisPendidikan' => \app\model\JenisPendidikanModel::all(),
+            ]);
+    }
+
     public function loadData()
     {
         $get = new GetSetHelper($this->request->getQueryParams());

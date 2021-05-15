@@ -11,6 +11,7 @@ module.exports = {
 	"user-edit"      	 : mod('user-edit'),
 	"pegawai"   	     : mod('pegawai'),
 	"pegawai-edit"   	 : mod('pegawai-edit'),
+	"pegawai-view"   	 : mod('pegawai-view'),
 	
 	"import-pegawai"   	 : mod('import-pegawai'),
 };

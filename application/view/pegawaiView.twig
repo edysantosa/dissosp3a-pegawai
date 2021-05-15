@@ -1,0 +1,807 @@
+{% extends "partials/frameTopMenu.twig" %}
+
+{% block site_content %}
+    <!-- Content Area -->
+    <div class="content">
+
+        <!-- Pegawai Form -->
+        <div class="card card-collapsed">
+            <div class="card-body">
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Data Kepegawaian</legend>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Status Kepegawaian:</label>
+                                <div class="font-size-lg">{{pegawai.statusKepeg.jenisKepegawaian}}</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>NIP:</label>
+                                <div class="font-size-lg">{{pegawai.nip}}</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nama:</label>
+                                <div class="font-size-lg">{{pegawai.nama}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Gelar Depan:</label>
+                                        <div class="font-size-lg">{{pegawai.gelarDepan}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Gelar Belakang:</label>
+                                        <div class="font-size-lg">{{pegawai.gelarBelakang}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tempat Lahir:</label>
+                                        <div class="font-size-lg">{{pegawai.tempatLahir}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tanggal Lahir:</label>
+                                        <div class="font-size-lg">{{pegawai.tglLahirFormat}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Jenis Kelamin:</label>
+                                        <div class="font-size-lg">
+                                            {% if pegawai.jk == 1 %}
+                                                Laki-laki
+                                            {% else %}
+                                                perempuan
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Agama:</label>
+                                        <div class="font-size-lg">{{pegawai.agama.jenisAgama}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>No. Telepon:</label>
+                                        <div class="font-size-lg">{{pegawai.noTelepon}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email:</label>
+                                        <div class="font-size-lg">{{pegawai.email}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Golongan Darah:</label>
+                                        <div class="font-size-lg">{{pegawai.golonganDarah}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <!-- User card -->
+                                <div class="col-md-4">
+                                </div>
+                                <div class="card col-md-4">
+                                    <div class="card-body text-center">
+                                        <div class="card-img-actions d-inline-block mb-3">
+                                            <img class="img-fluid" id="pegawai-image-preview" src="{% if pegawai.foto is not null and pegawai.foto is not empty %} {{baseUrl}}/assets/pegawai/photos/{{pegawai.foto}} {% else %} {{baseUrl}}/assets/dist/images/placeholder.jpg {% endif %}" width="170" height="170" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                                <!-- /user card -->
+                            </div>
+
+                            <div class="form-group">
+                                <label>Alamat:</label>
+                                <div class="font-size-lg">{{pegawai.alamat}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Desa/Kelurahan:</label>
+                                        <div class="font-size-lg">{{pegawai.kelurahan}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Kecamatan:</label>
+                                        <div class="font-size-lg">{{pegawai.kecamatan}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Kabupaten/Kota:</label>
+                                        <div class="font-size-lg">{{pegawai.kabupaten}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Provinsi:</label>
+                                        {% for pv in provinsi %}
+                                            {% if pegawai.jenisProvinsiId == pv.jenisProvinsiId %}
+                                                <div class="font-size-lg">{{pv.provinsi}}</div>
+                                            {% endif %}
+                                        {% endfor %} 
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Kode Pos:</label>
+                                        <div class="font-size-lg">{{pegawai.kodePos}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Status Pernikahan:</label>
+                                        {% if pegawai.statusPernikahan == 1 %}
+                                            <div class="font-size-lg">Belum Menikah</div>
+                                        {% elseif pegawai.statusPernikahan == 2 %}
+                                            <div class="font-size-lg">Menikah</div>
+                                        {% elseif pegawai.statusPernikahan == 3 %}
+                                            <div class="font-size-lg">Janda</div>
+                                        {% else %}
+                                            <div class="font-size-lg">Duda</div>
+                                        {% endif %}
+                                    </div>
+                                </div>                                    
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>No. Kartu Pegawai:</label>
+                                        <div class="font-size-lg">{{pegawai.noKarpeg}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>No. BPJS:</label>
+                                        <div class="font-size-lg">{{pegawai.noBPJS}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>No. Taspen:</label>
+                                        <div class="font-size-lg">{{pegawai.noTaspen}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>No. Karis/Karsu:</label>
+                                        <div class="font-size-lg">{{pegawai.noKaris}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>NPWP:</label>
+                                        <div class="font-size-lg">{{pegawai.noNPWP}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Data Pengangkatan Sebagai CPNS</legend>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>No. Persetujuan BKN:</label>
+                                <div class="font-size-lg">{{pegawai.cpnsNoBKN}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Tgl. Persetujuan BKN:</label>
+                                <div class="font-size-lg">{{pegawai.cpnsTglBKNFormat}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Ditetapkan Oleh:</label>
+                                <div class="font-size-lg">{{pegawai.cpnsDitetapkanOleh}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Pangkat/Golongan:</label>
+                                {% for pk in pangkat %}
+                                    {% if pegawai.cpnsPangkatGolonganId == pk.jenisPangkatGolonganId %}
+                                        <div class="font-size-lg">{{pk.golonganRuang}} - {{pk.pangkat}}</div>
+                                    {% endif %}
+                                {% endfor %}  
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>No. SK CPNS:</label>
+                                <div class="font-size-lg">{{pegawai.cpnsNoSK}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Tgl. SK CPNS:</label>
+                                <div class="font-size-lg">{{pegawai.cpnsTglSKFormat}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>TMT CPNS:</label>
+                                <div class="font-size-lg">{{pegawai.cpnsTMTFormat}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Dokumen SK CPNS:</label>
+                                {% if pegawai.dokSKCPNS is not null and pegawai.dokSKCPNS is not empty %}
+                                    <div class="font-size-lg"><a href="{{baseUrl}}/assets/pegawai/documents/{{pegawai.dokSKCPNS}}" target="_blank">Dokumen</a></div>
+                                {% else %}
+                                    <div class="font-size-lg text-muted">Belum Upload</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Data Pengangkatan Sebagai PNS</legend>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Ditetapkan Oleh:</label>
+                                <div class="font-size-lg text-muted">{{pegawai.pnsDitetapkanOleh}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Pangkat/Golongan:</label>
+                                {% for pk in pangkat %}
+                                    {% if pegawai.cpnsPangkatGolonganId == pk.jenisPangkatGolonganId %}
+                                        <div class="font-size-lg">{{pk.golonganRuang}} - {{pk.pangkat}}</div>
+                                    {% endif %}
+                                {% endfor %}  
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>No. SK PNS:</label>
+                                <div class="font-size-lg text-muted">{{pegawai.pnNoSK}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Tgl. SK PNS:</label>
+                                <div class="font-size-lg text-muted">{{pegawai.pnsTglSKFormat}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>TMT PNS:</label>
+                                <div class="font-size-lg text-muted">{{pegawai.pnsTMTFormat}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Dokumen SK PNS:</label>
+                                {% if pegawai.dokSKCPNS is not null and pegawai.dokSKCPNS is not empty %}
+                                    <div class="font-size-lg"><a href="{{baseUrl}}/assets/pegawai/documents/{{pegawai.dokSKPNS}}" target="_blank">Dokumen</a></div>
+                                {% else %}
+                                    <div class="font-size-lg text-muted">Belum Upload</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>       
+
+                <!-- Riwayat Gaji Berkala -->
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Data Transaksi Gaji Berkala</legend>
+
+                    <table id="table-gaji-berkala" class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 50px;">No.</th>
+                                <th class="text-center">No. SK</th>
+                                <th class="text-center">Tgl. SK</th>
+                                <th class="text-center">Tgl. Mulai</th>
+                                <th class="text-center">Masa Kerja Tahun</th>
+                                <th class="text-center">Masa Kerja Bulan</th>
+                                <th class="text-center">Gaji Pokok</th>
+                                <th class="text-center">Dokumen SK</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,g in pegawai.gajiBerkala %}
+                                <tr>
+                                    <td>
+                                        <span class="p-3">{{key+1}}</span>
+                                    </td>
+                                    <td>{{g.noSK}}</td>
+                                    <td>{% if g.tglSK %}{{g.tglSKFormat}}{% endif %}</td>
+                                    <td>{% if g.tglMulai %}{{g.tglMulaiFormat}}{% endif %}</td>
+                                    <td>{{g.masaKerjaTahun}}</td>
+                                    <td>{{g.masaKerjaBulan}}</td>
+                                    <td>{{g.gajiPokok}}</td>
+                                    <td class="text-center">
+                                        {% if pegawai.dokSKCPNS is not null and pegawai.dokSKCPNS is not empty %}
+                                            <a href="{{baseUrl}}/assets/pegawai/documents/{{g.dokumen}}" target="_blank">Dokumen</a>
+                                        {% else %}
+                                            Belum Upload
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+                <!-- End Riwayat Gaji Berkala -->
+
+                <!-- Riwayat Jabatan -->
+                <fieldset class="mb-3 ove">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Jabatan</legend>
+
+                    <div style="overflow: auto;">
+                        <table id="table-riwayat-jabatan" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
+                                    <th class="text-center" style="min-width: 200px;">Unit Kerja</th>
+                                    <th class="text-center" style="min-width: 120px;">Jenis Jabatan</th>
+                                    <th class="text-center" style="min-width: 150px;">Nama Jabatan</th>
+                                    <th class="text-center">Eselon</th>
+                                    <th class="text-center" style="min-width: 150px;">Bidang</th>
+                                    <th class="text-center" style="min-width: 100px;">Sub Bidang</th>
+                                    <th class="text-center" style="min-width: 80px;">TMT Jabatan</th>
+                                    <th class="text-center" style="min-width: 80px;">TMT Eselon</th>
+                                    <th class="text-center" style="min-width: 100px;">Ditetapkan Oleh</th>
+                                    <th class="text-center" style="min-width: 100px;">No. SK Jabatan</th>
+                                    <th class="text-center" style="min-width: 80px;">Tgl. SK Jabatan</th>
+                                    <th class="text-center" style="min-width: 100px;">Dokumen SK</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,r in pegawai.jabatan %}
+                                    <tr>
+                                        <td>
+                                            <span class="pl-3 pr-3">{{key+1}}</span>
+                                        </td>
+                                        <td>{{r.unitKerja}}</td>
+                                        <td>{{r.jenisJabatan}}</td>
+                                        <td>{{r.namaJabatan}}</td>
+                                        <td>{{r.eselon}}</td>
+                                        <td>{{r.bidang}}</td>
+                                        <td>{{r.subBidang}}</td>
+                                        <td>{% if r.tmtJabatan %}{{r.tmtJabatanFormat}}{% endif %}</td>
+                                        <td>{% if r.tmtEselon %}{{r.tmtEselonFormat}}{% endif %}</td>
+                                        <td>{{r.ditetapkanOleh}}</td>
+                                        <td>r.noSKJabatan</td>
+                                        <td>{% if r.tglSKJabatan %}{{r.tglSKJabatanFormat}}{% endif %}</td>
+                                        <td class="text-center">
+                                            {% if pegawai.dokSKCPNS is not null and pegawai.dokSKCPNS is not empty %}
+                                                <a href="{{baseUrl}}/assets/pegawai/documents/{{r.dokumen}}" target="_blank">Dokumen</a>
+                                            {% else %}
+                                                Belum Upload
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <!-- End Riwayat Jabatan -->        
+
+                <!-- Riwayat Pangkat -->
+                <fieldset class="mb-3 ove">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Pangkat</legend>
+
+                    <div style="overflow: auto;">
+                        <table id="table-riwayat-pangkat" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
+                                    <th class="text-center" style="min-width: 200px;">Pangkat/Gol. Ruang</th>
+                                    <th class="text-center" style="min-width: 80px;">TMT Pangkat</th>
+                                    <th class="text-center" style="min-width: 100px;">Ditetapkan Oleh</th>
+                                    <th class="text-center" style="min-width: 100px;">No. SK</th>
+                                    <th class="text-center" style="min-width: 80px;">Tgl. SK</th>
+                                    <th class="text-center" style="min-width: 80px;">Masa Kerja Tahun</th>
+                                    <th class="text-center" style="min-width: 80px;">Masa Kerja Bulan</th>
+                                    <th class="text-center" style="min-width: 100px;">Dokumen SK</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,r in pegawai.pangkat %}
+                                    <tr>
+                                        <td>
+                                            <span class="pl-3 pr-3">{{key+1}}</span>
+                                        </td>
+                                        <td>
+                                            {% for pk in pangkat %}
+                                                {% if r.jenisPangkatGolonganId == pk.jenisPangkatGolonganId %}
+                                                   {{pk.golonganRuang}} - {{pk.pangkat}}
+                                                {% endif %}
+                                            {% endfor %}  
+                                        </td>
+                                        <td>{% if r.tmtPangkat %}{{r.tmtPangkatFormat}}{% endif %}</td>
+                                        <td>{{r.ditetapkanOleh}}</td>
+                                        <td>r.noSKPangkat</td>
+                                        <td>{% if r.tglSKPangkat %}{{r.tglSKPangkatFormat}}{% endif %} </td>
+                                        <td>{{r.masaKerjaTahun}}</td>
+                                        <td>{{r.masaKerjaBulan}}</td>
+                                        <td class="text-center">
+                                            {% if pegawai.dokSKCPNS is not null and pegawai.dokSKCPNS is not empty %}
+                                                <a href="{{baseUrl}}/assets/pegawai/documents/{{r.dokumen}}" target="_blank">Dokumen</a>
+                                            {% else %}
+                                                Belum Upload
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <!-- End Riwayat Pangkat -->
+
+
+                <!-- Bahasa -->
+                <fieldset class="mb-3 ove">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Penguasaan Bahasa</legend>
+
+                    <div style="overflow: auto;">
+                        <table id="table-bahasa" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
+                                    <th class="text-center">Bahasa</th>
+                                    <th class="text-center">Kemampuan Bahasa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,b in pegawai.bahasa %}
+                                    <tr>
+                                        <td>
+                                            <span class="pl-3 pr-3">{{key+1}}</span>
+                                        </td>
+                                        <td>
+                                            {% for bh in jenisBahasa %}
+                                                {% if b.jenisBahasaId == bh.jenisBahasaId %}
+                                                    {{bh.jenisBahasa}}
+                                                {% endif %}
+                                            {% endfor %}  
+                                        </td>
+                                        <td>
+                                            {% if b.kemampuan == 1 %}
+                                                Aktif
+                                            {% else %}
+                                                Pasif
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <!-- End Bahasa -->   
+
+
+                <!-- Riwayat Pendidikan -->
+                <fieldset class="mb-3 ove">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Pendidikan</legend>
+
+                    <div style="overflow: auto;">
+                        <table id="table-riwayat-pendidikan" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
+                                    <th class="text-center" style="min-width: 100px;">Tingkat Pendidikan</th>
+                                    <th class="text-center" style="min-width: 80px;">Jurusan</th>
+                                    <th class="text-center" style="min-width: 100px;">Nama Sekolah/PTS/PTN</th>
+                                    <th class="text-center" style="min-width: 100px;">Tempat</th>
+                                    <th class="text-center" style="min-width: 80px;">Nama Kepsek/Rektor</th>
+                                    <th class="text-center" style="min-width: 80px;">No. Ijasah</th>
+                                    <th class="text-center" style="min-width: 80px;">Tgl Ijasah</th>
+                                    <th class="text-center" style="min-width: 100px;">Scan Ijasah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,r in pegawai.pendidikan %}
+                                    <tr>
+                                        <td>
+                                            <span class="pl-3 pr-3">{{key+1}}</span>
+                                        </td>
+                                        <td>
+                                            {% for pk in jenisPendidikan %}
+                                                {% if r.jenisPendidikanId == pk.jenisPendidikanId %}
+                                                    {{pk.jenisPendidikan}}
+                                                {% endif %}
+                                            {% endfor %}  
+                                        </td>
+                                        <td>{{r.jurusan}}</td>
+                                        <td>{{r.namaInstitusi}}</td>
+                                        <td>{{r.tempat}}</td>
+                                        <td>{{r.namaKepala}}</td>
+                                        <td>{{r.noIjasah}}</td>
+                                        <td>{% if r.tglIjasah %}{{r.tglIjasahFormat}}{% endif %}</td>
+                                        <td class="text-center">
+                                            {% if pegawai.dokSKCPNS is not null and pegawai.dokSKCPNS is not empty %}
+                                                <a href="{{baseUrl}}/assets/pegawai/documents/{{r.dokumen}}" target="_blank">Dokumen</a>
+                                            {% else %}
+                                                Belum Upload
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <!-- End Riwayat Pendidikan -->
+
+
+                <!-- Riwayat Diklat -->
+                <fieldset class="mb-3 ove">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Diklat</legend>
+
+                    <div style="overflow: auto;">
+                        <table id="table-riwayat-pendidikan" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
+                                    <th class="text-center" style="min-width: 100px;">Jenis Diklat</th>
+                                    <th class="text-center" style="min-width: 100px;">Nama Diklat</th>
+                                    <th class="text-center" style="min-width: 100px;">Tempat Diklat</th>
+                                    <th class="text-center" style="min-width: 100px;">Penyelenggara</th>
+                                    <th class="text-center" style="min-width: 50px;">Angkatan</th>
+                                    <th class="text-center" style="min-width: 80px;">Tgl Mulai</th>
+                                    <th class="text-center" style="min-width: 80px;">Tgl Selesai</th>
+                                    <th class="text-center" style="min-width: 80px;">No. STTP</th>
+                                    <th class="text-center" style="min-width: 80px;">Tgl STTP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,r in pegawai.diklat %}
+                                    <tr>
+                                        <td>
+                                            <span class="pl-3 pr-3">{{key+1}}</span>
+                                        </td>
+                                        <td>
+                                            {% if r.jenisDiklat == 1 %}
+                                                <div class="font-size-lg">Diklat Fungsional</div>
+                                            {% elseif r.jenisDiklat == 2 %}
+                                                <div class="font-size-lg">Diklat Struktural</div>
+                                            {% else %}
+                                                <div class="font-size-lg">Diklat Teknis</div>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{r.namaDiklat}}</td>
+                                        <td>{{r.tempatDiklat}}</td>
+                                        <td>{{r.penyelenggara}}</td>
+                                        <td>{{r.angkatan}}</td>
+                                        <td>{% if r.tglMulai %}{{r.tglMulaiFormat}}{% endif %}</td>
+                                        <td>{% if r.tglSelesai %}{{r.tglSelesaiFormat}}{% endif %}</td>
+                                        <td>{{r.noSTTP}}</td>
+                                        <td>{% if r.tglSTTP %}{{r.tglSTTPFormat}}{% endif %}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <!-- End Riwayat Diklat -->
+
+
+                <!-- Riwayat Penghargaan -->
+                <fieldset class="mb-3 ove">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Riwayat Penghargaan</legend>
+
+                    <div style="overflow: auto;">
+                        <table id="table-riwayat-penghargaan" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
+                                    <th class="text-center" style="min-width: 100px;">Nama Penghargaan</th>
+                                    <th class="text-center" style="min-width: 100px;">Asal Penghargaan</th>
+                                    <th class="text-center" style="min-width: 50px;">Tahun</th>
+                                    <th class="text-center" style="min-width: 80px;">No. Piagam</th>
+                                    <th class="text-center" style="min-width: 80px;">Tgl Piagam</th>
+                                    <th class="text-center" style="min-width: 100px;">Scan Piagam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,r in pegawai.penghargaan %}
+                                    <tr>
+                                        <td>
+                                            <span class="pl-3 pr-3">{{key+1}}</span>
+                                        </td>
+                                        <td>{{r.namaPenghargaan}}</td>
+                                        <td>{{r.asal}}</td>
+                                        <td>{{r.tahun}}</td>
+                                        <td>{{r.noPiagam}}</td>
+                                        <td>{% if r.tglPiagam %}{{r.tglPiagamFormat}}{% endif %}</td>
+                                        <td class="text-center">
+                                            {% if pegawai.dokSKCPNS is not null and pegawai.dokSKCPNS is not empty %}
+                                                <a href="{{baseUrl}}/assets/pegawai/documents/{{r.dokumen}}" target="_blank">Dokumen</a>
+                                            {% else %}
+                                                Belum Upload
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <!-- End Riwayat Penghargaan -->
+
+
+
+                <!-- Orang Tua -->
+                <fieldset class="mb-3">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Data Orang Tua</legend>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nama Ayah:</label>
+                                <div class="font-size-lg">{{pegawai.namaAyah}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tempat Lahir:</label>
+                                <div class="font-size-lg">{{pegawai.tempatLahirAyah}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tanggal Lahir:</label>
+                                        <div class="font-size-lg">{% if pegawai.tglLahirAyah %}{{pegawai.tglLahirAyahFormat}}{% endif %}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Pekerjaan:</label>
+                                        <div class="font-size-lg">{{pegawai.pekerjaanAyah}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Alamat Tempat Tinggal:</label>
+                                <div class="font-size-lg">{{pegawai.alamatAyah}}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nama Ibu:</label>
+                                <div class="font-size-lg">{{pegawai.namaIbu}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tempat Lahir:</label>
+                                <div class="font-size-lg">{{pegawai.tempatLahirIbu}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tanggal Lahir:</label>
+                                        <div class="font-size-lg">{% if pegawai.tglLahirIbu %}{{pegawai.tglLahirIbuFormat}}{% endif %}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Pekerjaan:</label>
+                                        <div class="font-size-lg">{{pegawai.pekerjaanIbu}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Alamat Tempat Tinggal:</label>
+                                <div class="font-size-lg">{{pegawai.alamatIbu}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <!-- End Orang Tua -->
+
+
+                <!-- Riwayat Anak -->
+                <fieldset class="mb-3 ove">
+                    <legend class="text-uppercase font-size-sm font-weight-bold">Anak</legend>
+
+                    <div style="overflow: auto;">
+                        <table id="table-anak" class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
+                                    <th class="text-center" style="min-width: 100px;">Nama Anak</th>
+                                    <th class="text-center" style="min-width: 100px;">Tempat Lahir</th>
+                                    <th class="text-center" style="min-width: 80px;">Tgl Lahir</th>
+                                    <th class="text-center" style="min-width: 80px;">Jenis Kelamin</th>
+                                    <th class="text-center" style="min-width: 80px;">Status Keluarga</th>
+                                    <th class="text-center" style="min-width: 80px;">Pendidikan</th>
+                                    <th class="text-center" style="min-width: 80px;">Jurusan Pendidikan</th>
+                                    <th class="text-center" style="min-width: 80px;">Pekerjaan</th>
+                                    <th class="text-center" style="min-width: 80px;">Status Tunjangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,r in pegawai.anak %}
+                                    <tr>
+                                        <td>
+                                            <span class="pl-3 pr-3">{{key+1}}</span>
+                                        </td>
+                                        <td>{{r.nama}}</td>
+                                        <td>{{r.tempatLahir}}</td>
+                                        <td>{% if r.tglLahir %}{{r.tglLahirFormat}}{% endif %}</td>
+                                        <td>
+                                            {% if r.jk == 1 %}
+                                                <div class="font-size-lg">Laki-laki</div>
+                                            {% else %}
+                                                <div class="font-size-lg">Perempuan</div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if r.statusKeluarga == 1 %}
+                                                <div class="font-size-lg">Anak Kandung</div>
+                                            {% elseif r.statusKeluarga == 2 %}
+                                                <div class="font-size-lg">Anak Angkat</div>
+                                            {% else %}
+                                                <div class="font-size-lg">Anak Tiri</div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% for pk in jenisPendidikan %}
+                                                {% if r.jenisPendidikanId == pk.jenisPendidikanId %}
+                                                    {{pk.jenisPendidikan}}
+                                                {% endif %}
+                                            {% endfor %}  
+                                        </td>
+                                        <td>{{r.jurusan}}</td>
+                                        <td>{{r.pekerjaan}}</td>
+                                        <td>
+                                            {% if r.statusTunjangan == 1 %}
+                                                <div class="font-size-lg">Ya</div>
+                                            {% else %}
+                                                <div class="font-size-lg">Tidak</div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <!-- End Anak -->
+            </div>
+        </div>
+        <!-- End Pegawai Form -->
+
+
+    </div>
+    <!-- End Content Area -->
+{% endblock site_content %}
