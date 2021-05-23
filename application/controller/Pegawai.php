@@ -18,6 +18,8 @@ use \PhpOffice\PhpSpreadsheet\IOFactory;
 use \app\helper\LoggingHelper as Logger;
 use Respect\Validation\Validator as v;
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 // use finfo;
 
 class Pegawai extends Base
@@ -33,7 +35,16 @@ class Pegawai extends Base
             ->addCss($this->url . '/assets/dist/css/pegawai.css')
             ->addJs($this->url . '/assets/dist/js/pegawai.js')
 
-            ->render('pegawai.twig');
+            ->render('pegawai.twig', [
+                'agama'           => \app\model\JenisAgamaModel::all(),
+                'provinsi'        => \app\model\JenisProvinsiModel::all(),
+                'pangkat'         => \app\model\JenisPangkatGolonganModel::all(),
+                'jenisKepeg'      => \app\model\JenisKepegawaianModel::all(),
+                'jenisBahasa'     => \app\model\JenisBahasaModel::all(),
+                'jenisPendidikan' => \app\model\JenisPendidikanModel::all(),
+                'jenisBidang'     => \app\model\JenisBidangModel::all(),
+                'jenisSubbag'     => \app\model\JenisSubbagModel::all(),
+            ]);
     }
 
     public function add()
@@ -42,7 +53,16 @@ class Pegawai extends Base
             ->addCss($this->url . '/assets/dist/css/pegawai-edit.css')
             ->addJs($this->url . '/assets/dist/js/pegawai-edit.js')
 
-            ->render('pegawaiEdit.twig');
+            ->render('pegawaiEdit.twig', [
+                'agama'      => \app\model\JenisAgamaModel::all(),
+                'provinsi'   => \app\model\JenisProvinsiModel::all(),
+                'pangkat'    => \app\model\JenisPangkatGolonganModel::all(),
+                'jenisKepeg' => \app\model\JenisKepegawaianModel::all(),
+                'jenisBahasa' => \app\model\JenisBahasaModel::all(),
+                'jenisPendidikan' => \app\model\JenisPendidikanModel::all(),
+                'jenisBidang'     => \app\model\JenisBidangModel::all(),
+                'jenisSubbag'     => \app\model\JenisSubbagModel::all(),
+            ]);
     }
 
     public function edit($id)
@@ -68,6 +88,8 @@ class Pegawai extends Base
                 'jenisKepeg' => \app\model\JenisKepegawaianModel::all(),
                 'jenisBahasa' => \app\model\JenisBahasaModel::all(),
                 'jenisPendidikan' => \app\model\JenisPendidikanModel::all(),
+                'jenisBidang'     => \app\model\JenisBidangModel::all(),
+                'jenisSubbag'     => \app\model\JenisSubbagModel::all(),
             ]);
     }
 
@@ -125,6 +147,90 @@ class Pegawai extends Base
                     $q->orWhere('Pegawai.nip', 'like', '%'.$search.'%');
                     $q->orWhere('Pegawai.nama', 'like', '%'.$search.'%');
                 }
+            });
+        }
+
+        // Filters
+        if ($get->get('status-kepeg', null)) {
+            $q->where('Pegawai.jenisKepegawaianId', $get->get('status-kepeg'));
+        }
+        if ($get->get('agama', null)) {
+            $q->whereIn('Pegawai.jenisAgamaId', $get->get('agama'));
+        }
+        if ($get->get('jk', null)) {
+            $q->where('Pegawai.jk', $get->get('jk'));
+        }
+        if ($get->get('status-pernikahan', null)) {
+            $q->whereIn('Pegawai.statusPernikahan', $get->get('status-pernikahan'));
+        }
+        if ($get->get('bidang', null)) {
+            $q->whereIn('Pegawai.jenisBidangId', $get->get('bidang'));
+        }
+        if ($get->get('subbag', null)) {
+            $q->whereIn('Pegawai.jenisSubbagId', $get->get('subbag'));
+        }
+        if ($get->get('tgl-lahir', null)) {
+            $dateFrom = $get->get('tglLahirFrom');
+            $dateTo = $get->get('tglLahirTo');
+            $q->where(function ($q) use ($dateFrom, $dateTo) {
+                $q->whereDate('tglLahir', '>=', $dateFrom);
+                $q->whereDate('tglLahir', '<=', $dateTo);
+            });
+        }
+
+        if ($get->get('pendidikan', null)) {
+            $pendidikan = $get->get('pendidikan');
+            // $q->whereHas('pendidikanTerakhir', function ($query) use ($pendidikan) {
+            //     $query->where('jenisPendidikanId', $pendidikan);
+            // });
+            $q->whereHas('pendidikan', function (EloquentBuilder $query) use ($pendidikan) {
+                $query
+                ->whereIn('jenisPendidikanId', $pendidikan)
+                ->whereIn('tglIjasah', function (QueryBuilder $query) {
+                    $query
+                        ->selectRaw('max(tglIjasah)')
+                        ->from('PegRiwayatPendidikan')
+                        ->whereColumn('pegawaiId', 'Pegawai.pegawaiId');
+                });
+            });
+        }
+        if ($get->get('pangkat', null)) {
+            $pangkat = $get->get('pangkat');
+            $q->whereHas('pangkat', function (EloquentBuilder $query) use ($pangkat) {
+                $query
+                ->whereIn('jenisPangkatGolonganId', $pangkat)
+                ->whereIn('tglSKPangkat', function (QueryBuilder $query) {
+                    $query
+                        ->selectRaw('max(tglSKPangkat)')
+                        ->from('PegRiwayatPangkat')
+                        ->whereColumn('pegawaiId', 'Pegawai.pegawaiId');
+                });
+            });
+        }
+        if ($get->get('jenis-jabatan', null)) {
+            $jenisjbt = $get->get('jenis-jabatan');
+            $q->whereHas('jabatan', function (EloquentBuilder $query) use ($jenisjbt) {
+                $query
+                ->whereIn('jenisJabatan', $jenisjbt)
+                ->whereIn('tglSKJabatan', function (QueryBuilder $query) {
+                    $query
+                        ->selectRaw('max(tglSKJabatan)')
+                        ->from('PegRiwayatJabatan')
+                        ->whereColumn('pegawaiId', 'Pegawai.pegawaiId');
+                });
+            });
+        }
+        if ($get->get('eselon', null)) {
+            $eselon = $get->get('eselon');
+            $q->whereHas('jabatan', function (EloquentBuilder $query) use ($eselon) {
+                $query
+                ->whereIn('eselon', $eselon)
+                ->whereIn('tglSKJabatan', function (QueryBuilder $query) {
+                    $query
+                        ->selectRaw('max(tglSKJabatan)')
+                        ->from('PegRiwayatJabatan')
+                        ->whereColumn('pegawaiId', 'Pegawai.pegawaiId');
+                });
             });
         }
         $result['recordsFiltered'] = $q->count();
@@ -214,6 +320,13 @@ class Pegawai extends Base
             $pegawai->nip = $post->get('nip', '');
             $pegawai->tempatLahir = $post->get('tempat-lahir', '');
             $pegawai->tglLahir = $post->get('tglLahir', null);
+
+            $pegawai->jenisBidangId = $post->get('bidang', null);
+            $pegawai->jenisSubbagId = null;
+            if ($pegawai->jenisBidangId == 1) {
+                $pegawai->jenisSubbagId = $post->get('subbag', null);
+            }
+
 
             $pegawai->gelarDepan = $post->get('gelar-depan', null);
             $pegawai->gelarBelakang = $post->get('gelar-belakang', null);

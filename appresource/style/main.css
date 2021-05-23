@@ -147,3 +147,8 @@ table.with-input td input:hover, .div_transaksi_table table.with-input td select
 table.with-input td, table.with-input th {
   padding: 0;
 }
+
+/** daterange */
+.ranges {
+    min-width: unset;
+}

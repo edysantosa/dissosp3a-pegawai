@@ -140,8 +140,34 @@
                                 <div class="row">
                                     <!-- User card -->
                                     <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Bidang</label>
+                                            <select id="bidang" class="custom-select" autocomplete="off" name="bidang">
+                                                {% for x in jenisBidang %}
+                                                    <option value="{{x.jenisBidangId}}"
+                                                    {% if pegawai %}
+                                                        {{pegawai.jenisBidangId == x.jenisBidangId ? 'selected="selected"'}}
+                                                    {% endif %}>{{x.bidang}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Sub. Bagian</label>
+                                            <select id="subbag"class="custom-select" autocomplete="off" name="subbag">
+                                                <option value=""></option>
+                                                {% for x in jenisSubbag %}
+                                                    <option value="{{x.jenisSubbagId}}"
+                                                    {% if pegawai %}
+                                                        {{pegawai.jenisSubbagId == x.jenisSubbagId ? 'selected="selected"'}}
+                                                    {% endif %}>{{x.subbag}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="card col-md-4">
+                                    <div class="col-md-1">
+                                    </div>                                    
+                                    <div class="card col-md-7">
                                         <div class="card-body text-center">
                                             <div class="card-img-actions d-inline-block mb-3">
                                                 <img class="img-fluid" id="pegawai-image-preview" src="{% if pegawai.foto is not null and pegawai.foto is not empty %} {{baseUrl}}/assets/pegawai/photos/{{pegawai.foto}} {% else %} {{baseUrl}}/assets/dist/images/placeholder.jpg {% endif %}" width="170" height="170" alt="">
@@ -154,8 +180,6 @@
 
                                             <input type="file" id="pegawai-image" name="pegawai-image" accept="image/x-png,image/jpeg" style="display:none">
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
                                     </div>
                                     <!-- /user card -->
                                 </div>
@@ -509,9 +533,22 @@
                                             <span class="pl-3 pr-3"></span>
                                         </td>
                                         <td><input type="text" name="rjb-unit-kerja[]"></td>
-                                        <td><input type="text" name="rjb-jenis-jabatan[]"></td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="rjb-jenis-jabatan[]">
+                                                <option value="1">Jabatan Fungsional</option>
+                                                <option value="2">Jabatan Struktural</option>
+                                                <option value="3">Fungsional Umum</option>
+                                            </select>
+                                        </td>
                                         <td><input type="text" name="rjb-nama-jabatan[]"></td>
-                                        <td><input type="text" name="rjb-eselon[]"></td>
+                                        <td>
+                                            <select class="custom-select" autocomplete="off" name="rjb-eselon[]">
+                                                <option value="1">I</option> 
+                                                <option value="2">II</option> 
+                                                <option value="3">III</option> 
+                                                <option value="4">IV</option> 
+                                            </select>                                            
+                                        </td>
                                         <td><input type="text" name="rjb-bidang[]"></td>
                                         <td><input type="text" name="rjb-sub-bidang[]"></td>
                                         <td>
@@ -540,9 +577,22 @@
                                                 <span class="pl-3 pr-3">{{key+1}}</span>
                                             </td>
                                             <td><input type="text" name="rjb-unit-kerja[]" value="{{r.unitKerja}}"></td>
-                                            <td><input type="text" name="rjb-jenis-jabatan[]" value="{{r.jenisJabatan}}"></td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="rjb-jenis-jabatan[]">
+                                                    <option value="1" {{r.jenisJabatan == 1 ? 'selected="selected"'}}>Jabatan Fungsional</option>
+                                                    <option value="2" {{r.jenisJabatan == 2 ? 'selected="selected"'}}>Jabatan Struktural</option>
+                                                    <option value="3" {{r.jenisJabatan == 3 ? 'selected="selected"'}}>Fungsional Umum</option>
+                                                </select>
+                                            </td>
                                             <td><input type="text" name="rjb-nama-jabatan[]" value="{{r.namaJabatan}}"></td>
-                                            <td><input type="text" name="rjb-eselon[]" value="{{r.eselon}}"></td>
+                                            <td>
+                                                <select class="custom-select" autocomplete="off" name="rjb-eselon[]">
+                                                    <option value="1" {{r.eselon == 1 ? 'selected="selected"'}}>I</option> 
+                                                    <option value="2" {{r.eselon == 2 ? 'selected="selected"'}}>II</option> 
+                                                    <option value="3" {{r.eselon == 3 ? 'selected="selected"'}}>III</option> 
+                                                    <option value="4" {{r.eselon == 4 ? 'selected="selected"'}}>IV</option> 
+                                                </select>   
+                                            </td>
                                             <td><input type="text" name="rjb-bidang[]" value="{{r.bidang}}"></td>
                                             <td><input type="text" name="rjb-sub-bidang[]" value="{{r.subBidang}}"></td>
                                             <td>

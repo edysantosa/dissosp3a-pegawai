@@ -51,6 +51,8 @@ $(function(){
 
     // Basic initialization
     initDatePicker($('.daterange'));
+    
+    $('#bidang').trigger('change');
 }).on('click' , '#test' , function( ev ){
     $(".daterange").each(function(){
         let elemName =  $(this).data('variable');
@@ -159,6 +161,14 @@ $(function(){
             }
         }
     });
+}).on('change' , '#bidang' , function( ev ){
+    // console.log($(this).val());
+    let x = $('#bidang option:selected').val();
+    if (x == '1') {
+        $('#subbag').prop('disabled' , false);
+    } else {
+        $('#subbag').prop('disabled' , true);
+    }
 });
 
 function initDatePicker($elem) {

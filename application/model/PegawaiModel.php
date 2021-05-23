@@ -122,6 +122,10 @@ class PegawaiModel extends \sys\Model
     {
         return $this->hasMany('\app\model\PegRiwayatPendidikanModel', 'pegawaiId', 'pegawaiId');
     }
+    public function pendidikanTerakhir()
+    {
+        return $this->hasOne('\app\model\PegRiwayatPendidikanModel', 'pegawaiId', 'pegawaiId')->latest('tglIjasah');
+    }
 
     public function diklat()
     {

@@ -34,6 +34,9 @@
 
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="#" data-type="single" data-trigger="new-pegawai" class="page-trigger dropdown-item"><i class="icon-file-plus"></i> Tambah Pegawai</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" data-trigger="export-excel" class="page-trigger dropdown-item"><i class="icon-file-excel"></i> Export Excel</a>
+                <a href="#" data-trigger="export-excel" class="page-trigger dropdown-item"><i class="icon-file-excel"></i> Export PDF</a>
             </div>
         </li>
     </ul>
@@ -50,37 +53,122 @@
                 <h6 class="card-title">Filter List</h6>
                 <div class="header-elements">
                     <div class="list-icons">
-                        <a id="driver-filter-collapse" class="list-icons-item" data-action="collapse"></a>
+                        <a id="pegawai-filter-collapse" class="list-icons-item" data-action="collapse"></a>
                     </div>
                 </div>
             </div>
 
             <div class="card-body">
-                <form id="form-driver-filter" action="#">
+                <form id="form-pegawai-filter" action="#">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="font-weight-semibold">Driver Name</label>
-                                <input type="text" class="form-control" name="driver-name" id="driver-name">
+                                <label class="font-weight-semibold">Status Kepegawaian</label>
+                                <select id="status-kepeg" name="status-kepeg" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    {% for x in jenisKepeg %}
+                                        <option value="{{x.jenisKepegawaianId}}">{{x.jenisKepegawaian}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
                             <div class="form-group">
-                                <label class="font-weight-semibold">Area</label>
-                                <input type="text" class="form-control" name="driver-area" id="driver-area">
+                                <label class="font-weight-semibold">Pendidikan</label>
+                                <select id="pendidikan" name="pendidikan" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    {% for x in jenisPendidikan %}
+                                        <option value="{{x.jenisPendidikanId}}">{{x.jenisPendidikan}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Agama</label>
+                                <select id="agama" name="agama" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    {% for x in agama %}
+                                        <option value="{{x.jenisAgamaId}}">{{x.jenisAgama}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Tanggal Lahir</label>
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                    </span>
+                                    <input id="tgl-lahir" name="tgl-lahir" type="text" class="form-control daterange-basic"> 
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="font-weight-semibold">Plate</label>
-                                <input type="text" class="form-control" name="driver-plate" id="driver-plate" maxlength="10">
+                                <label class="font-weight-semibold">Jenis Kelamin</label>
+                                <select id="jk" name="jk" class="form-control custom-select" autocomplete="off" name="golongan-darah">
+                                    <option value="">Semua</option>
+                                    <option value="1">Laki-laki</option>
+                                    <option value="2">Perempuan</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Status Pernikahan</label>
+                                <select  id="status-pernikahan" name="status-pernikahan" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    <option value="1">Belum Menikah</option> 
+                                    <option value="2">Menikah</option> 
+                                    <option value="3">Janda</option> 
+                                    <option value="4">Duda</option> 
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Pangkat</label>
+                                <select id="pangkat" name="pangkat" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    {% for x in pangkat %}
+                                        <option value="{{x.jenisPangkatGolonganId}}">{{x.golonganRuang}} - {{x.pangkat}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Jenis Jabatan</label>
+                                <select  id="jenis-jabatan" name="jenis-jabatan" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    <option value="1">Jabatan Fungsional</option> 
+                                    <option value="2">Jabatan Struktural</option> 
+                                    <option value="3">Fungsional Umum</option> 
+                                </select>
                             </div>
                         </div>
+
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="font-weight-semibold">Max. Capacity</label>
-                                <input type="text" class="form-control" name="driver-capacity" id="driver-capacity" maxlength="2">
+                                <label class="font-weight-semibold">Eselon</label>
+                                <select  id="eselon" name="eselon" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    <option value="1">I</option> 
+                                    <option value="2">II</option> 
+                                    <option value="3">III</option> 
+                                    <option value="4">IV</option> 
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Bidang</label>
+                                <select id="bidang" name="bidang" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    {% for x in jenisBidang %}
+                                        <option value="{{x.jenisBidangId}}">{{x.bidang}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-semibold">Sub. Bagian</label>
+                                <select id="subbag" name="subbag" class="form-control multiselect-filtering" multiple="multiple" data-fouc>
+                                    {% for x in jenisSubbag %}
+                                        <option value="{{x.jenisSubbagId}}">{{x.subbag}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
+
                         <div class="col-md-12">
                             <div class="text-right">
                                 <button type="submit" class="btn btn-primary legitRipple"><i class="icon-search4 mr-1"></i> Filter</button>
