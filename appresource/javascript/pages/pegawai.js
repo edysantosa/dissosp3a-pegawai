@@ -74,10 +74,12 @@ $(function(){
 
     // Initialize data table
     var sortCol = 1;
-    var sortDir = 'DESC';
-    if (Store.get('bookingPageSort', null) != null) {
-        sortCol = Store.get('bookingPageSort').column;
-        sortDir = Store.get('bookingPageSort').dir;
+    var sortDir = 'ASC';
+    if (Store.get('pegawaiPageSort', null) != null) {
+        sortCol = Store.get('pegawaiPageSort').column;
+        sortDir = Store.get('pegawaiPageSort').dir;
+
+
     }
     datatable = $('#pegawai-table').DataTable({
         autoWidth: false,
@@ -132,6 +134,7 @@ $(function(){
             data : function(data){
                 // Ambil satu kolom saja dari sort, untuk mempermudah query server side
                 let columnSort = data.columns[data.order[0].column];
+                Store.set('pegawaiPageSort' , data.order[0]);
                 data.order = columnSort.name + '-' + data.order[0].dir;
                 if (typeof uris.order !== 'undefined' && uris.order !== '' && typeof data.order !== 'string') {
                     data.order = uris.order;

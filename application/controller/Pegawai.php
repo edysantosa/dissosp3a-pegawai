@@ -328,35 +328,35 @@ class Pegawai extends Base
             }
 
 
-            $pegawai->gelarDepan = $post->get('gelar-depan', null);
-            $pegawai->gelarBelakang = $post->get('gelar-belakang', null);
-            $pegawai->jk = $post->get('jk', null);
+            $pegawai->gelarDepan = $post->get('gelar-depan', '');
+            $pegawai->gelarBelakang = $post->get('gelar-belakang', '');
+            $pegawai->jk = $post->get('jk', 1);
             $pegawai->jenisAgamaId = $post->get('agama', null);
-            $pegawai->email = $post->get('email', null);
-            $pegawai->golonganDarah = $post->get('golongan-darah', null);
-            $pegawai->alamat = $post->get('alamat', null);
-            $pegawai->kelurahan = $post->get('kelurahan', null);
-            $pegawai->kecamatan = $post->get('kecamatan', null);
-            $pegawai->jenisProvinsiId = $post->get('provinsi', null);
-            $pegawai->kodePos = $post->get('kode-pos', null);
-            $pegawai->statusPernikahan = $post->get('status-pernikahan', null);
-            $pegawai->noBPJS = $post->get('no-bpjs', null);
-            $pegawai->noTaspen = $post->get('no-taspen', null);
-            $pegawai->noKaris = $post->get('no-karis', null);
-            $pegawai->noKaris = $post->get('no-karis', null);
-            $pegawai->noNPWP = $post->get('no-npwp', null);
-            $pegawai->cpnsNoBKN = $post->get('cpns-no-bkn', null);
+            $pegawai->email = $post->get('email', '');
+            $pegawai->golonganDarah = $post->get('golongan-darah', '');
+            $pegawai->alamat = $post->get('alamat', '');
+            $pegawai->kelurahan = $post->get('kelurahan', '');
+            $pegawai->kecamatan = $post->get('kecamatan', '');
+            $pegawai->jenisProvinsiId = $post->get('provinsi', '');
+            $pegawai->kodePos = $post->get('kode-pos', '');
+            $pegawai->statusPernikahan = $post->get('status-pernikahan', '');
+            $pegawai->noBPJS = $post->get('no-bpjs', '');
+            $pegawai->noTaspen = $post->get('no-taspen', '');
+            $pegawai->noKaris = $post->get('no-karis', '');
+            $pegawai->noKaris = $post->get('no-karis', '');
+            $pegawai->noNPWP = $post->get('no-npwp', '');
+            $pegawai->cpnsNoBKN = $post->get('cpns-no-bkn', '');
             $pegawai->cpnsTglBKN = $post->get('cpnsTglBKN', null) ?: null;
-            $pegawai->cpnsDitetapkanOleh = $post->get('cpns-ditetapkan-oleh', null);
-            $pegawai->cpnsPangkatGolonganId = $post->get('cpns-pangkat-golongan', null);
-            $pegawai->cpnsNoSK = $post->get('cpns-no-sk', null);
+            $pegawai->cpnsDitetapkanOleh = $post->get('cpns-ditetapkan-oleh', '');
+            $pegawai->cpnsPangkatGolonganId = $post->get('cpns-pangkat-golongan', '');
+            $pegawai->cpnsNoSK = $post->get('cpns-no-sk', '');
             $pegawai->cpnsTglSK = $post->get('cpnsTglSK', null) ?: null;
-            $pegawai->cpnsTMT = $post->get('cpnsTMT', null);
-            $pegawai->pnsDitetapkanOleh = $post->get('pns-ditetapkan-oleh', null);
-            $pegawai->pnsPangkatGolonganId = $post->get('pns-pangkat-golongan', null);
-            $pegawai->pnsNoSK = $post->get('pns-no-sk', null);
+            $pegawai->cpnsTMT = $post->get('cpnsTMT', null) ?: null;
+            $pegawai->pnsDitetapkanOleh = $post->get('pns-ditetapkan-oleh', '');
+            $pegawai->pnsPangkatGolonganId = $post->get('pns-pangkat-golongan', '');
+            $pegawai->pnsNoSK = $post->get('pns-no-sk', '');
             $pegawai->pnsTglSK = $post->get('pnsTglSK', null) ?: null;
-            $pegawai->pnsTMT = $post->get('pnsTMT', null);
+            $pegawai->pnsTMT = $post->get('pnsTMT', null) ?: null;
             $pegawai->save();
 
             /** UPLOAD GAMBAR DAN FILE **/
@@ -1181,7 +1181,6 @@ class Pegawai extends Base
             'message' => $pegawai->toArray()
         ]);
     }
-
 
 
     // Home Page
