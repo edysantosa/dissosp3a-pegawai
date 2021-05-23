@@ -905,6 +905,270 @@ class Pegawai extends Base
         return $filename;
     }
 
+    public function excel()
+    {
+        $get = new GetSetHelper($this->request->getQueryParams());
+        $exportCols  = $get->get('expCol', []);
+        $exportSorts  = $get->get('expSort', []);
+        $azRange = $this->excelColumnRange('A', 'AZ');//range('A', 'Z');      
+        $data = $this->prepareExportData();
+        $pegawais = $data['pegawais'];
+        $columnName = $data['columnName'];
+
+        // Create new Spreadsheet object
+        $spreadsheet = new Spreadsheet();
+        $sheet0 = $spreadsheet->setActiveSheetIndex(0);
+
+        // Set document properties
+        $spreadsheet->getProperties()->setCreator('Edy Santosa Putra')
+            ->setLastModifiedBy('Edy Santosa Putra')
+            ->setTitle('Daftar Pegawai Dissos P3A Prov. Bali')
+            ->setSubject('Daftar Pegawai Dissos P3A Prov. Bali')
+            ->setDescription('Daftar Pegawai Dissos P3A Prov. Bali dari sistem database kepegawaian')
+            ->setKeywords('office 2007 openxml php')
+            ->setCategory('List');
+
+        // Add some data
+        $sheet0->setCellValue('A1', 'Daftar Pegawai');
+
+        $sheet0->getStyle('A1')->getFont()->applyFromArray([
+            'bold' => true,
+            'size' => 18
+        ]);
+
+        $sheet0->getStyle('A2:I2')->getFont()->applyFromArray([
+            'bold' => true
+        ]);
+
+
+        foreach ($exportCols as $key => $value) {
+            $sheet0->getColumnDimension($azRange[$key])->setAutoSize(true);
+            $sheet0->setCellValue($azRange[$key].'2', $columnName[$value]);
+            $lastCol = $azRange[$key];
+        }
+        $sheet0->getStyle('A2:'.$lastCol.'2')->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('FFEEEEEE');
+
+        $curRow = 2;
+        foreach ($pegawais as $pegawai) {
+            $curRow++;
+            foreach ($exportCols as $key => $value) {
+                if (in_array($value, ['nik', 'nip'])) {
+                    $sheet0->getCell($azRange[$key].$curRow)->setValueExplicit($pegawai[$value], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                } elseif (in_array($value, ['tglLahir'])) {
+                    $sheet0->setCellValue($azRange[$key].$curRow, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($pegawai[$value]));
+                    $sheet0->getStyle($azRange[$key].$curRow)->getNumberFormat()->setFormatCode("dd-mm-yyyy");
+                } else {
+                    $sheet0->setCellValue($azRange[$key].$curRow, $pegawai[$value]);
+                }
+            }
+        }
+
+        $styleArrayTabel = array(
+        'alignment' => array(
+                     'rotation'   => 0,
+                     'wrap'       => true
+            ),
+            'borders' => array(
+                'allBorders' => array(
+                      'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, //BORDER_THIN BORDER_MEDIUM BORDER_HAIR
+                      'color' => array('rgb' => '000000')
+                )
+              )
+        );
+        $sheet0->getStyle('A2:'.$lastCol.$curRow)->applyFromArray($styleArrayTabel);
+        $sheet0->getStyle('A2:'.$lastCol.'2')->applyFromArray([
+            'alignment' =>[
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ]);
+
+
+        // Rename worksheet
+        $sheet0->setTitle('Daftar Pegawai');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $spreadsheet->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Xlsx)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="pegawai.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        return $this->response->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    }
+
+    private function excelColumnRange($lower, $upper)
+    {
+        $letters = array();
+        $letter = $lower;
+        while ($letter !== $upper) {
+            $letters[] = $letter++;
+        }
+        return $letters;
+    }
+
+    public function pdf()
+    {
+        $get = new GetSetHelper($this->request->getQueryParams());
+        $exportCols  = $get->get('expCol', []);
+        $data = $this->prepareExportData();
+        $pegawais = $data['pegawais'];
+        $columnName = $data['columnName'];
+
+
+        $html= $this->view->fetchHtml('prints/pegawai.twig', [
+            'exportCols' => $exportCols,
+            'pegawais' => $pegawais,
+            'columnName' => $columnName,
+        ]);
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' =>'/tmp',
+            'format' => [297, 210],
+            'margin_left' => 5,
+            'margin_right' => 5,
+            'margin_top' => 5,
+            'margin_bottom' => 5,
+            'margin_header' => 2,
+            'margin_footer' => 2,
+            'fontDir' => [
+                // __DIR__ . '/../../vendor/webfontkit/roboto/fonts',
+                '/var/www/html/ekajaya/vendor/webfontkit/roboto/fonts',
+            ],
+            'fontdata' => [
+                'roboto' => [
+                    'R' => 'roboto-regular.ttf',
+                    'I' => 'roboto-italic.ttf',
+                    'B'  => 'roboto-bold.ttf',
+                    'BI'  => 'roboto-bolditalic.ttf',
+                    'L'  => 'roboto-light.ttf',
+                ]
+            ],
+            'default_font_size' => 8,
+            'default_font' => 'roboto',
+        ]);
+        $mpdf->WriteHTML($html);
+        // $mpdf->debug = true;
+
+
+        $mpdf->setTitle("Daftar Pegawai Dinas Sosial P3A Provinsi Bali");
+
+        if ($get->get('download', 0) == 1) {
+            $mpdf->Output($pdfTitle.'.pdf', \Mpdf\Output\Destination::DOWNLOAD);
+        } else {
+            $mpdf->Output($pdfTitle.'.pdf', \Mpdf\Output\Destination::INLINE);
+        }
+        return $this->response->withHeader('Content-Type', 'application/pdf');
+    }
+
+
+    private function prepareExportData()
+    {
+        $pegawaiData = json_decode($this->loadData()->getBody(), true);
+        $get = new GetSetHelper($this->request->getQueryParams());
+
+        // Nama untuk kolom yang valid
+        $columnName['nik']              = 'NIK';
+        $columnName['nip']              = 'NIP';
+        $columnName['nama']             = 'Nama Pegawai';
+        $columnName['tempatLahir']      = 'Tempat Lahir';
+        $columnName['tglLahir']         = 'Tgl. Lahir';
+        $columnName['jk']               = 'JenisKelamin';
+        $columnName['agama']            = 'Agama';
+        $columnName['alamat']           = 'Alamat';
+        $columnName['kelurahan']        = 'Kelurahan';
+        $columnName['kecamatan']        = 'Kecamatan';
+        $columnName['kabupaten']        = 'Kabupaten';
+        $columnName['provinsi']         = 'Provinsi';
+        $columnName['kodePos']          = 'Kode Pos';
+        $columnName['noTelepon']        = 'NoTelepon';
+        $columnName['email']            = 'Email';
+        $columnName['statusPernikahan'] = 'Status Pernikahan';
+        $columnName['golonganDarah']    = 'Golongan Darah';
+        $columnName['noKarpeg']         = 'No. Karpeg';
+        $columnName['noBPJS']           = 'No. BPJS';
+        $columnName['noKaris']          = 'No. Karis';
+        $columnName['noTaspen']         = 'No. Taspen';
+        $columnName['noNPWP']           = 'No. NPWP';
+        $columnName['pangkat']          = 'Pangkat';
+        $columnName['jabatan']          = 'Jabatan';
+        $columnName['eselon']           = 'Eselon';
+        $columnName['bidang']           = 'Bidang';
+        $columnName['subbag']           = 'Subbag';
+        
+        $pegawais = [];
+        foreach ($pegawaiData['data'] as $data) {
+            $agama = \app\model\JenisAgamaModel::where('jenisAgamaId', $data['jenisAgamaId'])->first();
+            $provinsi = \app\model\JenisProvinsiModel::where('jenisProvinsiId', $data['jenisProvinsiId'])->first();
+            switch ($data['statusPernikahan']) {
+                case '1':
+                    $statusPernikahan = "Single";
+                    break;
+                case '1':
+                    $statusPernikahan = "Menikah";
+                    break;
+                case '1':
+                    $statusPernikahan = "Janda";
+                    break;
+                default:
+                    $statusPernikahan = "Duda";
+                    break;
+            }
+
+            $pangkat = PegRiwayatPangkatModel::with('pangkat')->where('pegawaiId', $data['pegawaiId'])->latest('tglSKPangkat')->first();
+            $jabatan = PegRiwayatJabatanModel::where('pegawaiId', $data['pegawaiId'])->latest('tglSKJabatan')->first();
+            $bidang = \app\model\JenisBidangModel::where('jenisBidangId', $data['jenisBidangId'])->first();
+            $subbag = \app\model\JenisSubbagModel::where('jenisSubbagId', $data['jenisSubbagId'])->first();
+
+
+            $newpeg = [];
+            $newPeg['nik']              = $data['nik'];
+            $newPeg['nip']              = $data['nip'];
+            $newPeg['nama']             = $data['nama'];
+            $newPeg['tempatLahir']      = $data['tempatLahir'];
+            $newPeg['tglLahir']         = $data['tglLahir'];
+            $newPeg['jk']               = $data['jk'] == 1 ? "Laki-laki" : "Perempuan";
+            $newPeg['agama']            = $agama->jenisAgama;
+            $newPeg['alamat']           = $data['alamat'];
+            $newPeg['kelurahan']        = $data['kelurahan'];
+            $newPeg['kecamatan']        = $data['kecamatan'];
+            $newPeg['kabupaten']        = $data['kabupaten'];
+            $newPeg['provinsi']         = $provinsi->provinsi;
+            $newPeg['kodePos']          = $data['kodePos'];
+            $newPeg['noTelepon']        = $data['noTelepon'];
+            $newPeg['email']            = $data['email'];
+            $newPeg['statusPernikahan'] = $statusPernikahan;
+            $newPeg['golonganDarah']    = $data['golonganDarah'];
+            $newPeg['noKarpeg']         = $data['noKarpeg'];
+            $newPeg['noBPJS']           = $data['noBPJS'];
+            $newPeg['noKaris']          = $data['noKaris'];
+            $newPeg['noTaspen']         = $data['noTaspen'];
+            $newPeg['noNPWP']           = $data['noNPWP'];
+            $newPeg['pangkat']          = $pangkat ? $pangkat->pangkat->pangkat . ' - ' . $pangkat->pangkat->golonganRuang : '';
+            $newPeg['jabatan']          = $jabatan ? $jabatan->namaJabatan : '';
+            $newPeg['eselon']           = $jabatan ? $jabatan->eselon : '';
+            $newPeg['bidang']           = $bidang ? $bidang->bidang : '' ;
+            $newPeg['subbag']           = $subbag ? $subbag->subbag : '' ;
+            $pegawais[] = $newPeg;
+        }
+
+        return [
+            "pegawais" => $pegawais,
+            "columnName" => $columnName,
+        ];
+    }
 
     public function test()
     {

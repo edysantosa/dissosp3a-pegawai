@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>title</title>
+        <style type="text/css">
+            body{
+                width: 210mm;
+                height: 297mm;
+                font-family: 'roboto';
+            }
+            table{
+                width: 100%;
+                margin-top: 2mm; 
+            }            
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse
+            }
+            .date-header{
+                float: left;
+            }
+            th, td {
+              padding: 2mm;
+            }
+            th {
+              text-align: center;
+              background-color: #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Daftar Pegawai Dinas Sosial P3A</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    {% for key, column in exportCols %}
+                        <th>{{columnName[column]}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>            
+            <tbody>
+                    {% for pegawaiKey, pegawai in pegawais %}
+                        <tr>
+                            <td>{{pegawaiKey+1}}</td>
+                            {% for columnKey, column in exportCols %}
+                                <td>{{pegawai[column]}}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="float:right; text-align: right; width: 50%; margin-top: 5mm; "><b>Di Print pada tanggal {{"now"|date("d-m-Y") }}</div>
+
+    </body>
+</html>

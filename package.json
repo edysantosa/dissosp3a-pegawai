@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "autonumeric": "^4.5.4",
+    "bootstrap4-duallistbox": "^4.0.2",
     "bowser": "^2.3.0",
     "css-loader": "^2.1.1",
     "d3": "^3.5.17",

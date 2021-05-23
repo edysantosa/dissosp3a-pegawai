@@ -11,7 +11,10 @@ import '../../../node_modules/daterangepicker/daterangepicker.css';
 
 import '../limitless/js/plugins/forms/selects/bootstrap_multiselect.js';
 import '../limitless/js/plugins/forms/selects/bootstrap_multiselect_id.js';
-import '../limitless/js/plugins/forms/inputs/duallistbox/duallistbox.min.js';
+// import '../limitless/js/plugins/forms/inputs/duallistbox/duallistbox.min.js';
+import '../../../node_modules/bootstrap4-duallistbox/dist/jquery.bootstrap-duallistbox.min.js';
+import '../../../node_modules/bootstrap4-duallistbox/dist/bootstrap-duallistbox.min.css';
+
 import Bootbox from '../limitless/js/plugins/notifications/bootbox.min.js';
 import moment from 'moment';
 import Store from 'store';
@@ -29,7 +32,6 @@ $(function(){
     let currentURI = new URI();
     let uris = URI.parseQuery(currentURI.query());
     for(let name in uris){
-        console.log($('[name="'+name+'"]').prop("type"));
         if ($('[name="'+name+'"]').prop("type") == 'select-multiple') {
             if(Array.isArray(uris[name])){
                 for(let i in uris[name]){
@@ -343,32 +345,30 @@ function deletePegawai(pegawaiIds){
     });
 }
 
-function exportPdf(){
-    window.open(Sitebase.url + '/pegawai/pdf?' + $.param(datatable.ajax.params()) + '&download=1', '_blank');
-}
-function printPdf(){
+// function exportPdf(){
+//     window.open(Sitebase.url + '/pegawai/pdf?' + $.param(datatable.ajax.params()) + '&download=1', '_blank');
+// }
+// function printPdf(){
 
-    let pdfUrl = Sitebase.url + '/pegawai/pdf?' + $.param(datatable.ajax.params());
+//     let pdfUrl = Sitebase.url + '/pegawai/pdf?' + $.param(datatable.ajax.params());
 
-    Modal.dialog({
-        title       : "Print PDF",
-        size        : 'full',
-        backdrop    : 'static',
-        keyboard    : false,
-        message     : '<iframe width="100%" src="' + pdfUrl +'" id="print_frame"></iframe>'
-    }).show(function(){
-        var me = this;
-        let iframehght =  $(document).height() - 400;
-        me.element.find('iframe').height(iframehght)
-    });
-}
-function exportExcel(){
-    window.open(Sitebase.url + '/pegawai/excel?' + $.param(datatable.ajax.params()) + '&download=1', '_blank');
-}
+//     Modal.dialog({
+//         title       : "Print PDF",
+//         size        : 'full',
+//         backdrop    : 'static',
+//         keyboard    : false,
+//         message     : '<iframe width="100%" src="' + pdfUrl +'" id="print_frame"></iframe>'
+//     }).show(function(){
+//         var me = this;
+//         let iframehght =  $(document).height() - 400;
+//         me.element.find('iframe').height(iframehght)
+//     });
+// }
+
 
 function exportModal(){
     Modal.dialog({
-        title       : "Export data ke excel",
+        title       : "Export data ke excel / PDF",
         size        : 'medium',
         backdrop    : 'static',
         keyboard    : false,
@@ -383,18 +383,35 @@ function exportModal(){
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="font-weight-semibold">Pilih kolom-kolom yang ingin disertakan pada file Excel</label>
-                                <select id="export-select-column" multiple="multiple" class="form-control listbox" autocomplete="off" data-fouc>
-                                    <option value="1" data-column="1">Nik</option>
-                                    <option value="1" data-column="1">NIP</option>
-                                    <option value="3" data-column="3">Nama</option>
-                                    <option value="3" data-column="3">Tempat Lahir</option>
-                                    <option value="3" data-column="3">Tanggal Lahir</option>
-                                    <option value="3" data-column="3">Jabatan</option>
-                                    <option value="3" data-column="3">Pangkat/Golongan Ruang</option>
-                                    <option value="3" data-column="3">Alamat</option>
-                                    <option value="3" data-column="3">Nomor Telpon</option>
-                                    <option value="3" data-column="3">Pendidikan Terakhir</option>
-                                </select>
+                            <select id="export-select-column" multiple="multiple" class="form-control listbox" autocomplete="off" data-fouc>
+                                <option value="nik" data-column="nik">NIK</option>
+                                <option value="nip" data-column="nip">NIP</option>
+                                <option value="nama" data-column="nama">Nama Pegawai</option>
+                                <option value="tempatLahir" data-column="tempatLahir">Tempat Lahir</option>
+                                <option value="tglLahir" data-column="tglLahir">Tgl. Lahir</option>
+                                <option value="jk" data-column="jk">Jenis Kelamin</option>
+                                <option value="agama" data-column="agama">Agama</option>
+                                <option value="alamat" data-column="alamat">Alamat</option>
+                                <option value="kelurahan" data-column="kelurahan">Kelurahan</option>
+                                <option value="kecamatan" data-column="kecamatan">Kecamatan</option>
+                                <option value="kabupaten" data-column="kabupaten">Kabupaten</option>
+                                <option value="provinsi" data-column="provinsi">Provinsi</option>
+                                <option value="kodePos" data-column="kodePos">Kode Pos</option>
+                                <option value="noTelepon" data-column="noTelepon">No. Telepon</option>
+                                <option value="email" data-column="email">Email</option>
+                                <option value="statusPernikahan" data-column="statusPernikahan">Status Pernikahan</option>
+                                <option value="golonganDarah" data-column="golonganDarah">Golongan Darah</option>
+                                <option value="noKarpeg" data-column="noKarpeg">No. Karpeg</option>
+                                <option value="noBPJS" data-column="noBPJS">No. BPJS</option>
+                                <option value="noKaris" data-column="noKaris">No. Karis</option>
+                                <option value="noTaspen" data-column="noTaspen">No. Taspen</option>
+                                <option value="noNPWP" data-column="noNPWP">No. NPWP</option>
+                                <option value="pangkat" data-column="pangkat">Pangkat</option>
+                                <option value="jabatan" data-column="jabatan">Jabatan</option>
+                                <option value="eselon" data-column="eselon">Eselon</option>
+                                <option value="bidang" data-column="bidang">Bidang</option>
+                                <option value="subbag" data-column="subbag">Subbag</option>
+                            </select>
                         </div>             
                     </div>
                 </div>
@@ -402,26 +419,27 @@ function exportModal(){
         `);
 
         let footer = '<button type="button" class="btn btn-light" id="export-modal-cancel" data-dismiss="modal">Batal</button>';
-            footer += '<button type="button" class="btn btn-primary" id="export-modal-save">Download</button>';
+            footer += '<button type="button" class="btn btn-primary" id="export-modal-excel">Download Excel</button>';
+            footer += '<button type="button" class="btn btn-primary" id="export-modal-pdf">Download PDF</button>';
         me.element.find('.modal-footer').html(footer);
 
-        me.element.find('.listbox').bootstrapDualListbox();
+        me.element.find('.listbox').bootstrapDualListbox({
+            sortByInputOrder:true
+        });
 
-        me.element.find('#export-modal-save').on('click', function(e){
-            let ticketDetail = {
-                routeId       : parseInt(me.element.find('#booking-ticket').val()),
-                date          : me.element.find('#booking-ticket-date').val(),
-                schedule      : parseInt(me.element.find('#booking-ticket-schedule').val()),
-                car           : parseInt(me.element.find('.booking-ticket-car:checked').val()),
-                isPickup      : me.element.find('#booking-ticket-pickup').prop("checked") ? 1 : 0,
-                pickupId      : parseInt(me.element.find('#booking-ticket-area').val()),
-                pickupLocation: me.element.find('#booking-ticket-location').val(),
-                routeName     : me.element.find('#booking-ticket').find(':selected').html(),
-                scheduleName  : me.element.find('#booking-ticket-schedule').find(':selected').html(),
-                pickupPrice   : Rupiah.getUnformattedValue(me.element.find('#booking-ticket-pickup-price'))
-                // extraCharge   : me.element.find('#booking-ticket-extra-charge').val()
-            }
-            deferred.resolve(ticketDetail);
+        me.element.find('#export-modal-excel').on('click', function(e){
+            let exportCols = new Array();
+            $("#bootstrap-duallistbox-selected-list_ option").each(function(){
+                exportCols.push($(this).data('column'));
+            });
+            window.open(Sitebase.url + '/pegawai/excel?' + $.param(datatable.ajax.params()) + '&' + $.param({expCol: exportCols}) + '&download=1', '_blank');
+        });
+        me.element.find('#export-modal-pdf').on('click', function(e){
+            let exportCols = new Array();
+            $("#bootstrap-duallistbox-selected-list_ option").each(function(){
+                exportCols.push($(this).data('column'));
+            });
+            window.open(Sitebase.url + '/pegawai/pdf?' + $.param(datatable.ajax.params()) + '&' + $.param({expCol: exportCols}) + '&download=1', '_blank');
             me.element.modal('hide');
         });
 
