@@ -1181,4 +1181,30 @@ class Pegawai extends Base
             'message' => $pegawai->toArray()
         ]);
     }
+
+
+
+    // Home Page
+    public function homeInfo()
+    {
+        try {
+            $totalPegawai = PegawaiModel::where('status', 1)->count();
+            $totalPegawaiPNS = PegawaiModel::where('status', 1)->whereIn('jenisKepegawaianId', [1,2])->count();
+            $totalPegawaiPPPK = PegawaiModel::where('status', 1)->where('jenisKepegawaianId', 3)->count();
+            $totalPegawaiKontrak = PegawaiModel::where('status', 1)->where('jenisKepegawaianId', 4)->count();
+            $totalPegawaiPensiun= PegawaiModel::where('status', 1)->where('tglLahir', '<=', date('Y-m-d', strtotime('-58 years')))->count();
+                
+            return $this->response->withJson([
+                'totalPegawai'        => $totalPegawai,
+                'totalPegawaiPNS'     => $totalPegawaiPNS,
+                'totalPegawaiPPPK'    => $totalPegawaiPPPK,
+                'totalPegawaiKontrak' => $totalPegawaiKontrak,
+                'totalPegawaiPensiun' => $totalPegawaiPensiun,
+            ]);
+        } catch (Exception $err) {
+            return $this->response->withStatus(500)->withJson([
+                'message' => $err->getMessage()
+            ]);
+        }
+    }
 }
