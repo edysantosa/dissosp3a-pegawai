@@ -305,7 +305,7 @@ class Pegawai extends Base
         //     'pnsTglSK' => $post->get('pnsTglSK', null)
         // ]);
         try {
-            // $this->database->getConnection()->getPdo()->beginTransaction();
+            $this->database->getConnection()->getPdo()->beginTransaction();
             $post = new GetSetHelper($this->request->getParsedBody());
             
             if ($pegawaiId) {
@@ -876,14 +876,14 @@ class Pegawai extends Base
                 );
             }
 
-            // $this->database->getConnection()->getPdo()->commit();
+            $this->database->getConnection()->getPdo()->commit();
 
             return $this->response->withJson([
                 'message' => 'Data pegawai tersimpan',
                 'pegawaiId' => $pegawai->pegawaiId
             ]);
         } catch (Exception $err) {
-            // $this->database->getConnection()->getPdo()->rollBack();
+            $this->database->getConnection()->getPdo()->rollBack();
             return $this->response->withStatus(500)->withJson([
                 'message' => $err->getMessage()
             ]);
