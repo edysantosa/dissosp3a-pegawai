@@ -514,8 +514,6 @@
                                         <th class="text-center" style="min-width: 120px;">Jenis Jabatan</th>
                                         <th class="text-center" style="min-width: 150px;">Nama Jabatan</th>
                                         <th class="text-center">Eselon</th>
-                                        <th class="text-center" style="min-width: 150px;">Bidang</th>
-                                        <th class="text-center" style="min-width: 100px;">Sub Bidang</th>
                                         <th class="text-center" style="min-width: 80px;">TMT Jabatan</th>
                                         <th class="text-center" style="min-width: 80px;">TMT Eselon</th>
                                         <th class="text-center" style="min-width: 100px;">Ditetapkan Oleh</th>
@@ -543,14 +541,13 @@
                                         <td><input type="text" name="rjb-nama-jabatan[]"></td>
                                         <td>
                                             <select class="custom-select" autocomplete="off" name="rjb-eselon[]">
+                                                <option value=""></option> 
                                                 <option value="1">I</option> 
                                                 <option value="2">II</option> 
                                                 <option value="3">III</option> 
                                                 <option value="4">IV</option> 
                                             </select>                                            
                                         </td>
-                                        <td><input type="text" name="rjb-bidang[]"></td>
-                                        <td><input type="text" name="rjb-sub-bidang[]"></td>
                                         <td>
                                             <input type="text" autocomplete="off" class="daterange rjb-tmt-jabatan" data-variable="rjbTmtJabatan[]" name="rjb-tmt-jabatan[]" readonly>
                                         </td>
@@ -587,14 +584,13 @@
                                             <td><input type="text" name="rjb-nama-jabatan[]" value="{{r.namaJabatan}}"></td>
                                             <td>
                                                 <select class="custom-select" autocomplete="off" name="rjb-eselon[]">
+                                                    <option value=""></option> 
                                                     <option value="1" {{r.eselon == 1 ? 'selected="selected"'}}>I</option> 
                                                     <option value="2" {{r.eselon == 2 ? 'selected="selected"'}}>II</option> 
                                                     <option value="3" {{r.eselon == 3 ? 'selected="selected"'}}>III</option> 
                                                     <option value="4" {{r.eselon == 4 ? 'selected="selected"'}}>IV</option> 
                                                 </select>   
                                             </td>
-                                            <td><input type="text" name="rjb-bidang[]" value="{{r.bidang}}"></td>
-                                            <td><input type="text" name="rjb-sub-bidang[]" value="{{r.subBidang}}"></td>
                                             <td>
                                                 <input type="text" autocomplete="off" class="daterange rjb-tmt-jabatan" data-variable="rjbTmtJabatan[]" name="rjb-tmt-jabatan[]" value="{% if r.tmtJabatan %}{{r.tmtJabatanFormat}}{% endif %}" readonly>
                                             </td>
@@ -1162,6 +1158,64 @@
                     </fieldset>
                     <!-- End Orang Tua -->
 
+
+                    <!-- Pasangan -->
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Data Pasangan</legend>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Nama:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Nama" name="pasangan-nama" value="{{pegawai ? pegawai.namaPasangan}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tempat Lahir:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Tempat Lahir" name="pasangan-tempat" value="{{pegawai ? pegawai.tempatLahirPasangan}}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Tanggal Lahir:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                        </span>                                                
+                                        <input type="text" autocomplete="off" class="form-control daterange pasangan-tgl" data-variable="pasanganTgl" placeholder="Tanggal Lahir" name="pasangan-tgl" value="{% if pegawai.tglLahirPasangan %}{{pegawai.tglLahirPasanganFormat}}{% endif %}" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Tanggal Pernikahan:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                        </span>                                                
+                                        <input type="text" autocomplete="off" class="form-control daterange pasangan-tgl-pernikahan" data-variable="pasanganTglPernikahan" placeholder="Tanggal Pernikahan" name="pasangan-tgl-pernikahan" value="{% if pegawai.tglPernikahan %}{{pegawai.tglPernikahanFormat}}{% endif %}" readonly>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label>Pekerjaan:</label>
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Pekerjaan" name="pasangan-pekerjaan" value="{{pegawai ? pegawai.pekerjaanPasangan}}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Pendidikan:</label>
+                                    <select class="custom-select" autocomplete="off" name="pasangan-pendidikan">
+                                        {% for pk in jenisPendidikan %}
+                                        <option value="{{pk.jenisPendidikanId}}" 
+                                            {% if pegawai %}
+                                                {{pegawai.pendidikanPasangan == pk.jenisPendidikanId ? 'selected="selected"'}}
+                                            {% endif %}
+                                        >{{pk.jenisPendidikan}}</option>
+                                        {% endfor %}  
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- End Pasangan -->
 
                     <!-- Riwayat Anak -->
                     <fieldset class="mb-3 ove">

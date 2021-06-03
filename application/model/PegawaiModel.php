@@ -10,7 +10,7 @@ class PegawaiModel extends \sys\Model
 
     protected $hidden   = [];
     protected $guarded  = [ 'pegawaiId' ];
-    protected $appends = ['tglLahirFormat', 'cpnsTglBKNFormat', 'cpnsTglSKFormat', 'cpnsTMTFormat', 'pnsTglSKFormat', 'pnsTMTFormat', 'tglLahirAyahFormat', 'tglLahirIbuFormat'];
+    protected $appends = ['tglLahirFormat', 'cpnsTglBKNFormat', 'cpnsTglSKFormat', 'cpnsTMTFormat', 'pnsTglSKFormat', 'pnsTMTFormat', 'tglLahirAyahFormat', 'tglLahirIbuFormat', 'tglLahirPasanganFormat', 'tglPernikahanFormat'];
 
     public function getTglLahirFormatAttribute()
     {
@@ -74,6 +74,22 @@ class PegawaiModel extends \sys\Model
             return '';
         } else {
             return date("d-m-Y", strtotime($this->tglLahirIbu));
+        }
+    }
+    public function getTglLahirPasanganFormatAttribute()
+    {
+        if (is_null($this->tglLahirPasangan)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->tglLahirPasangan));
+        }
+    }
+    public function getTglPernikahanFormatAttribute()
+    {
+        if (is_null($this->tglPernikahan)) {
+            return '';
+        } else {
+            return date("d-m-Y", strtotime($this->tglPernikahan));
         }
     }
 

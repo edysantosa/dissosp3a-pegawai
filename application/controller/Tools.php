@@ -56,40 +56,16 @@ class Tools extends Base
             $this->database->getConnection()->getPdo()->beginTransaction();
             foreach ($sheet as $index => $row) {
 
-                $golonganDarah = trim($row['L']);
-                $tglLahir = new Carbon(trim($row['P']));
-                $tempatLahir = ucfirst(strtolower(trim($row['O'])));
-                $jk = (trim($row['I'])) == "Perempuan" ? 2 : 1;
-
-                switch (trim($row['K'])) {
-                    case 'Menikah':
-                        $statusPernikahan = 2;
-                        break;
-                    case 'Belum Menikah':
-                        $statusPernikahan = 1;
-                        break;
-                    default:
-                        $statusPernikahan = 3;
-                        break;
-                }
-
-                // return $this->response->withJson([
-                //     'tglLahir' => $tglLahir->format('d/m/Y'),
-                //     'tempatLahir' => $tempatLahir,
-                //     'jk' => $jk,
-                //     'golonganDarah' => $golonganDarah,
-                //     'statusPernikahan' => $statusPernikahan,
-                // ]);
-                $pegawai = PegawaiModel::where('nip', trim($row['A']))->first();
+                $nik = trim($row['A']);
+                $alamat = trim($row['I']);
+                $pegawai = PegawaiModel::where('nip', trim($row['K']))->first();
 
                 if (!$pegawai) {
                     throw new Exception($index);
                 }
-                $pegawai->tglLahir = $tglLahir->format('Y-m-d');
-                $pegawai->tempatLahir = $tempatLahir;
-                $pegawai->jk = $jk;
-                $pegawai->golonganDarah = $golonganDarah;
-                $pegawai->statusPernikahan = $statusPernikahan;
+
+                $pegawai->nik = $nik;
+                $pegawai->alamat = $alamat;
                 $pegawai->save();
             }
             $this->database->getConnection()->getPdo()->commit();

@@ -478,8 +478,6 @@ class Pegawai extends Base
             $rjbJenis      = $post->get('rjb-jenis-jabatan', []);
             $rjbJabatan    = $post->get('rjb-nama-jabatan', []);
             $rjbEselon     = $post->get('rjb-eselon', []);
-            $rjbBidang     = $post->get('rjb-bidang', []);
-            $rjbSub        = $post->get('rjb-sub-bidang', []);
             $rjbDitetapkan = $post->get('rjb-ditetapkan-oleh', []);
             $rjbNoSK       = $post->get('rjb-no-sk', []);
             $rjbTmtJabatan = $post->get('rjbTmtJabatan', []);
@@ -510,8 +508,6 @@ class Pegawai extends Base
                 $rjb->jenisJabatan   = $rjbJenis[$key];
                 $rjb->eselon         = $rjbEselon[$key];
                 $rjb->namaJabatan    = $rjbJabatan[$key];
-                $rjb->bidang         = $rjbBidang[$key];
-                $rjb->subBidang      = $rjbSub[$key];
                 $rjb->tmtJabatan     = $rjbTmtJabatan[$key] ?: null;
                 $rjb->ditetapkanOleh = $rjbDitetapkan[$key];
                 $rjb->noSKJabatan    = $rjbNoSK[$key];
@@ -814,6 +810,12 @@ class Pegawai extends Base
             $pegawai->tglLahirIbu = $post->get('ibuTgl', null) ?: null;
             $pegawai->pekerjaanIbu = $post->get('ibu-pekerjaan', '');
             $pegawai->alamatIbu = $post->get('ibu-alamat', '');
+            $pegawai->namaPasangan = $post->get('pasangan-nama', '');
+            $pegawai->tempatLahirPasangan = $post->get('pasangan-tempat', '');
+            $pegawai->tglLahirPasangan = $post->get('pasanganTgl', null) ?: null;
+            $pegawai->pekerjaanPasangan = $post->get('pasangan-pekerjaan', '');
+            $pegawai->tglPernikahan = $post->get('pasanganTglPernikahan', null) ?: null;
+            $pegawai->pendidikanPasangan = $post->get('pasangan-pendidikan', null) ?: null;
 
             // Anak
             $ankId         = $post->get('ank-id', []);
@@ -876,7 +878,7 @@ class Pegawai extends Base
 
             // $this->database->getConnection()->getPdo()->commit();
 
-            return $this->response->withStatus(500)->withJson([
+            return $this->response->withJson([
                 'message' => 'Data pegawai tersimpan',
                 'pegawaiId' => $pegawai->pegawaiId
             ]);

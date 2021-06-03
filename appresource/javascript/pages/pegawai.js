@@ -124,9 +124,9 @@ $(function(){
                 text: 'Select none'
             }]
         },
-        select : {
-            style : 'multi+shift'
-        },
+        // select : {
+        //     style : 'multi+shift'
+        // },
         processing: true,
         serverSide: true,
         ajax : {
